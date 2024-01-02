@@ -11,3 +11,8 @@ declare module '*.vue';
 interface Window {
     publicPath: string;
 }
+type EmptyObject = {
+    [K in PropertyKey]: never;
+};
+
+declare const API_HOST: string;
