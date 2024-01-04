@@ -5,25 +5,33 @@ import http from '@/utils/http';
 import api from '@/api';
 import { Toast } from '@/components';
 import path from 'path';
-
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 export const EMPTY: EmptyObject = Object.create(null);
-/*
-    常用正则表达式整理
+
+//登录校验函数（处理一些需要登录后才可执行的方法）
+export const authFunc: (func: any) => (...args: any[]) => void = (func) => {
+    if (localStorage.getItem('token')) {
+        return (...args) => {
+            func.call(EMPTY, ...args);
+        };
+    } else {
+        return () => {
+            router.push('/auth/login');
+        };
+    }
+};
+
+/**
+ * 时间戳格式化字符串（针对后台返回的10位时间戳）
+ * @param timeStamp
  */
-export const Reg = {
-    // 自然数（0，1，2，3，4）
-    natureNo: /^(0|[1-9][0-9]*)$/,
-    // 非0数量（1，2，3...）
-    noZeroAmount: /^[1-9]\d*$/,
-    // 手机号码
-    mobileTel: /^1(3[0-9]|4[01456879]|5[0-35-9]|6[2567]|7[0-8]|8[0-9]|9[0-35-9])\d{8}$/,
-    // 固定电话号码（带区号）
-    fixedTel: /^(0\d{2,3})-?(\d{7,8})$/,
-    // url地址(以http或https开头)
-    url: /^(https?):\/\/[\w-]+(\.[\w-]+)+([\w\-.,@?^=%&:/~+#]*[\w\-@?^=%&/~+#])?$/,
-    // 邮箱正则
-    email: /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/
+export const dateFormat = (timeStamp: number | string) => {
+    const length = String(timeStamp).length;
+
+    const date = new Date(parseInt(`${length === 10 ? `${timeStamp}000` : timeStamp}`));
+    return dayjs(date).format('YYYY-MM-DD HH:mm:ss');
 };
 
 // 防抖
@@ -55,18 +63,6 @@ export const throttle = (fun: (...args: any[]) => void, delay = 200) => {
     };
 };
 
-
-/**
- * 时间戳格式化字符串（针对后台返回的10位时间戳）
- * @param timeStamp
- */
-export const dateFormat = (timeStamp: number | string) => {
-    const length = String(timeStamp).length;
-
-    const date = new Date(parseInt(`${length === 10 ? `${timeStamp}000` : timeStamp}`));
-    return dayjs(date).format('YYYY-MM-DD HH:mm:ss');
-};
-
 /**
  * 文件上传
  * @param file file对象
@@ -94,7 +90,7 @@ export const uploadFile: (file: File | Blob) => Promise<{ name?: string; url?: s
         stsToken: SecurityToken,
         // 填写Bucket名称。
         bucket: 'codeyell',
-        endpoint:'static.codeyell.com',
+        endpoint: 'static.codeyell.com',
         cname: true
     });
 
@@ -119,9 +115,8 @@ export const uploadFile: (file: File | Blob) => Promise<{ name?: string; url?: s
         // 'x-oss-forbid-overwrite': 'true',
     };
     try {
-
         const result = await client.put(
-            wrapOSSKey(file.name),
+            wrapOSSKey((file as File).name),
             file
             //{headers}
         );
@@ -186,12 +181,17 @@ export const copyToClipboard = async (text: string) => {
 };
 
 // 封装oss上传key
-export const wrapOSSKey = (filename: string ) => {
+export const wrapOSSKey = (filename: string) => {
     let data: any = new Date();
     let year: any = data.getFullYear();
     let month: any = data.getMonth() + 1;
 
-    return path.join('upload',year.toString(),month.toString(),randomString(32)+path.extname(filename));
+    return path.join(
+        'upload',
+        year.toString(),
+        month.toString(),
+        randomString(32) + path.extname(filename)
+    );
 };
 
 export const randomString = (length: number) => {
@@ -199,17 +199,17 @@ export const randomString = (length: number) => {
     let inOptions = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
     for (let i = 0; i < length; i++) {
-      outString += inOptions.charAt(Math.floor(Math.random() * inOptions.length));
+        outString += inOptions.charAt(Math.floor(Math.random() * inOptions.length));
     }
 
     return outString;
 };
 
-export const processOSSLogo = (url: string, isAvatar:boolean) => {
+export const processOSSLogo = (url: string, isAvatar: boolean) => {
     if (url) {
         return url + '?x-oss-process=image/resize,m_pad,h_64,w_64,color_FFFFFF';
     }
-    if(isAvatar) {
+    if (isAvatar) {
         return 'https://static.codeyell.com/system/base/avatar-default.png';
     }
     return 'https://static.codeyell.com/system/base/logo-default.png';

@@ -1,9 +1,10 @@
 import { Toast } from '@/components';
-import store from '@/store';
 import { notification } from 'ant-design-vue';
-import {useRouter} from 'vue-router'
+import { useRouter } from 'vue-router';
 import Axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-const router = useRouter()
+import useGlobalStore from '@/store/global';
+const router = useRouter();
+const store = useGlobalStore();
 const CancelToken = Axios.CancelToken;
 
 type CustomConfig = {

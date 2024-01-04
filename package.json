@@ -24,11 +24,16 @@
   "author": "scw",
   "license": "ISC",
   "dependencies": {
+    "@ant-design/icons-vue": "^7.0.1",
     "ant-design-vue": "^4.0.8",
     "axios": "^1.6.3",
     "pinia": "^2.1.7",
     "vue": "^3.3.13",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "dayjs": "^1.11.7",
+    "highlight.js": "^11.7.0",
+    "marked": "^4.2.12",
+    "monaco-editor": "^0.34.1"
   },
   "engines": {
     "node": ">=18.0.0"
