@@ -11,9 +11,15 @@ import {
     Select,
     Upload,
     Avatar,
-    Tabs
+    Tabs,
+    Image,
+    Space,
+    Row,
+    Col,
+    Dropdown
 } from 'ant-design-vue';
 import 'ant-design-vue/dist/reset.css';
+import './index.less';
 const app = createApp(App);
 import { createPinia } from 'pinia';
 
@@ -29,6 +35,11 @@ app.use(ConfigProvider)
     .use(Select)
     .use(Upload)
     .use(Avatar)
-    .use(Tabs);
+    .use(Tabs)
+    .use(Image)
+    .use(Space)
+    .use(Row)
+    .use(Col)
+    .use(Dropdown);
 
 app.mount('#root');

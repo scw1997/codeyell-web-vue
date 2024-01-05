@@ -1,10 +1,10 @@
-import { Toast } from '@/components';
+import Toast from '@/utils/Toast';
 import { notification } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import Axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import useGlobalStore from '@/store/global';
 const router = useRouter();
-const store = useGlobalStore();
+
 const CancelToken = Axios.CancelToken;
 
 type CustomConfig = {
@@ -38,6 +38,7 @@ const instance: AxiosInstance = Axios.create({
  */
 instance.interceptors.request.use(
     (config) => {
+        const store = useGlobalStore();
         if (config.method === 'post') {
             config.headers['Content-Type'] = 'application/json';
         }
@@ -55,6 +56,7 @@ instance.interceptors.response.use(
         return res;
     },
     (err: AxiosError) => {
+        const store = useGlobalStore();
         console.log('err', err);
         if (!navigator.onLine) {
             return Promise.reject({ code: -1, msg: '当前网络存在问题，请检查后重试' });
@@ -94,6 +96,7 @@ const handleRes = async (
     reject: (reason: any) => void,
     config?: Parameters<HttpMethod>[2]
 ) => {
+    const store = useGlobalStore();
     if (res?.status === 200) {
         let { code, msg, data } = res?.data || {};
 

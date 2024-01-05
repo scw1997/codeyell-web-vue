@@ -4,7 +4,6 @@ import hljs from 'highlight.js';
 // @ts-ignore
 import { marked } from 'marked';
 import 'highlight.js/styles/base16/onedark.css';
-import { Image } from 'ant-design-vue'; // 引入渲染的主题样式
 // @ts-ignore
 import { ImagePreviewType } from 'rc-image';
 import { ref } from 'vue';
@@ -59,7 +58,7 @@ const handleContentClick = (e) => {
 
 <template>
     <div class="parsed-content-component-root">
-        <Image
+        <AImage
             v-if="previewConfig?.src && previewConfig.visible"
             class="image"
             :preview="{

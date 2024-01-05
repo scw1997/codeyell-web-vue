@@ -1,6 +1,6 @@
 <!--纯Tabs组件（不含tab内容）-->
 <script setup lang="ts">
-import { ref } from 'vue';
+import {ref, watch} from 'vue';
 
 type TabConfigItem = {
     name: string;
@@ -11,10 +11,10 @@ interface PropsType {
     config: TabConfigItem[];
     defaultActiveKey?: TabConfigItem['key'];
     activeKey?: TabConfigItem['key'];
-    onChange?: (key: TabConfigItem['key']) => void;
 }
 
-const { config, defaultActiveKey, activeKey, onChange } = defineProps<PropsType>();
+const { config, defaultActiveKey, activeKey } = defineProps<PropsType>();
+const emit = defineEmits<{ (e: 'change', key: TabConfigItem['key']): void }>();
 const activeKeyRef = ref<typeof defaultActiveKey>(activeKey ?? defaultActiveKey);
 
 const handleTabClick = (item: TabConfigItem) => {
@@ -22,16 +22,20 @@ const handleTabClick = (item: TabConfigItem) => {
     if (!activeKey) {
         activeKeyRef.value = item.key;
     }
-    onChange?.(item.key);
+    emit('change', item.key);
 };
+
+// watch(activeKey,(value, oldValue, onCleanup)=>{
+//
+// })
 </script>
 
 <template>
     <div class="pure-tabs-component-root">
         <section
-            v-for="(index, item) in config"
+            v-for="(item, index) in config"
             :key="index"
-            :class="{ 'tab-item': true, active: activeKeyState === item.key }"
+            :class="{ 'tab-item': true, active: activeKeyRef === item.key }"
         >
             <div class="name" @click="handleTabClick(item)">{{ item.name }}</div>
         </section>

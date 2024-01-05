@@ -1,0 +1,156 @@
+html {
+    //min-width: 1200px;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    height: 100%;
+}
+
+#root {
+    height: 100%;
+    --readPageHeaderHeigt: 46px //阅读页上方header的高度变量，便于部分页面样式计算
+;
+}
+
+.logo {
+    width: 42px;
+    height: 42px;
+    vertical-align: middle;
+    display: inline-block;
+    background-image: url('@/assets/logo.png');
+    background-size: contain;
+}
+
+.mb {
+    margin-bottom: 16px !important;
+}
+
+.mr {
+    margin-right: 16px !important;
+}
+
+.mt {
+    margin-top: 16px !important;
+}
+
+.ml {
+    margin-left: 16px !important;
+}
+
+.pt {
+    padding-top: 16px !important;
+}
+
+.pl {
+    padding-left: 16px !important;
+}
+
+.pb {
+    padding-bottom: 16px !important;
+}
+
+.pr {
+    padding-right: 16px !important;
+}
+
+/*单行超出省略*/
+.ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/*两行超出省略*/
+.ellipsis-2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.disabled-box {
+    filter: grayscale(100%);
+    pointer-events: none;
+}
+
+.orange {
+    color: #fb8918;
+}
+
+.red {
+    color: #ff0000;
+}
+
+.blue {
+    color: #1677ff;
+}
+
+.green {
+    color: #10c15f;
+}
+
+.gray {
+    color: #868a8e;
+}
+
+.cp {
+    cursor: pointer;
+}
+
+.hide {
+    display: none !important;
+}
+
+//一些antd的组件样式重置
+.global-spin-container {
+    width: 100%;
+    height: 100%;
+
+    .global-spin {
+        position: relative;
+        height: 100%;
+        width: 100%;
+
+        .ant-spin-dot {
+            position: absolute;
+            inset: 0 0 0 0;
+            margin: auto;
+        }
+
+        .ant-spin-text {
+            width: max-content;
+            height: max-content;
+            position: absolute;
+            inset: 0 0 0 0;
+            margin: auto;
+            padding-top: 60px;
+        }
+    }
+}
+
+//标准样式的modal弹窗（使用modal.xxx调用）
+.method-modal-reset {
+    .ant-modal-confirm-body {
+        flex-direction: column;
+
+        .anticon {
+            display: none;
+        }
+
+        .ant-modal-confirm-paragraph {
+            width: 100%;
+        }
+
+        .ant-modal-confirm-title {
+            align-self: flex-start;
+        }
+
+        .ant-modal-confirm-content {
+            margin: 0 !important;
+        }
+    }
+}

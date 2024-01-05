@@ -3,8 +3,7 @@ import dayjs from 'dayjs';
 import OSS from 'ali-oss';
 import http from '@/utils/http';
 import api from '@/api';
-import { Toast } from '@/components';
-import path from 'path';
+import Toast from '@/utils/Toast';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
@@ -186,12 +185,9 @@ export const wrapOSSKey = (filename: string) => {
     let year: any = data.getFullYear();
     let month: any = data.getMonth() + 1;
 
-    return path.join(
-        'upload',
-        year.toString(),
-        month.toString(),
-        randomString(32) + path.extname(filename)
-    );
+    return `
+        upload${year.toString()}${month.toString()}
+        ${randomString(32) + filename.slice(filename.lastIndexOf('.'))}`;
 };
 
 export const randomString = (length: number) => {
