@@ -39,7 +39,6 @@ const path = ref<string>(route.path);
 watch(
     () => route.path,
     (value, oldValue, onCleanup) => {
-        console.log('value', value);
         path.value = value;
     }
 );
@@ -67,7 +66,6 @@ watch(
                                 @change="(key) => router.push(key)"
                             />
                         </section>
-
                         <AInputSearch
                             allowClear
                             class="item search-bar"
@@ -94,6 +92,35 @@ watch(
                                         <UserOutlined />
                                     </template>
                                 </AAvatar>
+
+                                <template v-else>
+                                    <span
+                                        class="cp"
+                                        @click="
+                                            () => {
+                                                router.push(
+                                                    pathname === '/'
+                                                        ? '/auth/login'
+                                                        : `/auth/login?redirect_path=${encodeURIComponent(
+                                                              pathname + search
+                                                          )}`
+                                                );
+                                            }
+                                        "
+                                    >
+                                        登录
+                                    </span>
+                                    <span
+                                        class="cp"
+                                        @click="
+                                            () => {
+                                                router.push('/auth/sign');
+                                            }
+                                        "
+                                    >
+                                        注册
+                                    </span>
+                                </template>
 
                                 <ASelect
                                     defaultValue="chinese"
