@@ -24,7 +24,6 @@ import Toast from '@/utils/Toast';
 
 interface PropsType {
     data: Record<string, any>; //当前评论相关数据
-    refresh?: (type: 'delete') => void; //触发刷新列表，点赞相关/删除/举报等操作成功后调用
     type?: 'detail' | 'read';
 }
 
@@ -32,10 +31,11 @@ const props = defineProps<PropsType>();
 const emits = defineEmits<{
     (e: 'reply', record: PropsType['data']): void; //点击回复
     (e: 'edit', record: PropsType['data']): void; //点击修改
+    (e: 'refresh', type: 'delete'): void; //触发刷新列表，点赞相关/删除/举报等操作成功后调用
 }>();
-const { userInfo, token } = useGlobalStore();
-const { isJoined, setRightShowMode } = useReadStore();
 const router = useRouter();
+const { isJoined, setRightShowMode } = useReadStore();
+const { userInfo, token } = useGlobalStore();
 
 const dropdownItems = ref<MenuProps['items']>([]);
 const likeStates = ref<{ count_liked: number; count_unliked: number; is_liked: number | null }>({
@@ -232,4 +232,37 @@ const handleAgreeOrDisagree = async (isLike: boolean) => {
     </div>
 </template>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.comment-item-component-root {
+    .top {
+        .name {
+            padding-left: 6px;
+            color: #626b7d;
+
+            .arrow {
+                padding: 0 6px;
+            }
+        }
+    }
+
+    .main {
+        .comment {
+            padding: 8px 0;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+
+            .date {
+                color: #868a8e;
+            }
+
+            .like-amount,
+            .reply {
+                padding-left: 4px;
+            }
+        }
+    }
+}
+</style>

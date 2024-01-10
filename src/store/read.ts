@@ -7,7 +7,6 @@ import { getContentFromBase64 } from '@/utils/tools';
 import { TreeDataNode } from 'ant-design-vue/es/vc-tree-select/interface';
 import { languageRules } from '@/views/project/read/config';
 
-const globalStore = useGlobalStore();
 export type Editor = monaco.editor.IStandaloneCodeEditor | null;
 export interface TabItem {
     key: string; //唯一标识
@@ -120,6 +119,7 @@ const useReadStore = defineStore('global', {
         },
         //查询是否当前用户已加入该阅读
         async getJoinOrNot(projectId: string) {
+            const globalStore = useGlobalStore();
             const data = await http.post(api.project.getJoinOrNot, {
                 project_id: projectId
             });
