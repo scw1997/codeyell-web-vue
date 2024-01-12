@@ -7,11 +7,13 @@ import { UserOutlined } from '@ant-design/icons-vue';
 import { processOSSLogo } from '@/utils/tools';
 import { Layout } from 'ant-design-vue';
 import { watch, ref } from 'vue';
+
 const { Header, Content, Footer } = Layout;
 const router = useRouter();
 const route = useRoute();
-
 const { userInfo } = useGlobalStore();
+const path = ref<string>(route.path);
+
 const navTabConfig = [
     {
         name: '首页',
@@ -35,7 +37,6 @@ const handleSearch = (value: string) => {
     router.push(`/search?keyword=${value}`);
 };
 
-const path = ref<string>(route.path);
 watch(
     () => route.path,
     (value, oldValue, onCleanup) => {

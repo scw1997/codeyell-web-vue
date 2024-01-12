@@ -1,6 +1,6 @@
 <!--纯Tabs组件（不含tab内容）-->
 <script setup lang="ts">
-import {ref, watch} from 'vue';
+import { ref, toRefs, watch } from 'vue';
 
 type TabConfigItem = {
     name: string;
@@ -14,23 +14,25 @@ interface PropsType {
 }
 
 const props = defineProps<PropsType>();
+const { config, activeKey, defaultActiveKey } = toRefs(props);
 const emit = defineEmits<{ (e: 'change', key: TabConfigItem['key']): void }>();
-const activeKeyRef = ref<typeof props.defaultActiveKey>(props.activeKey ?? props.defaultActiveKey);
+const activeKeyState = ref<typeof props.defaultActiveKey>(
+    props.activeKey ?? props.defaultActiveKey
+);
 
 const handleTabClick = (item: TabConfigItem) => {
     //没有传activeKey prop则可以内部切换activeKeyState，否则以activeKey prop为准
-    if (!props.activeKey) {
-        activeKeyRef.value = item.key;
+    if (!activeKey.value) {
+        activeKeyState.value = item.key;
     }
     emit('change', item.key);
 };
 
-watch(()=>props.activeKey,(value, oldValue, onCleanup)=>{
-  if(value){
-    activeKeyRef.value = value
-  }
-
-},)
+watch(activeKey, (value, oldValue, onCleanup) => {
+    if (value) {
+        activeKeyState.value = value;
+    }
+});
 </script>
 
 <template>

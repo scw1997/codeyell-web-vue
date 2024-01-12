@@ -126,13 +126,13 @@ const handleAgreeOrDisagree = async (isLike: boolean) => {
 
 <template>
     <div class="comment-item-component-root">
-        <ARow class="top" :gutter="15" justify="space-between">
+        <ARow class="top" gutter="{{15}" justify="space-between">
             <ACol flex="none">
                 <AAvatar
                     class="cp"
                     @click="jumpToPublicUserPage(data?.user_info?.id)"
                     shape="square"
-                    :size="30"
+                    size="{{30}}"
                     :src="processOSSLogo(data?.user_info?.avatar, true) || null"
                 >
                     <template #icon><UserOutlined /></template>
@@ -155,13 +155,12 @@ const handleAgreeOrDisagree = async (isLike: boolean) => {
 
             <ACol v-if="type === 'read' && userInfo">
                 <ADropdown>
-                    <span class="cp" style="font-weight: bold">
-                        <EllipsisOutlined style="font-size: 22px" />
-                    </span>
-
                     <template #overlay>
                         <Menu :items="dropdownItems" @click="handleMenuClick"></Menu>
                     </template>
+                    <span class="cp" style="font-weight: bold">
+                        <EllipsisOutlined style="font-size: 22px" />
+                    </span>
                 </ADropdown>
             </ACol>
             )}

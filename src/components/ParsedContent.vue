@@ -70,11 +70,40 @@ const handleContentClick = (e) => {
             }"
             :src="previewConfig.src"
             style="display: none"
-            :width="200"
+            width="{{200}}"
         />
 
         <div class="main-content" v-html="parsedContent" @click="handleContentClick"></div>
     </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="less">
+.parsed-content-component-root {
+    .ant-image {
+        display: block;
+    }
+
+    .main-content {
+        :deep(p) {
+            margin: 4px 0;
+        }
+
+        :deep(code) {
+            margin: 0 2px;
+            padding: 6px 8px;
+            border-radius: 6px;
+            background-color: #eeeeee;
+            vertical-align: bottom;
+            line-height: 1.5;
+            word-break: break-all;
+        }
+
+        :deep(img) {
+            max-width: 200px;
+            max-height: 200px;
+            object-fit: contain;
+            object-position: center;
+        }
+    }
+}
+</style>

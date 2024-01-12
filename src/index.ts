@@ -16,7 +16,12 @@ import {
     Space,
     Row,
     Col,
-    Dropdown
+    Dropdown,
+    Card,
+    Empty,
+    Popover,
+    Tag,
+    Textarea
 } from 'ant-design-vue';
 import 'ant-design-vue/dist/reset.css';
 import './index.less';
@@ -40,6 +45,10 @@ app.use(ConfigProvider)
     .use(Space)
     .use(Row)
     .use(Col)
-    .use(Dropdown);
+    .use(Dropdown)
+    .use(Card)
+    .use(Empty)
+    .use(Popover)
+    .use(Tag);
 
 app.mount('#root');
