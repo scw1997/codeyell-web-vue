@@ -17,7 +17,7 @@ import {
     UserOutlined
 } from '@ant-design/icons-vue';
 import { MenuProps, Menu } from 'ant-design-vue';
-import { ref, watch } from 'vue';
+import { ref, render, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import useReadStore from '@/store/read';
 import Toast from '@/utils/Toast';
@@ -126,7 +126,7 @@ const handleAgreeOrDisagree = async (isLike: boolean) => {
 
 <template>
     <div class="comment-item-component-root">
-        <ARow class="top" gutter="{{15}" justify="space-between">
+        <ARow class="top" gutter="{{15}}" justify="space-between">
             <ACol flex="none">
                 <AAvatar
                     class="cp"
