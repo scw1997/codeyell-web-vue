@@ -40,7 +40,7 @@ watch(activeKey, (value, oldValue, onCleanup) => {
         <section
             v-for="(item, index) in config"
             :key="index"
-            :class="{ 'tab-item': true, active: activeKeyRef === item.key }"
+            :class="{ 'tab-item': true, active: activeKeyState === item.key }"
         >
             <div class="name" @click="handleTabClick(item)">{{ item.name }}</div>
         </section>

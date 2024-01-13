@@ -6,13 +6,13 @@ import useGlobalStore from '@/store/global';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { processOSSLogo } from '@/utils/tools';
 import { Layout } from 'ant-design-vue';
-import { watch, ref } from 'vue';
+import { watch, ref, toRefs, watchEffect } from 'vue';
+import { storeToRefs } from 'pinia';
 
 const { Header, Content, Footer } = Layout;
 const router = useRouter();
-const route = useRoute();
-const { userInfo } = useGlobalStore();
-const path = ref<string>(route.path);
+const { path } = toRefs(useRoute());
+const { userInfo } = storeToRefs(useGlobalStore());
 
 const navTabConfig = [
     {
@@ -36,13 +36,6 @@ const handleSearch = (value: string) => {
     //跳转搜索结果页
     router.push(`/search?keyword=${value}`);
 };
-
-watch(
-    () => route.path,
-    (value, oldValue, onCleanup) => {
-        path.value = value;
-    }
-);
 </script>
 
 <template>

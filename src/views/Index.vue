@@ -366,7 +366,7 @@ watch(
                             <AAvatar
                                 shape="square"
                                 :size="45"
-                                :src="processOSSLogo(logo, true) || null"
+                                :src="processOSSLogo(logo, false) || null"
                             >
                                 <template #icon>
                                     <Logo />
@@ -380,8 +380,7 @@ watch(
                                             {{ getLanguageName(language) }}
                                         </section>
                                         <section @click="jumpToGitPath(input_url)">
-                                            <GithubOutlined />
-                                            &nbsp;
+                                            <GithubOutlined style="padding-right: 4px" />
                                             <ATag color="default">{{ count_star || 0 }}</ATag>
                                         </section>
                                     </ASpace>
@@ -573,7 +572,7 @@ watch(
                     width: 0;
                     flex: 1;
 
-                    .ant-space {
+                    :deep(.ant-space) {
                         display: flex;
 
                         .ant-space-item {
