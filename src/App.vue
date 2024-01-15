@@ -11,7 +11,7 @@ import { storeToRefs } from 'pinia';
 
 const { Header, Content, Footer } = Layout;
 const router = useRouter();
-const { path } = toRefs(useRoute());
+const { path, query } = toRefs(useRoute());
 const { userInfo } = storeToRefs(useGlobalStore());
 
 const navTabConfig = [
@@ -93,10 +93,10 @@ const handleSearch = (value: string) => {
                                         @click="
                                             () => {
                                                 router.push(
-                                                    pathname === '/'
+                                                    path === '/'
                                                         ? '/auth/login'
                                                         : `/auth/login?redirect_path=${encodeURIComponent(
-                                                              pathname + search
+                                                              path + query
                                                           )}`
                                                 );
                                             }

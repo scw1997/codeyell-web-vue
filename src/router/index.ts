@@ -9,6 +9,18 @@ const router = createRouter({
             component: () => import('../views/Index.vue')
         },
         {
+            path: '/auth',
+            name: 'auth',
+            component: () => import('../views/user/auth/Index.vue'),
+            children: [
+                {
+                    path: 'login',
+                    name: 'login',
+                    component: () => import('../views/user/auth/Login.vue')
+                }
+            ]
+        },
+        {
             path: '/:pathMatch(.*)*',
             name: '404',
             component: () => import('../views/404.vue')

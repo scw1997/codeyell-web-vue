@@ -9,6 +9,24 @@ const router = useRouter();
 
 export const EMPTY: EmptyObject = Object.create(null);
 
+/*
+    常用正则表达式整理
+ */
+export const Reg = {
+    // 自然数（0，1，2，3，4）
+    natureNo: /^(0|[1-9][0-9]*)$/,
+    // 非0数量（1，2，3...）
+    noZeroAmount: /^[1-9]\d*$/,
+    // 手机号码
+    mobileTel: /^1(3[0-9]|4[01456879]|5[0-35-9]|6[2567]|7[0-8]|8[0-9]|9[0-35-9])\d{8}$/,
+    // 固定电话号码（带区号）
+    fixedTel: /^(0\d{2,3})-?(\d{7,8})$/,
+    // url地址(以http或https开头)
+    url: /^(https?):\/\/[\w-]+(\.[\w-]+)+([\w\-.,@?^=%&:/~+#]*[\w\-@?^=%&/~+#])?$/,
+    // 邮箱正则
+    email: /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/
+};
+
 //登录校验函数（处理一些需要登录后才可执行的方法）
 export const authFunc: (func: any) => (...args: any[]) => void = (func) => {
     if (localStorage.getItem('token')) {

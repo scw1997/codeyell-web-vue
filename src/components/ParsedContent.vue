@@ -70,7 +70,7 @@ const handleContentClick = (e) => {
             }"
             :src="previewConfig.src"
             style="display: none"
-            width="{{200}}"
+            :width="200"
         />
 
         <div class="main-content" v-html="parsedContent" @click="handleContentClick"></div>
