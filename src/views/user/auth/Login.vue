@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Title } from '@/components';
-import { Form, FormItem, InputPassword } from 'ant-design-vue';
+import { Form, FormInstance, FormItem, InputPassword } from 'ant-design-vue';
 import { ref, toRefs } from 'vue';
 import { debounce, Reg } from '@/utils/tools';
 import Toast from '@/utils/Toast';
@@ -16,6 +16,7 @@ const { query } = toRefs(route);
 const redirect_path = query.value['redirect_path'] || '/';
 const props = withDefaults(defineProps<{ isControl?: boolean }>(), { isControl: false });
 const { isControl } = toRefs(props);
+const formRef = ref<FormInstance>();
 
 const emits = defineEmits<{
     (e: 'success'): void;
@@ -42,6 +43,7 @@ const handleFormFinish = debounce(async (values: Record<string, any>) => {
     <div class="login-content">
         <Title v-if="!isControl" value="登录 - 源码阅读交流平台" />
         <Form
+            ref="formRef"
             autoComplete="off"
             class="login-form"
             :labelCol="{ span: 6 }"

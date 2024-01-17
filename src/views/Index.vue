@@ -5,11 +5,10 @@ import { GithubOutlined, ReadOutlined, UserAddOutlined, UserOutlined } from '@an
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
 import { SelectProps, Empty } from 'ant-design-vue';
-import { computed, onMounted, reactive, toRefs, VNode, watch, watchEffect } from 'vue';
+import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import Logo from '@/components/Logo.vue';
 import { useRouter } from 'vue-router';
-import http from '@/utils/http';
-import api from '@/api';
+import { useMyPro, useHotPro, useHotNote, useRecentPro } from '@/use/dashboard';
 
 const globalStore = useGlobalStore();
 const router = useRouter();
@@ -34,44 +33,22 @@ const rangeOptions = [
 interface StatesType {
     rangeValue: number; //热门项目的筛选日期
     languageValue: number; //热门项目的筛选语言
-    recentProData: any[]; //最新项目数据
-    offset: number; //热门评论列表查询的offset分页参数
-    hotNoteData: StatesType['recentProData']; //热门评论数据
-    isFinish: boolean; //热们评论数据是否加载完毕
-    loading: boolean; //热门评论数据加载按钮状态
-    hotProData: StatesType['recentProData']; //热门项目数据
-    myProData: StatesType['recentProData']; //右侧用户项目数据
 }
 
-const states: StatesType = reactive({
-    isFinish: true,
-    loading: false,
+const statesRef = ref<StatesType>({
     rangeValue: 1,
-    languageValue: -1, //-1表示全部，不选
-    recentProData: [],
-    offset: 0,
-    hotNoteData: [],
-    hotProData: [],
-    myProData: []
+    languageValue: -1 //-1表示全部，不选
 });
 
-const {
-    isFinish,
-    loading,
-    rangeValue,
-    languageValue,
-    recentProData,
-    offset,
-    hotNoteData,
-    hotProData,
-    myProData
-} = toRefs(states);
+const { getMyProjectData, myProData } = useMyPro();
+const { getRecentProjectData, recentProData } = useRecentPro();
+const { getHotProjectData, hotProData } = useHotPro();
+const { hotNoteStatesRef, getHotNoteData } = useHotNote();
 
 //当前场景添加‘全部’选项
 const formatLanguageData = computed<SelectProps['options']>(() => {
     return [{ label: '全部', value: -1 }, ...languageData.value];
 });
-
 //跳转到项目详情
 const handleJumpToProjectDetail = (id: number | string) => {
     router.push(`/project/detail?id=${id}`);
@@ -81,50 +58,7 @@ const handleJumpToProjectDetail = (id: number | string) => {
 const handleSelectChange = (type: 'range' | 'language', value: number) => {
     //
     const changeStateKey = type === 'range' ? 'rangeValue' : 'languageValue';
-    states[changeStateKey] = value;
-};
-
-//获取最近项目列表
-const getRecentProjectData = async () => {
-    const data = await http.post(api.project.getRecentProList);
-    states.recentProData = data;
-    return data;
-};
-//获取热门项目列表
-const getHotProjectData = async () => {
-    const data = await http.post(api.project.getHotProList, {
-        index: rangeValue.value,
-        language: languageValue.value === -1 ? undefined : languageValue.value
-    });
-    states.hotProData = data;
-
-    return data;
-};
-
-//获我的项目列表
-const getMyProjectData = async () => {
-    const { list = [] } = await http.post(api.user.getMyProList, { limit: 5 });
-
-    states.myProData = list || [];
-    return list;
-};
-
-//获取热门评论列表
-const getHotNoteData = async (nextPage = false) => {
-    //nextPage表示加载下一页数据
-    const newOffset = nextPage ? offset.value + 10 : 0;
-    if (nextPage) {
-        states.loading = true;
-    }
-    const newData =
-        (await http.post(api.comment.getRecentHotCommentList, { offset: newOffset })) || [];
-
-    states.hotNoteData = nextPage ? [...hotNoteData.value, ...newData] : newData;
-    states.offset = newOffset;
-    states.isFinish = newData.length < 10;
-    states.loading = nextPage ? false : loading.value;
-
-    return newData;
+    statesRef.value[changeStateKey] = value;
 };
 
 //跳转到git仓库地址
@@ -157,13 +91,9 @@ watchEffect(() => {
     }
 });
 
-watch(
-    [rangeValue, languageValue],
-    () => {
-        getHotProjectData();
-    },
-    { immediate: true }
-);
+watchEffect(() => {
+    getHotProjectData(statesRef.value);
+});
 </script>
 
 <template>
@@ -178,13 +108,13 @@ watch(
                             @change="(value) => handleSelectChange('range', value)"
                             :options="rangeOptions"
                             style="width: 120px"
-                            :value="rangeValue"
+                            :value="statesRef.rangeValue"
                         />
                         <ASelect
                             @change="(value) => handleSelectChange('language', value)"
                             :options="formatLanguageData"
                             style="width: 120px"
-                            :value="languageValue"
+                            :value="statesRef.languageValue"
                         />
                     </ASpace>
                 </section>
@@ -251,7 +181,7 @@ watch(
             <ACard class="bottom-card">
                 <div class="title">近期热门注解</div>
                 <NoteItem
-                    v-for="(item, index) in hotNoteData"
+                    v-for="(item, index) in hotNoteStatesRef.hotNoteData"
                     class="pb"
                     :data="item"
                     :key="index"
@@ -260,9 +190,15 @@ watch(
 
                 <ARow justify="center">
                     <ACol flex="none">
-                        <template v-if="hotNoteData.length > 0">
-                            <span v-if="isFinish" class="finish-text">已加载全部数据</span>
-                            <AButton v-else :loading="loading" @click="getHotNoteData(true)">
+                        <template v-if="hotNoteStatesRef.hotNoteData.length > 0">
+                            <span v-if="hotNoteStatesRef.isFinish" class="finish-text">
+                                已加载全部数据
+                            </span>
+                            <AButton
+                                v-else
+                                :loading="hotNoteStatesRef.loading"
+                                @click="getHotNoteData(true)"
+                            >
                                 加载更多
                             </AButton>
                         </template>
