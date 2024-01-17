@@ -11,10 +11,9 @@ interface StatesType {
     btnDisabled: boolean;
     isCountdown: boolean;
 }
-const attrs = useAttrs();
 const emits = defineEmits<{
-    (e: 'finish'): void; //倒计时结束回调
-    (e: 'btnClick'): boolean | Promise<any>; //点击按钮回调
+    finish: [];
+    btnClick: [sendFunc: (func) => void];
 }>();
 
 const props = defineProps<PropsType>();
@@ -52,10 +51,10 @@ const createInterval = (endTime: dayjs.Dayjs) => {
 };
 
 const handleBtnClick = async () => {
-    if (attrs['btnClick']) {
+    emits('btnClick', (func) => {
+        //点击按钮回调方法返回true或值时则开始倒计时
         statesRef.value.btnDisabled = true;
-        //点击按钮回调方法返回true或promise resolve非false值时则开始倒计时
-        Promise.resolve(emits('btnClick'))
+        Promise.resolve(func())
             .then((res) => {
                 if (res) {
                     const endTime = dayjs().add(initCount.value, 'second');
@@ -68,7 +67,7 @@ const handleBtnClick = async () => {
             .catch((e) => {
                 statesRef.value.btnDisabled = false;
             });
-    }
+    });
 };
 onMounted(() => {
     //有缓存时间，则走缓存，否则重新创建计时器

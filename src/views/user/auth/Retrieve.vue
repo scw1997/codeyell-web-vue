@@ -15,12 +15,11 @@ const globalStore = useGlobalStore();
 
 const router = useRouter();
 const route = useRoute();
-//分享链接中的邀请人id
-const inviteId = route.query['invite_id'] || undefined;
+
 const formRef = ref<FormInstance>();
 const submitLoading = ref<boolean>(false);
 
-const formStateRef = reactive<{ mobile: string; code: string; password: string }>({
+const formStatesRef = reactive<{ mobile: string; code: string; password: string }>({
     mobile: '',
     code: '',
     password: ''
@@ -31,61 +30,49 @@ const emits = defineEmits<{
     login: [];
     retrieveClick: [];
 }>();
+
 //点击发送短信
-const handleSendMsgClick = async (callback) => {
+const handleSendMsgClick = async () => {
     const { mobile } = formRef.value.getFieldsValue();
     if (!Reg.mobileTel.test(mobile)) {
-        Toast.info('请输入正确的手机号');
-        return callback(false);
+        return Toast.info('请输入正确的手机号');
     }
     Toast.loading(true);
     await http.post(api.auth.sendCode, { mobile });
     Toast.loading(false);
-    callback(true);
+    return true;
 };
-//点击注册
-const handleSignClick = async () => {
-    const { mobile: username, password, code } = formRef.value.getFieldsValue();
-
+//点击确定
+const handleSubmit = async (values: Record<string, any>) => {
     try {
-        submitLoading.value = true;
-        await http.post(api.auth.sign, { username, password, code, from: inviteId });
-        Toast.success('注册成功');
-
-        //是否父组件使用了success事件
-        let isOnSuccess = false;
-        emits('success', () => {
-            isOnSuccess = true;
-        });
-        if (!isOnSuccess) {
-            router.push('/auth/login');
+        setStates({ submitLoading: true });
+        await http.post(api.auth.retrievePwd, values);
+        Toast.success('设置新密码成功');
+        if (onSuccess) {
+            onSuccess();
+        } else {
+            history.push('/auth/login');
         }
     } finally {
-        submitLoading.value = false;
+        setStates({ submitLoading: false });
     }
 };
-onMounted(() => {
-    if (inviteId) {
-        globalStore.setInviteId(inviteId as string);
-    }
-});
 </script>
 <template>
-    <div class="sign-content">
-        <Title v-if="!isControl" value="登录 - 源码阅读交流平台" />
+    <div class="retrieve-content">
+        <Title value="找回密码 - 源码阅读交流平台" />
         <Form
-            :model="formStateRef"
-            ref="formRef"
             autoComplete="off"
-            class="sign-form"
+            class="retrieve-form"
+            :form="formRef"
             :labelCol="{ span: 6 }"
-            name="form"
-            @finish="handleSignClick"
+            name="basic"
+            :onFinish="handleSubmit"
             :wrapperCol="{ span: 18 }"
         >
             <FormItem
                 label="手机号"
-                name="mobile"
+                name="username"
                 :rules="[
                     { required: true, message: '请输入手机号' },
                     {
@@ -94,7 +81,7 @@ onMounted(() => {
                     }
                 ]"
             >
-                <AInput :maxLength="11" v-model:value="formStateRef.mobile" placeholder="手机号" />
+                <Input :maxLength="11" placeholder="手机号" />
             </FormItem>
 
             <FormItem
@@ -105,52 +92,21 @@ onMounted(() => {
                 <ARow :gutter="8">
                     <ACol :span="16">
                         <FormItem :noStyle="true">
-                            <AInput
-                                v-model:value="formStateRef.code"
-                                :maxLength="6"
-                                placeholder="验证码"
-                            />
+                            <Input :maxLength="6" placeholder="验证码" />
                         </FormItem>
                     </ACol>
                     <ACol :span="8">
-                        <CountDown
-                            @btnClick="
-                                (sendFunc) => {
-                                    sendFunc(handleSendMsgClick);
-                                }
-                            "
-                            text="发送短信"
-                        />
+                        <CountDown @btnClick="handleSendMsgClick" text="发送短信" />
                     </ACol>
                 </ARow>
             </FormItem>
 
             <FormItem
-                label="密码"
+                label="新密码"
                 name="password"
-                :rules="[{ required: true, message: '请输入密码' }]"
+                :rules="[{ required: true, message: '请输入新密码' }]"
             >
-                <InputPassword
-                    v-model:value="formStateRef.password"
-                    :maxLength="20"
-                    placeholder="密码"
-                />
-            </FormItem>
-
-            <FormItem
-                v-if="!!inviteId"
-                label="邀请人ID"
-                name="invite"
-                :rules="[{ required: false, message: '请输入邀请人id' }]"
-            >
-                <div>
-                    <AInput
-                        v-model:value="formStateRef.mobile"
-                        disabled
-                        placeholder="请输入邀请人id"
-                        readOnly
-                    />
-                </div>
+                <InputPassword :maxLength="20" placeholder="设置新密码" />
             </FormItem>
 
             <FormItem style="text-align: center" :wrapperCol="{ span: 24 }">
@@ -160,7 +116,7 @@ onMounted(() => {
                     style="width: 200px"
                     type="primary"
                 >
-                    注册
+                    确定
                 </AButton>
             </FormItem>
         </Form>
@@ -170,21 +126,21 @@ onMounted(() => {
                 class="cp"
                 @click="
                     () => {
-                        isControl ? emits('retrieveClick') : router.push('/auth/retrieve_pwd');
+                        onLoginClick ? onLoginClick() : history.push('/auth/login');
                     }
                 "
             >
-                找回密码
+                登录
             </span>
             <span
                 class="cp"
                 @click="
                     () => {
-                        isControl ? emits('login') : router.push('/auth/login');
+                        onSignClick ? onSignClick() : history.push('/auth/sign');
                     }
                 "
             >
-                登录
+                注册
             </span>
         </ASpace>
     </div>
