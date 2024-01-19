@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 interface PropsType {
     initCount?: number; //初始时间，单位为秒
     text: string;
+    beforeStart: () => Promise<boolean> | boolean; //点击按钮开始计时前的回调，返回true或promise<true>则开始计时
 }
 interface StatesType {
     count: PropsType['initCount'];
@@ -13,11 +14,10 @@ interface StatesType {
 }
 const emits = defineEmits<{
     finish: [];
-    btnClick: [sendFunc: (func) => void];
 }>();
 
 const props = defineProps<PropsType>();
-const { initCount, text } = toRefs(props);
+const { initCount, text, beforeStart } = toRefs(props);
 
 const statesRef = ref<StatesType>({
     count: initCount.value,
@@ -51,10 +51,10 @@ const createInterval = (endTime: dayjs.Dayjs) => {
 };
 
 const handleBtnClick = async () => {
-    emits('btnClick', (func) => {
+    if (beforeStart.value) {
         //点击按钮回调方法返回true或值时则开始倒计时
         statesRef.value.btnDisabled = true;
-        Promise.resolve(func())
+        Promise.resolve(beforeStart.value())
             .then((res) => {
                 if (res) {
                     const endTime = dayjs().add(initCount.value, 'second');
@@ -67,7 +67,7 @@ const handleBtnClick = async () => {
             .catch((e) => {
                 statesRef.value.btnDisabled = false;
             });
-    });
+    }
 };
 onMounted(() => {
     //有缓存时间，则走缓存，否则重新创建计时器

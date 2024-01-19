@@ -20,28 +20,26 @@ const inviteId = route.query['invite_id'] || undefined;
 const formRef = ref<FormInstance>();
 const submitLoading = ref<boolean>(false);
 
-const formStateRef = reactive<{ mobile: string; code: string; password: string }>({
+const formStates = reactive<{ mobile: string; code: string; password: string }>({
     mobile: '',
     code: '',
     password: ''
 });
-
+const props = withDefaults(defineProps<{ isControl?: boolean }>(), { isControl: false });
 const emits = defineEmits<{
-    success: [callback: () => void];
+    success: [];
     login: [];
     retrieveClick: [];
 }>();
 //点击发送短信
-const handleSendMsgClick = async (callback) => {
+const handleSendMsgClick = async () => {
     const { mobile } = formRef.value.getFieldsValue();
     if (!Reg.mobileTel.test(mobile)) {
         Toast.info('请输入正确的手机号');
-        return callback(false);
     }
     Toast.loading(true);
     await http.post(api.auth.sendCode, { mobile });
     Toast.loading(false);
-    callback(true);
 };
 //点击注册
 const handleSignClick = async () => {
@@ -52,12 +50,9 @@ const handleSignClick = async () => {
         await http.post(api.auth.sign, { username, password, code, from: inviteId });
         Toast.success('注册成功');
 
-        //是否父组件使用了success事件
-        let isOnSuccess = false;
-        emits('success', () => {
-            isOnSuccess = true;
-        });
-        if (!isOnSuccess) {
+        if (props.isControl) {
+            emits('success');
+        } else {
             router.push('/auth/login');
         }
     } finally {
@@ -74,7 +69,7 @@ onMounted(() => {
     <div class="sign-content">
         <Title v-if="!isControl" value="登录 - 源码阅读交流平台" />
         <Form
-            :model="formStateRef"
+            :model="formStates"
             ref="formRef"
             autoComplete="off"
             class="sign-form"
@@ -94,7 +89,7 @@ onMounted(() => {
                     }
                 ]"
             >
-                <AInput :maxLength="11" v-model:value="formStateRef.mobile" placeholder="手机号" />
+                <AInput :maxLength="11" v-model:value="formStates.mobile" placeholder="手机号" />
             </FormItem>
 
             <FormItem
@@ -106,21 +101,14 @@ onMounted(() => {
                     <ACol :span="16">
                         <FormItem :noStyle="true">
                             <AInput
-                                v-model:value="formStateRef.code"
+                                v-model:value="formStates.code"
                                 :maxLength="6"
                                 placeholder="验证码"
                             />
                         </FormItem>
                     </ACol>
                     <ACol :span="8">
-                        <CountDown
-                            @btnClick="
-                                (sendFunc) => {
-                                    sendFunc(handleSendMsgClick);
-                                }
-                            "
-                            text="发送短信"
-                        />
+                        <CountDown :beforeStart="handleSendMsgClick" text="发送短信" />
                     </ACol>
                 </ARow>
             </FormItem>
@@ -131,7 +119,7 @@ onMounted(() => {
                 :rules="[{ required: true, message: '请输入密码' }]"
             >
                 <InputPassword
-                    v-model:value="formStateRef.password"
+                    v-model:value="formStates.password"
                     :maxLength="20"
                     placeholder="密码"
                 />
@@ -145,7 +133,7 @@ onMounted(() => {
             >
                 <div>
                     <AInput
-                        v-model:value="formStateRef.mobile"
+                        v-model:value="formStates.mobile"
                         disabled
                         placeholder="请输入邀请人id"
                         readOnly

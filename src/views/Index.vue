@@ -30,15 +30,8 @@ const rangeOptions = [
     }
 ];
 
-interface StatesType {
-    rangeValue: number; //热门项目的筛选日期
-    languageValue: number; //热门项目的筛选语言
-}
-
-const statesRef = ref<StatesType>({
-    rangeValue: 1,
-    languageValue: -1 //-1表示全部，不选
-});
+const modelRange = defineModel<number>('range', { default: 1 }); //热门项目的筛选日期
+const modelLanguage = defineModel<number>('language', { default: -1 }); //热门项目的筛选语言,-1表示全部，不选
 
 const { getMyProjectData, myProData } = useMyPro();
 const { getRecentProjectData, recentProData } = useRecentPro();
@@ -52,13 +45,6 @@ const formatLanguageData = computed<SelectProps['options']>(() => {
 //跳转到项目详情
 const handleJumpToProjectDetail = (id: number | string) => {
     router.push(`/project/detail?id=${id}`);
-};
-
-//热门项目的下拉选项变化
-const handleSelectChange = (type: 'range' | 'language', value: number) => {
-    //
-    const changeStateKey = type === 'range' ? 'rangeValue' : 'languageValue';
-    statesRef.value[changeStateKey] = value;
 };
 
 //跳转到git仓库地址
@@ -92,7 +78,7 @@ watchEffect(() => {
 });
 
 watchEffect(() => {
-    getHotProjectData(statesRef.value);
+    getHotProjectData({ rangeValue: modelRange.value, languageValue: modelLanguage.value });
 });
 </script>
 
@@ -105,16 +91,14 @@ watchEffect(() => {
                     <ASpace size="large">
                         <span class="title">热门项目</span>
                         <ASelect
-                            @change="(value) => handleSelectChange('range', value)"
                             :options="rangeOptions"
                             style="width: 120px"
-                            :value="statesRef.rangeValue"
+                            v-model:value="modelRange"
                         />
                         <ASelect
-                            @change="(value) => handleSelectChange('language', value)"
                             :options="formatLanguageData"
                             style="width: 120px"
-                            :value="statesRef.languageValue"
+                            v-model:value="modelLanguage"
                         />
                     </ASpace>
                 </section>
@@ -315,7 +299,7 @@ watchEffect(() => {
                                         <section class="language">
                                             {{ getLanguageName(language) }}
                                         </section>
-                                        <section @click="jumpToGitPath(input_url)">
+                                        <section @click="jumpToGitPath(input_url, $event)">
                                             <GithubOutlined style="padding-right: 4px" />
                                             <ATag color="default">{{ count_star || 0 }}</ATag>
                                         </section>

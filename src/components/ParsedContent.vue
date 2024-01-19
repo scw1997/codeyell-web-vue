@@ -6,7 +6,7 @@ import { marked } from 'marked';
 import 'highlight.js/styles/base16/onedark.css';
 // @ts-ignore
 import { ImagePreviewType } from 'rc-image';
-import { ref } from 'vue';
+import { ref, toRefs, watch, watchEffect } from 'vue';
 
 // 配置marked
 const renderer = new marked.Renderer();
@@ -34,7 +34,8 @@ interface PropsType {
     content: string; //markdown语法字符串
 }
 
-const { content } = withDefaults(defineProps<PropsType>(), { content: '' });
+const props = withDefaults(defineProps<PropsType>(), { content: '' });
+const { content } = toRefs(props);
 
 const previewConfig = ref<ImagePreviewType>({
     src: undefined,
@@ -42,7 +43,7 @@ const previewConfig = ref<ImagePreviewType>({
 });
 
 //将原始的markdown格式内容字符串转换成富文本html样式内容
-const parsedContent = marked.parse(content || '');
+const parsedContent = ref('');
 
 //处理图片内容的预览效果
 const handleContentClick = (e) => {
@@ -54,6 +55,10 @@ const handleContentClick = (e) => {
         };
     }
 };
+
+watchEffect(() => {
+    parsedContent.value = marked.parse(content.value || '');
+});
 </script>
 
 <template>

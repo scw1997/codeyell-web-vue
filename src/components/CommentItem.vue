@@ -17,10 +17,12 @@ import {
     UserOutlined
 } from '@ant-design/icons-vue';
 import { MenuProps, Menu } from 'ant-design-vue';
-import { ref, render, watch } from 'vue';
+import { ref, render, toRefs, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import useReadStore from '@/store/read';
 import Toast from '@/utils/Toast';
+import { storeToRefs } from 'pinia';
+import { MenuClickEventHandler } from 'ant-design-vue/es/menu/src/interface';
 
 interface PropsType {
     data: Record<string, any>; //当前评论相关数据
@@ -29,13 +31,15 @@ interface PropsType {
 
 const props = defineProps<PropsType>();
 const emits = defineEmits<{
-    (e: 'reply', record: PropsType['data']): void; //点击回复
-    (e: 'edit', record: PropsType['data']): void; //点击修改
-    (e: 'refresh', type: 'delete'): void; //触发刷新列表，点赞相关/删除/举报等操作成功后调用
+    reply: [record: PropsType['data']]; //点击回复
+    edit: [record: PropsType['data']]; //点击修改
+    refresh: [type: 'delete']; //触发刷新列表，点赞相关/删除/举报等操作成功后调用
 }>();
+
+const { data, type } = toRefs(props);
 const router = useRouter();
 const { isJoined, setRightShowMode } = useReadStore();
-const { userInfo, token } = useGlobalStore();
+const { userInfo, token } = storeToRefs(useGlobalStore());
 
 const dropdownItems = ref<MenuProps['items']>([]);
 const likeStates = ref<{ count_liked: number; count_unliked: number; is_liked: number | null }>({
@@ -44,7 +48,7 @@ const likeStates = ref<{ count_liked: number; count_unliked: number; is_liked: n
     is_liked: null
 });
 
-watch([userInfo, () => props.data], ([newUserInfo, newPropsData]) => {
+watch([userInfo, data], ([newUserInfo, newPropsData]) => {
     const newItems = [
         {
             key: '2',
@@ -69,7 +73,7 @@ watch([userInfo, () => props.data], ([newUserInfo, newPropsData]) => {
 
 //跳转到指定用户公开页
 const jumpToPublicUserPage = (userid: number) => {
-    if (props.data.user_info && userid === userInfo?.id) {
+    if (data.value.user_info && userid === userInfo.value?.id) {
         //如果点击是登录人自己的头像信息，则跳转到我的个人首页
 
         if (props.type === 'read') {
@@ -79,7 +83,7 @@ const jumpToPublicUserPage = (userid: number) => {
         }
     } else {
         //其他用户头像
-        if (props.type === 'read') {
+        if (type.value === 'read') {
             window.open(`/user?id=${userid}`);
         } else {
             router.push(`/user?id=${userid}`);
@@ -87,7 +91,7 @@ const jumpToPublicUserPage = (userid: number) => {
     }
 };
 
-const handleMenuClick = ({ item, key, keyPath }) => {
+const handleMenuClick: MenuClickEventHandler = ({ item, keyPath, key }) => {
     console.log('item', item);
 };
 
@@ -97,7 +101,7 @@ const handleAgreeOrDisagree = async (isLike: boolean) => {
         setRightShowMode(!token ? 'login' : 'join');
         return;
     }
-    if (props.data?.user_id && props.data?.user_id === userInfo?.id) {
+    if (props.data?.user_id && props.data?.user_id === userInfo.value?.id) {
         return Toast.info('不可赞成/反对自己发表的内容');
     }
 
@@ -168,11 +172,11 @@ const handleAgreeOrDisagree = async (isLike: boolean) => {
 
         <div class="main">
             <section class="comment">
-                <ParsedContent :content="content" />
+                <ParsedContent :content="data.content" />
             </section>
             <section class="footer">
                 <span class="date">
-                    {{ created_at ? dateFormat(created_at).slice(0, 16) : '发表时间' }}
+                    {{ data.created_at ? dateFormat(data.created_at).slice(0, 16) : '发表时间' }}
                 </span>
                 <ASpace size="middle">
                     <div v-if="type === 'detail'">

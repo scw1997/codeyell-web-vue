@@ -18,10 +18,12 @@ const props = withDefaults(defineProps<{ isControl?: boolean }>(), { isControl: 
 const { isControl } = toRefs(props);
 const formRef = ref<FormInstance>();
 
+const modelStates = ref<{ username: string; password: string }>({ username: '', password: '' });
+
 const emits = defineEmits<{
-    (e: 'success'): void;
-    (e: 'signClick'): void;
-    (e: 'retrieveClick'): void;
+    success: [];
+    signClick: [];
+    retrieveClick: [];
 }>();
 
 const handleFormFinish = debounce(async (values: Record<string, any>) => {
@@ -44,6 +46,7 @@ const handleFormFinish = debounce(async (values: Record<string, any>) => {
         <Title v-if="!isControl" value="登录 - 源码阅读交流平台" />
         <Form
             ref="formRef"
+            :model="modelStates"
             autoComplete="off"
             class="login-form"
             :labelCol="{ span: 6 }"
@@ -59,7 +62,7 @@ const handleFormFinish = debounce(async (values: Record<string, any>) => {
                     { pattern: Reg.mobileTel, message: '手机号格式不正确' }
                 ]"
             >
-                <AInput :maxLength="11" placeholder="手机号" />
+                <AInput v-model:value="modelStates.username" :maxLength="11" placeholder="手机号" />
             </FormItem>
 
             <FormItem
@@ -67,7 +70,11 @@ const handleFormFinish = debounce(async (values: Record<string, any>) => {
                 name="password"
                 :rules="[{ required: true, message: '请输入密码' }]"
             >
-                <InputPassword :maxLength="20" placeholder="密码" />
+                <InputPassword
+                    v-model:value="modelStates.password"
+                    :maxLength="20"
+                    placeholder="密码"
+                />
             </FormItem>
 
             <FormItem style="text-align: center" :wrapperCol="{ span: 24 }">

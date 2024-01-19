@@ -21,6 +21,7 @@ import useReadStore from '@/store/read';
 import Toast from '@/utils/Toast';
 import api from '@/api';
 import http from '@/utils/http';
+import { MenuClickEventHandler } from 'ant-design-vue/es/menu/src/interface';
 interface PropsType {
     type?: 'user' | 'index' | 'detail' | 'read'; //展示样式类型，用户资料页/首页/项目详情页/项目阅读页
     data: Record<string, any>; //数据源
@@ -34,7 +35,7 @@ const props = defineProps<PropsType>();
 const { type, data } = toRefs(props);
 
 const {
-    project = {},
+    project,
     user_info,
     count_liked,
     count_unliked,
@@ -47,22 +48,22 @@ const {
     id: commentId
 } = toRefs(data.value);
 const emits = defineEmits<{
-    (e: 'reply', record: PropsType['data']): void; //点击回复
-    (e: 'edit', record: PropsType['data']): void; //点击修改
-    (e: 'refresh', type: 'delete'): void; //触发刷新列表，点赞相关/删除/举报等操作成功后调用
+    reply: [record: PropsType['data']]; //点击回复
+    edit: [record: PropsType['data']]; //点击修改
+    refresh: [type: 'delete']; //触发刷新列表，点赞相关/删除/举报等操作成功后调用
 }>();
-
+//
 const router = useRouter();
 const dropdownItems = ref<MenuProps['items']>([]);
 const likeStates = ref<{ count_liked: number; count_unliked: number; is_liked: number | null }>({
-    count_liked: 0,
-    count_unliked: 0,
-    is_liked: null
+    count_liked: data?.value.count_liked,
+    count_unliked: data?.value.count_unliked,
+    is_liked: data?.value.is_liked
 });
 let complaintValue = ref<string>('');
 
 watch(data, () => {
-    const { count_liked, count_unliked, is_liked } = data.value;
+    const { count_liked, count_unliked, is_liked } = data.value || {};
     likeStates.value = { count_liked, count_unliked, is_liked };
 });
 
@@ -205,7 +206,7 @@ const openComplaintModal = () => {
     });
 };
 
-const handleMenuClick = ({ item, key, keyPath }) => {
+const handleMenuClick: MenuClickEventHandler = ({ item, key, keyPath }) => {
     console.log('xxxx', item, key, keyPath);
     switch (key) {
         case 'edit':
@@ -431,9 +432,6 @@ const handleMenuClick = ({ item, key, keyPath }) => {
     padding-right: 10px;
 
     .header {
-        .avatar {
-        }
-
         .project-name {
             color: #868a8e;
             font-weight: bold;
@@ -474,9 +472,6 @@ const handleMenuClick = ({ item, key, keyPath }) => {
         .operation {
             .like-amount {
                 padding-left: 4px;
-            }
-
-            .reply {
             }
         }
     }

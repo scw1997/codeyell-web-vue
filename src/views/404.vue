@@ -2,8 +2,8 @@
 import { Result } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
+const type = 'primary';
 </script>
-
 <template>
     <Result status="404" subTitle="抱歉，你访问的页面不存在" title="404">
         <template #extra>
@@ -13,7 +13,6 @@ const router = useRouter();
                         router.replace('/');
                     }
                 "
-                type="primary"
             >
                 回到首页
             </AButton>

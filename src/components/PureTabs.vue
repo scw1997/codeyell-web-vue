@@ -15,9 +15,11 @@ interface PropsType {
 
 const props = defineProps<PropsType>();
 const { config, activeKey, defaultActiveKey } = toRefs(props);
-const emit = defineEmits<{ (e: 'change', key: TabConfigItem['key']): void }>();
-const activeKeyState = ref<typeof props.defaultActiveKey>(
-    props.activeKey ?? props.defaultActiveKey
+const emits = defineEmits<{
+    change: [key: TabConfigItem['key']];
+}>();
+const activeKeyState = ref<typeof defaultActiveKey.value>(
+    activeKey.value ?? defaultActiveKey.value
 );
 
 const handleTabClick = (item: TabConfigItem) => {
@@ -25,7 +27,7 @@ const handleTabClick = (item: TabConfigItem) => {
     if (!activeKey.value) {
         activeKeyState.value = item.key;
     }
-    emit('change', item.key);
+    emits('change', item.key);
 };
 
 watch(activeKey, (value, oldValue, onCleanup) => {

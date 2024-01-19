@@ -22,6 +22,11 @@ const router = createRouter({
                     path: 'sign',
                     name: 'sign',
                     component: () => import('../views/user/auth/Sign.vue')
+                },
+                {
+                    path: 'retrieve_pwd',
+                    name: 'retrieve',
+                    component: () => import('../views/user/auth/Retrieve.vue')
                 }
             ]
         },

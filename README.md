@@ -2,7 +2,7 @@
 
 # 1：简介
 
-个人独立开发的 secywo 脚手架的前端项目Vue模板，基于 Vue3 + TypeScript4 + Webpack5 + Vue-Router4
+个人独立开发的 secywo 脚手架的前端项目Vue模板，基于 Vue3 + TypeScript5 + Webpack5 + Vue-Router4
 
 **模板特点：**
 

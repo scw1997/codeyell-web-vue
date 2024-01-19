@@ -15,25 +15,25 @@ const globalStore = useGlobalStore();
 
 const router = useRouter();
 const route = useRoute();
-
+const props = withDefaults(defineProps<{ isControl?: boolean }>(), { isControl: false });
 const formRef = ref<FormInstance>();
 const submitLoading = ref<boolean>(false);
 
-const formStatesRef = reactive<{ mobile: string; code: string; password: string }>({
-    mobile: '',
-    code: '',
+const modelStates = ref<{ username: string; password: string }>({
+    username: '',
+    // code: '',
     password: ''
 });
 
 const emits = defineEmits<{
-    success: [callback: () => void];
-    login: [];
-    retrieveClick: [];
+    success: [];
+    loginClick: [];
+    signClick: [];
 }>();
 
 //点击发送短信
 const handleSendMsgClick = async () => {
-    const { mobile } = formRef.value.getFieldsValue();
+    const { username: mobile } = formRef.value.getFieldsValue();
     if (!Reg.mobileTel.test(mobile)) {
         return Toast.info('请输入正确的手机号');
     }
@@ -45,16 +45,16 @@ const handleSendMsgClick = async () => {
 //点击确定
 const handleSubmit = async (values: Record<string, any>) => {
     try {
-        setStates({ submitLoading: true });
+        submitLoading.value = true;
         await http.post(api.auth.retrievePwd, values);
         Toast.success('设置新密码成功');
-        if (onSuccess) {
-            onSuccess();
+        if (props.isControl) {
+            emits('success');
         } else {
-            history.push('/auth/login');
+            router.push('/auth/login');
         }
     } finally {
-        setStates({ submitLoading: false });
+        submitLoading.value = false;
     }
 };
 </script>
@@ -62,6 +62,7 @@ const handleSubmit = async (values: Record<string, any>) => {
     <div class="retrieve-content">
         <Title value="找回密码 - 源码阅读交流平台" />
         <Form
+            :model="modelStates"
             autoComplete="off"
             class="retrieve-form"
             :form="formRef"
@@ -81,7 +82,7 @@ const handleSubmit = async (values: Record<string, any>) => {
                     }
                 ]"
             >
-                <Input :maxLength="11" placeholder="手机号" />
+                <AInput v-model:value="modelStates.username" :maxLength="11" placeholder="手机号" />
             </FormItem>
 
             <FormItem
@@ -92,11 +93,11 @@ const handleSubmit = async (values: Record<string, any>) => {
                 <ARow :gutter="8">
                     <ACol :span="16">
                         <FormItem :noStyle="true">
-                            <Input :maxLength="6" placeholder="验证码" />
+                            <AInput :maxLength="6" placeholder="验证码" />
                         </FormItem>
                     </ACol>
                     <ACol :span="8">
-                        <CountDown @btnClick="handleSendMsgClick" text="发送短信" />
+                        <CountDown :beforeStart="handleSendMsgClick" text="发送短信" />
                     </ACol>
                 </ARow>
             </FormItem>
@@ -106,7 +107,11 @@ const handleSubmit = async (values: Record<string, any>) => {
                 name="password"
                 :rules="[{ required: true, message: '请输入新密码' }]"
             >
-                <InputPassword :maxLength="20" placeholder="设置新密码" />
+                <InputPassword
+                    v-model:value="modelStates.password"
+                    :maxLength="20"
+                    placeholder="设置新密码"
+                />
             </FormItem>
 
             <FormItem style="text-align: center" :wrapperCol="{ span: 24 }">
@@ -121,12 +126,12 @@ const handleSubmit = async (values: Record<string, any>) => {
             </FormItem>
         </Form>
 
-        <ASpace size="large">
+        <ASpace size="large" justify="center">
             <span
                 class="cp"
                 @click="
                     () => {
-                        onLoginClick ? onLoginClick() : history.push('/auth/login');
+                        isControl ? emits('loginClick') : router.push('/auth/login');
                     }
                 "
             >
@@ -136,7 +141,7 @@ const handleSubmit = async (values: Record<string, any>) => {
                 class="cp"
                 @click="
                     () => {
-                        onSignClick ? onSignClick() : history.push('/auth/sign');
+                        isControl ? emits('signClick') : router.push('/auth/sign');
                     }
                 "
             >
@@ -147,12 +152,12 @@ const handleSubmit = async (values: Record<string, any>) => {
 </template>
 
 <style scoped lang="less">
-.sign-content {
+.retrieve-content {
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    .sign-form {
+    .retrieve-form {
         width: 100%;
     }
 }
