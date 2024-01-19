@@ -3,7 +3,6 @@ import { notification } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import Axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import useGlobalStore from '@/store/global';
-const router = useRouter();
 
 const CancelToken = Axios.CancelToken;
 
@@ -56,6 +55,7 @@ instance.interceptors.response.use(
         return res;
     },
     (err: AxiosError) => {
+        const router = useRouter();
         const store = useGlobalStore();
         console.log('err', err);
         if (!navigator.onLine) {
@@ -69,7 +69,7 @@ instance.interceptors.response.use(
                     return;
                 }
                 isNotifying = true;
-                router.push('/auth/login');
+                router.push({ name: 'login' });
                 return Promise.reject({ code: 401, msg: '登录状态已失效，请重新登录' });
             case 403:
                 //登录失败（例如非管理员）
@@ -97,6 +97,7 @@ const handleRes = async (
     config?: Parameters<HttpMethod>[2]
 ) => {
     const store = useGlobalStore();
+    const router = useRouter();
     if (res?.status === 200) {
         let { code, msg, data } = res?.data || {};
 
@@ -115,7 +116,7 @@ const handleRes = async (
                     isNotifying = false;
                 });
 
-                router.push('/auth/login');
+                router.push({ name: 'login' });
 
                 return;
             default:

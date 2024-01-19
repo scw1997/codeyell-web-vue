@@ -16,10 +16,10 @@ const emits = defineEmits<{
     finish: [];
 }>();
 
-const props = defineProps<PropsType>();
+const props = withDefaults(defineProps<PropsType>(), { initCount: 60 });
 const { initCount, text, beforeStart } = toRefs(props);
 
-const statesRef = ref<StatesType>({
+const states = ref<StatesType>({
     count: initCount.value,
     btnDisabled: false,
     isCountdown: false
@@ -33,7 +33,7 @@ const createInterval = (endTime: dayjs.Dayjs) => {
 
         if (diff <= 0 || !diff) {
             //重置状态
-            statesRef.value = {
+            states.value = {
                 count: initCount.value,
                 btnDisabled: false,
                 isCountdown: false
@@ -45,7 +45,7 @@ const createInterval = (endTime: dayjs.Dayjs) => {
         } else {
             //缓存本地，处理刷新页面的情况
             sessionStorage.setItem('timer', endTime.valueOf().toString());
-            statesRef.value.count = Math.round(diff / 1000);
+            states.value.count = Math.round(diff / 1000);
         }
     }, 1000);
 };
@@ -53,19 +53,19 @@ const createInterval = (endTime: dayjs.Dayjs) => {
 const handleBtnClick = async () => {
     if (beforeStart.value) {
         //点击按钮回调方法返回true或值时则开始倒计时
-        statesRef.value.btnDisabled = true;
+        states.value.btnDisabled = true;
         Promise.resolve(beforeStart.value())
             .then((res) => {
                 if (res) {
                     const endTime = dayjs().add(initCount.value, 'second');
                     createInterval(endTime);
-                    statesRef.value.isCountdown = true;
+                    states.value.isCountdown = true;
                 } else {
-                    statesRef.value.btnDisabled = false;
+                    states.value.btnDisabled = false;
                 }
             })
             .catch((e) => {
-                statesRef.value.btnDisabled = false;
+                states.value.btnDisabled = false;
             });
     }
 };
@@ -75,7 +75,7 @@ onMounted(() => {
     if (cacheEndTime) {
         const endTime = dayjs(Number(cacheEndTime));
         createInterval(endTime);
-        statesRef.value = {
+        states.value = {
             count: Math.round(endTime.diff(dayjs()) / 1000),
             btnDisabled: true,
             isCountdown: true
@@ -86,8 +86,8 @@ onMounted(() => {
 
 <template>
     <div class="countdown-component-root">
-        <AButton :disabled="statesRef.btnDisabled" @click="handleBtnClick" style="width: 100%">
-            {{ statesRef.isCountdown ? `${statesRef.count}秒` : text }}
+        <AButton :disabled="states.btnDisabled" @click="handleBtnClick" style="width: 100%">
+            {{ states.isCountdown ? `${states.count}秒` : text }}
         </AButton>
     </div>
 </template>

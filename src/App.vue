@@ -11,30 +11,30 @@ import { storeToRefs } from 'pinia';
 
 const { Header, Content, Footer } = Layout;
 const router = useRouter();
-const { path, query } = toRefs(useRoute());
+const { path, query, name } = toRefs(useRoute());
 const { userInfo } = storeToRefs(useGlobalStore());
 
 const navTabConfig = [
     {
         name: '首页',
-        key: '/'
+        key: 'index'
     },
     {
         name: '项目',
-        key: '/project'
+        key: 'project'
     },
     {
         name: '排行榜',
-        key: '/rank'
+        key: 'rank'
     }
 ];
 
 const jumpToIndex = () => {
-    router.push('/');
+    router.push({ name: 'index' });
 };
 const handleSearch = (value: string) => {
     //跳转搜索结果页
-    router.push(`/search?keyword=${value}`);
+    router.push({ name: 'search', query: { keyword: value } });
 };
 </script>
 
@@ -57,7 +57,7 @@ const handleSearch = (value: string) => {
                             <PureTabs
                                 :activeKey="path"
                                 :config="navTabConfig"
-                                @change="(key) => router.push(key)"
+                                @change="(key) => router.push({ name: key })"
                             />
                         </section>
                         <AInputSearch
@@ -75,7 +75,7 @@ const handleSearch = (value: string) => {
                                     class="avatar cp"
                                     @click="
                                         () => {
-                                            router.push('/my/personal_page');
+                                            router.push({ name: 'myPersonal' });
                                         }
                                     "
                                     :size="40"
@@ -92,13 +92,17 @@ const handleSearch = (value: string) => {
                                         class="cp"
                                         @click="
                                             () => {
-                                                router.push(
-                                                    path === '/'
-                                                        ? '/auth/login'
-                                                        : `/auth/login?redirect_path=${encodeURIComponent(
-                                                              path + query
-                                                          )}`
-                                                );
+                                                router.push({
+                                                    name: 'login',
+                                                    query:
+                                                        name === 'index'
+                                                            ? {}
+                                                            : {
+                                                                  redirect_path: encodeURIComponent(
+                                                                      path + query
+                                                                  )
+                                                              }
+                                                });
                                             }
                                         "
                                     >
@@ -108,7 +112,7 @@ const handleSearch = (value: string) => {
                                         class="cp"
                                         @click="
                                             () => {
-                                                router.push('/auth/sign');
+                                                router.push({ name: 'login' });
                                             }
                                         "
                                     >

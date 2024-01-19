@@ -5,7 +5,6 @@ import http from '@/utils/http';
 import api from '@/api';
 import Toast from '@/utils/Toast';
 import { useRouter } from 'vue-router';
-const router = useRouter();
 
 export const EMPTY: EmptyObject = Object.create(null);
 
@@ -29,13 +28,14 @@ export const Reg = {
 
 //登录校验函数（处理一些需要登录后才可执行的方法）
 export const authFunc: (func: any) => (...args: any[]) => void = (func) => {
+    const router = useRouter();
     if (localStorage.getItem('token')) {
         return (...args) => {
             func.call(EMPTY, ...args);
         };
     } else {
         return () => {
-            router.push('/auth/login');
+            router.push({ name: 'login' });
         };
     }
 };

@@ -87,7 +87,7 @@ const handleFormFinish = debounce(async (values: Record<string, any>) => {
                 class="cp"
                 @click="
                     () => {
-                        isControl ? emits('retrieveClick') : router.push('/auth/retrieve_pwd');
+                        isControl ? emits('retrieveClick') : router.push({ name: 'retrieve' });
                     }
                 "
             >
@@ -97,7 +97,7 @@ const handleFormFinish = debounce(async (values: Record<string, any>) => {
                 class="cp"
                 @click="
                     () => {
-                        isControl ? emits('signClick') : router.push('/auth/sign');
+                        isControl ? emits('signClick') : router.push({ name: 'login' });
                     }
                 "
             >

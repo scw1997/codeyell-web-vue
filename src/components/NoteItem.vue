@@ -5,7 +5,7 @@ import { ref, toRefs, watch, h, defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
 import { dateFormat, processOSSLogo } from '@/utils/tools';
 import { ParsedContent, Logo } from '@/components';
-import { Modal, Textarea } from 'ant-design-vue';
+import { Modal, Space, Textarea } from 'ant-design-vue';
 import {
     DislikeFilled,
     DislikeOutlined,
@@ -92,7 +92,7 @@ watch([userInfo, data], ([newUserInfo, newPropsData]) => {
 
 //跳转到项目阅读页
 const jumpToProjectReadPage = (id: number) => {
-    router.push(`/project/read?id=${id}`);
+    router.push({ name: 'projectRead', query: { id } });
 };
 
 //跳转到指定用户公开页
@@ -103,21 +103,21 @@ const jumpToPublicUserPage = (userid: number) => {
         if (type.value === 'read') {
             window.open('/my/personal_page');
         } else {
-            router.push('/my/personal_page');
+            router.push({ name: 'myPersonal' });
         }
     } else {
         //其他用户头像
         if (type.value === 'read') {
             window.open(`/user?id=${userid}`);
         } else {
-            router.push(`/user?id=${userid}`);
+            router.push({ name: 'user', query: { id: userid } });
         }
     }
 };
 
 //跳转到项目详情页
 const jumpToProjectDetailPage = (id: number) => {
-    router.push(`/project/detail?id=${id}`);
+    router.push({ name: 'projectDetail', query: { id } });
 };
 
 //举报评论/注解
@@ -128,7 +128,6 @@ const handleComplaintComment = async () => {
         Toast.info(msg);
         return Promise.reject(msg);
     }
-    // console.log('eeeee', complaintValue.current);
     Toast.loading(true);
     await http.post(api.global.complaintComment, {
         content_id: commentId, //内容id，content_type=1时，是评论的id, content_type=2时，是注解的id
@@ -185,14 +184,25 @@ const handleAgreeOrDisagree = async (isLike: boolean) => {
 //打开举报弹窗
 const openComplaintModal = () => {
     const modalTitle = defineComponent({
+        components: {
+            ASpace: Space
+        },
         props: ['type'],
         template:
             '<ASpace>  <span v-if="type">{{type === "detail" ? "举报评论" : "举报注解"}}</span></ASpace>'
     });
 
     const content = defineComponent({
+        components: {
+            ATextarea: Textarea
+        },
+        methods: {
+            handleChange(e) {
+                complaintValue.value = e.target.value;
+            }
+        },
         template:
-            '<div><Textarea :maxlength="300" placeholder="填写举报原因" @change="(e)=>{ complaintValue = e.target.value}"/></div>'
+            '<div><ATextarea :maxlength="300" placeholder="填写举报原因" @change="handleChange"/></div>'
     });
 
     Modal.confirm({

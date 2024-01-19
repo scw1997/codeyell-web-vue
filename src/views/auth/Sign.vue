@@ -36,10 +36,12 @@ const handleSendMsgClick = async () => {
     const { mobile } = formRef.value.getFieldsValue();
     if (!Reg.mobileTel.test(mobile)) {
         Toast.info('请输入正确的手机号');
+        return false;
     }
     Toast.loading(true);
     await http.post(api.auth.sendCode, { mobile });
     Toast.loading(false);
+    return true;
 };
 //点击注册
 const handleSignClick = async () => {
@@ -53,7 +55,7 @@ const handleSignClick = async () => {
         if (props.isControl) {
             emits('success');
         } else {
-            router.push('/auth/login');
+            router.push({ name: 'login' });
         }
     } finally {
         submitLoading.value = false;
@@ -158,7 +160,7 @@ onMounted(() => {
                 class="cp"
                 @click="
                     () => {
-                        isControl ? emits('retrieveClick') : router.push('/auth/retrieve_pwd');
+                        isControl ? emits('retrieveClick') : router.push({ name: 'retrieve' });
                     }
                 "
             >
@@ -168,7 +170,7 @@ onMounted(() => {
                 class="cp"
                 @click="
                     () => {
-                        isControl ? emits('login') : router.push('/auth/login');
+                        isControl ? emits('login') : router.push({ name: 'login' });
                     }
                 "
             >

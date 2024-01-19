@@ -21,7 +21,6 @@ const submitLoading = ref<boolean>(false);
 
 const modelStates = ref<{ username: string; password: string }>({
     username: '',
-    // code: '',
     password: ''
 });
 
@@ -35,7 +34,8 @@ const emits = defineEmits<{
 const handleSendMsgClick = async () => {
     const { username: mobile } = formRef.value.getFieldsValue();
     if (!Reg.mobileTel.test(mobile)) {
-        return Toast.info('请输入正确的手机号');
+        Toast.info('请输入正确的手机号');
+        return false;
     }
     Toast.loading(true);
     await http.post(api.auth.sendCode, { mobile });
@@ -51,7 +51,7 @@ const handleSubmit = async (values: Record<string, any>) => {
         if (props.isControl) {
             emits('success');
         } else {
-            router.push('/auth/login');
+            router.push({ name: 'login' });
         }
     } finally {
         submitLoading.value = false;
@@ -65,7 +65,7 @@ const handleSubmit = async (values: Record<string, any>) => {
             :model="modelStates"
             autoComplete="off"
             class="retrieve-form"
-            :form="formRef"
+            ref="formRef"
             :labelCol="{ span: 6 }"
             name="basic"
             :onFinish="handleSubmit"
@@ -131,7 +131,7 @@ const handleSubmit = async (values: Record<string, any>) => {
                 class="cp"
                 @click="
                     () => {
-                        isControl ? emits('loginClick') : router.push('/auth/login');
+                        isControl ? emits('loginClick') : router.push({ name: 'login' });
                     }
                 "
             >
@@ -141,7 +141,7 @@ const handleSubmit = async (values: Record<string, any>) => {
                 class="cp"
                 @click="
                     () => {
-                        isControl ? emits('signClick') : router.push('/auth/sign');
+                        isControl ? emits('signClick') : router.push({ name: 'login' });
                     }
                 "
             >
