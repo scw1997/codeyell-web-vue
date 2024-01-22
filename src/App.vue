@@ -55,7 +55,7 @@ const handleSearch = (value: string) => {
                         </section>
                         <section class="item nav-bar">
                             <PureTabs
-                                :activeKey="path"
+                                :activeKey="name"
                                 :config="navTabConfig"
                                 @change="(key) => router.push({ name: key })"
                             />

@@ -21,7 +21,7 @@ import {
     Empty,
     Popover,
     Tag,
-    Textarea
+    Tooltip
 } from 'ant-design-vue';
 import 'ant-design-vue/dist/reset.css';
 import './index.less';
@@ -49,6 +49,7 @@ app.use(ConfigProvider)
     .use(Card)
     .use(Empty)
     .use(Popover)
+    .use(Tooltip)
     .use(Tag);
 
 app.mount('#root');

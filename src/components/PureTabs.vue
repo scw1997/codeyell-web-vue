@@ -1,8 +1,8 @@
 <!--纯Tabs组件（不含tab内容）-->
 <script setup lang="ts">
-import { ref, toRefs, watch } from 'vue';
+import { ref, toRefs, watch, watchEffect } from 'vue';
 
-type TabConfigItem = {
+export type TabConfigItem = {
     name: string;
     key: string;
 };
@@ -30,11 +30,15 @@ const handleTabClick = (item: TabConfigItem) => {
     emits('change', item.key);
 };
 
-watch(activeKey, (value, oldValue, onCleanup) => {
-    if (value) {
-        activeKeyState.value = value;
+watch(
+    activeKey,
+    (value, oldValue, onCleanup) => {
+        if (value) {
+            activeKeyState.value = value;
+        }
     }
-});
+    // { immediate: true }
+);
 </script>
 
 <template>

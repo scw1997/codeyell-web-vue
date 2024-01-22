@@ -75,7 +75,7 @@ const router = createRouter({
                 {
                     path: 'personal_page',
                     name: 'myPersonal',
-                    component: () => import('@/views/user/my/PersonalPage.vue')
+                    component: () => import('@/views/user/my/personal/Index.vue')
                 },
                 {
                     path: 'account_settings',

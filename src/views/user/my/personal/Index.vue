@@ -1,0 +1,125 @@
+<script setup lang="ts">
+import { Card } from 'ant-design-vue';
+import Reading from '@/views/user/my/personal/Reading.vue';
+import Notes from '@/views/user/my/personal/Notes.vue';
+import Integral from '@/views/user/my/personal/Integral.vue';
+import { useRoute, useRouter } from 'vue-router';
+import { Title, PureTabs } from '@/components';
+import type { TabConfigItem } from '@/components/PureTabs.vue';
+import { Component, defineAsyncComponent, defineComponent, ref, watchEffect } from 'vue';
+import useGlobalStore from '@/store/global';
+import { storeToRefs } from 'pinia';
+const router = useRouter();
+const route = useRoute();
+const { query } = route;
+const defaultTab = ['read', 'note', 'integral'].find((item) => item === query.tab) || 'read';
+const globalStore = useGlobalStore();
+const { userInfo } = storeToRefs(globalStore);
+
+type StatesType = {
+    tabConfig: TabConfigItem[];
+    activeKey: TabConfigItem['key'];
+};
+// 定义各个模块的渲染内容
+const readComp = defineComponent({
+    components: {
+        Card,
+        Reading
+    },
+    template: `<Card class="main-card">
+                        <Reading />
+                    </Card>`
+});
+const notesComp = defineComponent({
+    components: {
+        Notes,
+        Card
+    },
+    template: `<Card class="main-card">
+                        <Notes />
+                    </Card>`
+});
+const integralComp = Integral;
+
+const mainContentMap = {
+    read: readComp,
+    note: notesComp,
+    integral: integralComp
+};
+
+const states = ref<StatesType>({
+    tabConfig: [
+        {
+            name: '在读',
+            key: 'read'
+        },
+        {
+            name: '注解',
+            key: 'note'
+        },
+        {
+            name: '积分',
+            key: 'integral'
+        }
+    ],
+    activeKey: defaultTab
+});
+
+const handleTabChange = (key: string) => {
+    states.value.activeKey = key;
+};
+
+watchEffect(() => {
+    if (userInfo.value) {
+        const { count_project, count_comment, count_point } = userInfo.value;
+        states.value.tabConfig = [
+            {
+                name: `在读(${count_project || 0})`,
+                key: 'read'
+            },
+            {
+                name: `注解(${count_comment || 0})`,
+                key: 'note'
+            },
+            {
+                name: `积分(${count_point || 0})`,
+                key: 'integral'
+            }
+        ];
+    }
+});
+</script>
+<template>
+    <div class="personal-page-root">
+        <Title value="个人中心 - 源码阅读交流平台" />
+        <ACard class="tab-card mb">
+            <PureTabs
+                :activeKey="states.activeKey"
+                class="pure-tabs"
+                :config="states.tabConfig"
+                @change="handleTabChange"
+            />
+        </ACard>
+
+        <component :is="mainContentMap[states.activeKey]" />
+    </div>
+</template>
+
+<style scoped lang="less">
+.personal-page-root {
+    .tab-card {
+        :deep(.ant-card-body) {
+            padding-bottom: 0;
+        }
+
+        :deep(.pure-tabs) {
+            justify-content: flex-start;
+
+            .tab-item {
+                height: 50px;
+                margin-right: 50px;
+            }
+        }
+    }
+}
+</style>

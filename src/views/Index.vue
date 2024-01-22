@@ -219,7 +219,7 @@ watchEffect(() => {
                         </AAvatar>
                         <div class="main">
                             <p class="name ellipsis">{{ userInfo?.nickname || '昵称' }}</p>
-                            <p class="description ellipsis">介绍</p>
+                            <p class="description ellipsis">{{ userInfo?.info || '介绍' }}</p>
                         </div>
                     </div>
 
@@ -295,10 +295,12 @@ watchEffect(() => {
                             <div class="main">
                                 <ASpace direction="vertical">
                                     <span class="name">{{ name }}</span>
-                                    <ASpace size="middle">
-                                        <section class="language">
-                                            {{ getLanguageName(language) }}
-                                        </section>
+                                    <ASpace size="small">
+                                        <ATooltip :title="getLanguageName(language)">
+                                            <section class="language ellipsis">
+                                                {{ getLanguageName(language) }}
+                                            </section>
+                                        </ATooltip>
                                         <section @click="jumpToGitPath(input_url, $event)">
                                             <GithubOutlined style="padding-right: 4px" />
                                             <ATag color="default">{{ count_star || 0 }}</ATag>
@@ -495,14 +497,9 @@ watchEffect(() => {
                     :deep(.ant-space) {
                         display: flex;
 
-                        .ant-space-item {
-                            text-overflow: ellipsis;
-                            overflow: hidden;
-                            white-space: nowrap;
-                        }
-
                         .language {
                             min-width: 50px;
+                            max-width: 60px;
                         }
                     }
 
