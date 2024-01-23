@@ -63,7 +63,6 @@ watch(
                 curPageNo: 1,
                 isFinish: true
             };
-            await nextTick();
             getData(1);
         }
     },

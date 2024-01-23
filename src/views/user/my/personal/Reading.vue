@@ -19,17 +19,12 @@ const states = ref<StatesType>({
     proList: [],
     proParams: props.userId ? { user_id: props.userId } : {}
 });
-
-watch([() => states.value.proList], (newValue) => {
-    console.log('proList', newValue);
-});
 </script>
 
 <template>
     <div class="personal-reading-root">
         <div v-for="(proItem, index) in states.proList" class="pb" :key="index">
             <ProjectItem class="pb" :data="proItem" :type="!!userId ? 'public' : 'my'" />
-            <!--            <div>111</div>-->
         </div>
 
         <Empty

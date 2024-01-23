@@ -1,8 +1,8 @@
 import Toast from '@/utils/Toast';
 import { notification } from 'ant-design-vue';
-import { useRouter } from 'vue-router';
 import Axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import useGlobalStore from '@/store/global';
+import router from '@/router';
 
 const CancelToken = Axios.CancelToken;
 
@@ -55,9 +55,8 @@ instance.interceptors.response.use(
         return res;
     },
     (err: AxiosError) => {
-        const router = useRouter();
         const store = useGlobalStore();
-        console.log('err', err);
+
         if (!navigator.onLine) {
             return Promise.reject({ code: -1, msg: '当前网络存在问题，请检查后重试' });
         }
@@ -97,7 +96,6 @@ const handleRes = async (
     config?: Parameters<HttpMethod>[2]
 ) => {
     const store = useGlobalStore();
-    const router = useRouter();
     if (res?.status === 200) {
         let { code, msg, data } = res?.data || {};
 

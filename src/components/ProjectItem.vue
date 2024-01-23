@@ -10,20 +10,7 @@ interface PropsType {
 }
 
 const props = defineProps<PropsType>();
-const {
-    logo,
-    name,
-    info,
-    count_star,
-    count_comment,
-    created_at,
-    id,
-    count_member,
-    input_url,
-    branch,
-    tag,
-    language_str
-} = toRefs(props.data);
+const { data, type } = toRefs(props);
 
 const router = useRouter();
 //跳转到项目详情页
@@ -42,36 +29,37 @@ const jumpToGitPath = (url: string) => {
 <template>
     <div class="project-item-component-root">
         <ARow align="top" class="container" :gutter="[15, 15]" justify="space-between">
-            <ACol class="avatar cp" flex="none" @click="jumpToProjectDetailPage(id)">
+            <ACol class="avatar cp" flex="none" @click="jumpToProjectDetailPage(data.id)">
                 <AAvatar
                     class="avatar"
                     shape="square"
                     :size="56"
-                    :src="processOSSLogo(logo, false) || null"
+                    :src="processOSSLogo(data.logo, false) || null"
                 >
                     <template #icon><Logo /></template>
                 </AAvatar>
             </ACol>
             <ACol class="text" flex="1">
-                <section class="ellipsis cp" @click="jumpToProjectDetailPage(id)">
+                <section class="ellipsis cp" @click="jumpToProjectDetailPage(data.id)">
                     <ASpace size="middle">
-                        <span class="title">{{ name || '项目名' }}</span>
+                        <span class="title">{{ data.name || '项目名' }}</span>
                         <span>
-                            <ATag color="default">{{ language_str || '' }}</ATag>
+                            <ATag color="default">{{ data.language_str || '' }}</ATag>
                         </span>
 
-                        <span v-if="!!tag" class="branch-name pl">Tag: {{ tag }}</span>
+                        <span v-if="!!data.tag" class="branch-name pl">Tag: {{ data.tag }}</span>
 
-                        <span v-if="!!branch" class="branch-name pl">Branch: {{ branch }}</span>
+                        <span v-if="!!data.branch" class="branch-name pl">
+                            Branch: {{ data.branch }}
+                        </span>
                     </ASpace>
                 </section>
                 <section class="desc ellipsis-2">
                     <APopover>
-                        <template #title>
-                            {{ info || '介绍' }}
-                        </template>
+                        {{ data.info || '介绍' }}
+
                         <template #content>
-                            <div style="max-width: 400pc">{{ info }}</div>
+                            <div style="max-width: 400pc">{{ data.info }}</div>
                         </template>
                     </APopover>
                 </section>
@@ -80,13 +68,14 @@ const jumpToGitPath = (url: string) => {
                 <section class="mb">
                     <ASpace size="large">
                         <span>
-                            Clone on: {{ created_at ? dateFormat(created_at).slice(0, 16) : null }}
+                            Clone on:
+                            {{ data.created_at ? dateFormat(data.created_at).slice(0, 16) : null }}
                         </span>
-                        <span class="cp" @click="jumpToGitPath(input_url)">
+                        <span class="cp" @click="jumpToGitPath(data.input_url)">
                             <GithubOutlined />
                             &nbsp;
                             <ATag class="git-tag" color="default">
-                                {{ count_star || 0 }}
+                                {{ data.count_star || 0 }}
                             </ATag>
                         </span>
                     </ASpace>
@@ -95,18 +84,18 @@ const jumpToGitPath = (url: string) => {
                     <ASpace v-if="['my', 'search'].includes(type)" size="large">
                         <span title="在读人数">
                             <UserOutlined />
-                            <span class="amount">{{ count_member || 0 }}</span>
+                            <span class="amount">{{ data.count_member || 0 }}</span>
                         </span>
                         <span title="注解数">
                             <ReadOutlined />
-                            <span class="amount">{{ count_comment || 0 }}</span>
+                            <span class="amount">{{ data.count_comment || 0 }}</span>
                         </span>
                     </ASpace>
 
                     <ASpace v-else-if="type === 'public'" size="large">
                         <span title="发表注解">
                             <ReadOutlined />
-                            <span class="amount">{{ count_comment || 0 }}</span>
+                            <span class="amount">{{ data.count_comment || 0 }}</span>
                         </span>
                         <span title="被赞数">
                             <LikeOutlined />

@@ -34,19 +34,19 @@ const props = defineProps<PropsType>();
 
 const { type, data } = toRefs(props);
 
-const {
-    project,
-    user_info,
-    count_liked,
-    count_unliked,
-    content,
-    created_at,
-    file_name,
-    user_id,
-    project_id,
-    is_liked, //评论模式：是否点赞过，0否，1是；注解模式：0未反对，也未赞成，1 已赞成 2 已反对
-    id: commentId
-} = toRefs(data.value);
+// const {
+//     project,
+//     user_info,
+//     count_liked,
+//     count_unliked,
+//     content,
+//     created_at,
+//     file_name,
+//     user_id,
+//     project_id,
+//     is_liked, //评论模式：是否点赞过，0否，1是；注解模式：0未反对，也未赞成，1 已赞成 2 已反对
+//     id: commentId
+// } = toRefs(data.value);
 const emits = defineEmits<{
     reply: [record: PropsType['data']]; //点击回复
     edit: [record: PropsType['data']]; //点击修改
@@ -62,8 +62,15 @@ const likeStates = ref<{ count_liked: number; count_unliked: number; is_liked: n
 });
 let complaintValue = ref<string>('');
 
-watch(data, () => {
-    const { count_liked, count_unliked, is_liked } = data.value || {};
+watch(
+    () => data.value.content,
+    (newValue) => {
+        console.log('newValue', newValue);
+    }
+);
+
+watch(data, (newValue) => {
+    const { count_liked, count_unliked, is_liked } = newValue || {};
     likeStates.value = { count_liked, count_unliked, is_liked };
 });
 
@@ -122,6 +129,7 @@ const jumpToProjectDetailPage = (id: number) => {
 
 //举报评论/注解
 const handleComplaintComment = async () => {
+    const { commentId } = props.data;
     const reason = complaintValue.value;
     if (!reason) {
         const msg = '举报原因不可为空';
@@ -139,6 +147,7 @@ const handleComplaintComment = async () => {
 
 //删除评论/注解
 const handleDelComment = async () => {
+    const { project_id, commentId } = props.data;
     Toast.loading(true);
     await http.post(type.value === 'detail' ? api.comment.deleteComment : api.code.deleteNote, {
         project_id,
@@ -150,6 +159,7 @@ const handleDelComment = async () => {
 
 //赞成/反对（注解模式）
 const handleAgreeOrDisagree = async (isLike: boolean) => {
+    const { project_id, commentId, user_id } = props.data;
     if (!token || !isJoined) {
         setRightShowMode(!token ? 'login' : 'join');
         return;
@@ -239,141 +249,147 @@ const handleMenuClick: MenuClickEventHandler = ({ item, key, keyPath }) => {
                 <ACol>
                     <AAvatar
                         class="cp"
-                        @click="jumpToPublicUserPage(user_id)"
+                        @click="jumpToPublicUserPage(data.user_id)"
                         shape="square"
                         :size="40"
-                        :src="processOSSLogo(user_info?.avatar, true) || null"
+                        :src="processOSSLogo(data.user_info?.avatar, true) || null"
                     >
                         <template #icon>
                             <UserOutlined />
                         </template>
                     </AAvatar>
-                    <span class="user-name pl cp" @click="jumpToPublicUserPage(user_id)">
-                        {{ user_info?.nickname || '昵称' }}
+                    <span class="user-name pl cp" @click="jumpToPublicUserPage(data.user_id)">
+                        {{ data.user_info?.nickname || '昵称' }}
                     </span>
-                    <span class="project-name pl cp" @click="jumpToProjectDetailPage(project?.id)">
-                        @{{ project?.name || '项目名' }}
+                    <span
+                        class="project-name pl cp"
+                        @click="jumpToProjectDetailPage(data.project?.id)"
+                    >
+                        @{{ data.project?.name || '项目名' }}
                     </span>
                 </ACol>
             </ARow>
             <div class="main" style="padding-left: 50px">
                 <section class="text">
-                    <ParsedContent :content="content" />
+                    <ParsedContent :content="data.content" />
                 </section>
             </div>
             <div class="remark" style="padding-left: 50px">
                 <span class="date">
-                    {{ created_at ? dateFormat(created_at).slice(0, 16) : '发表时间' }}
+                    {{ data.created_at ? dateFormat(data.created_at).slice(0, 16) : '发表时间' }}
                 </span>
 
                 <ASpace class="operation" size="large">
                     <span class="cp" title="被赞成数">
                         <LikeOutlined />
 
-                        <span class="like-amount">{{ count_liked || 0 }}</span>
+                        <span class="like-amount">{{ data.count_liked || 0 }}</span>
                     </span>
                 </ASpace>
             </div>
         </template>
 
-        <template v-if="type === 'user'">
+        <template v-else-if="type === 'user'">
             <ARow align="middle" class="header" justify="space-between">
                 <ACol>
                     <AAvatar
                         class="cp"
-                        @click="jumpToProjectDetailPage(project?.id)"
+                        @click="jumpToProjectDetailPage(data.project?.id)"
                         shape="square"
                         :size="40"
-                        :src="processOSSLogo(project?.avatar, true) || null"
+                        :src="processOSSLogo(data.project?.avatar, true) || null"
                     >
                         <template #icon>
                             <Logo />
                         </template>
                     </AAvatar>
-                    <span class="file-name pl cp" @click="jumpToProjectReadPage(project?.id)">
-                        {{ file_name || '文件名' }}
+                    <span class="file-name pl cp" @click="jumpToProjectReadPage(data.project?.id)">
+                        {{ data.file_name || '文件名' }}
                     </span>
-                    <span class="project-name pl cp" @click="jumpToProjectDetailPage(project?.id)">
-                        @{{ project?.name || '项目名' }}
+                    <span
+                        class="project-name pl cp"
+                        @click="jumpToProjectDetailPage(data.project?.id)"
+                    >
+                        @{{ data.project?.name || '项目名' }}
                     </span>
                 </ACol>
             </ARow>
             <div class="main">
                 <section class="text">
-                    <ParsedContent content="{content}" />
+                    <ParsedContent :content="data.content" />
                 </section>
             </div>
             <div class="remark">
                 <span class="date">
-                    {{ created_at ? dateFormat(created_at).slice(0, 16) : '发表时间' }}
+                    {{ data.created_at ? dateFormat(data.created_at).slice(0, 16) : '发表时间' }}
                 </span>
 
                 <ASpace class="operation" size="large">
                     <span class="cp" title="被赞成数">
                         <LikeOutlined />
-                        <span class="like-amount">{{ count_liked || 0 }}</span>
+                        <span class="like-amount">{{ data.count_liked || 0 }}</span>
                     </span>
                 </ASpace>
             </div>
         </template>
 
-        <template v-if="type === 'detail'">
+        <template v-else-if="type === 'detail'">
             <ARow align="middle" class="header" justify="space-between">
                 <ACol>
                     <AAvatar
                         class="cp"
-                        @click="jumpToPublicUserPage(user_id)"
+                        @click="jumpToPublicUserPage(data.user_id)"
                         shape="square"
                         :size="40"
-                        :src="processOSSLogo(user_info?.avatar, true) || null"
+                        :src="processOSSLogo(data.user_info?.avatar, true) || null"
                     >
                         <template #icon>
                             <UserOutlined />
                         </template>
                     </AAvatar>
-                    <span class="user-name pl cp" @click="jumpToPublicUserPage(user_id)">
-                        {{ user_info?.nickname || '昵称' }}
+                    <span class="user-name pl cp" @click="jumpToPublicUserPage(data.user_id)">
+                        {{ data.user_info?.nickname || '昵称' }}
                     </span>
                 </ACol>
             </ARow>
             <div class="main" style="padding-left: 50px">
                 <section class="text">
-                    <ParsedContent content="{content}" />
+                    <ParsedContent :content="data.content" />
                 </section>
             </div>
             <div class="remark" style="padding-left: 50px">
                 <span class="date">
-                    {{ created_at ? dateFormat(created_at).slice(0, 16) : '发表时间' }}
+                    {{ data.created_at ? dateFormat(data.created_at).slice(0, 16) : '发表时间' }}
                 </span>
 
                 <ASpace class="operation" size="large">
                     <div>
-                        <LikeOutlined class="cp" v-if="is_liked === 0" />
+                        <LikeOutlined class="cp" v-if="data.is_liked === 0" />
 
                         <LikeFilled class="cp" v-else />
 
-                        <span class="like-amount">{{ count_liked || 0 }}</span>
+                        <span class="like-amount">{{ data.count_liked || 0 }}</span>
                     </div>
                 </ASpace>
             </div>
         </template>
 
-        <template v-if="type === 'read'">
+        <template v-else-if="type === 'read'">
             <ARow align="middle" class="header" justify="space-between">
                 <ACol>
                     <AAvatar
                         class="cp"
-                        @click="jumpToPublicUserPage(user_id)"
+                        @click="jumpToPublicUserPage(data.user_id)"
                         shape="square"
                         :size="40"
-                        :src="processOSSLogo(user_info?.avatar, true) || null"
+                        :src="processOSSLogo(data.user_info?.avatar, true) || null"
                     >
                         <template #icon>
                             <UserOutlined />
                         </template>
                     </AAvatar>
-                    <span class="user-name pl cp" @click="jumpToPublicUserPage(user_id)">
-                        {{ user_info?.nickname || '昵称' }}
+                    <span class="user-name pl cp" @click="jumpToPublicUserPage(data.user_id)">
+                        {{ data.user_info?.nickname || '昵称' }}
                     </span>
                 </ACol>
 
@@ -390,12 +406,12 @@ const handleMenuClick: MenuClickEventHandler = ({ item, key, keyPath }) => {
             </ARow>
             <div class="main">
                 <section class="text">
-                    <ParsedContent content="{content}" />
+                    <ParsedContent :content="data.content" />
                 </section>
             </div>
             <div class="remark">
                 <span class="date">
-                    {{ created_at ? dateFormat(created_at).slice(0, 16) : '发表时间' }}
+                    {{ data.created_at ? dateFormat(data.created_at).slice(0, 16) : '发表时间' }}
                 </span>
 
                 <ASpace class="operation" size="large">

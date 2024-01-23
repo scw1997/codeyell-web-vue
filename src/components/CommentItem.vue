@@ -73,7 +73,8 @@ watch([userInfo, data], ([newUserInfo, newPropsData]) => {
 
 //跳转到指定用户公开页
 const jumpToPublicUserPage = (userid: number) => {
-    if (data.value.user_info && userid === userInfo.value?.id) {
+    const { user_info } = data.value;
+    if (user_info && userid === userInfo.value?.id) {
         //如果点击是登录人自己的头像信息，则跳转到我的个人首页
 
         if (props.type === 'read') {
@@ -97,11 +98,12 @@ const handleMenuClick: MenuClickEventHandler = ({ item, keyPath, key }) => {
 
 //赞成/反对（注解模式）
 const handleAgreeOrDisagree = async (isLike: boolean) => {
+    const { user_id, project_id, id } = data.value;
     if (!token || !isJoined) {
         setRightShowMode(!token ? 'login' : 'join');
         return;
     }
-    if (props.data?.user_id && props.data?.user_id === userInfo.value?.id) {
+    if (user_id && user_id === userInfo.value?.id) {
         return Toast.info('不可赞成/反对自己发表的内容');
     }
 
@@ -118,8 +120,8 @@ const handleAgreeOrDisagree = async (isLike: boolean) => {
 
     Toast.loading(true);
     const likeData = await http.post(api.code.agreeOrDisagreeNote, {
-        project_id: props.data.project_id,
-        comment_id: props.data.id,
+        project_id: project_id,
+        comment_id: id,
         is_like: isLikeParam //1点赞2反对3中立
     });
     Toast.success(msg);
