@@ -228,3 +228,6 @@ export const processOSSLogo = (url: string, isAvatar: boolean) => {
     }
     return 'https://static.codeyell.com/system/base/logo-default.png';
 };
+export const fenToYuan = (amount: string | number): string => {
+    return (Number(amount) / 100).toFixed(2);
+};

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { Card } from 'ant-design-vue';
-import Reading from '@/views/user/my/personal/Reading.vue';
-import Notes from '@/views/user/my/personal/Notes.vue';
-import Integral from '@/views/user/my/personal/Integral.vue';
+import Reading from '@/views/user/my/personal/MyPersonalReading.vue';
+import Notes from '@/views/user/my/personal/MyPersonalNotes.vue';
+import Integral from '@/views/user/my/personal/MyPersonalIntegral.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Title, PureTabs } from '@/components';
-import type { TabConfigItem } from '@/components/PureTabs.vue';
+import type { TabConfigItem } from '../../../../components/PureTabs.vue';
 import { Component, defineAsyncComponent, defineComponent, ref, watchEffect } from 'vue';
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
@@ -100,8 +100,9 @@ watchEffect(() => {
                 @change="handleTabChange"
             />
         </ACard>
-
-        <component :is="mainContentMap[states.activeKey]" />
+        <KeepAlive>
+            <component :is="mainContentMap[states.activeKey]" />
+        </KeepAlive>
     </div>
 </template>
 

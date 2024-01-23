@@ -11,83 +11,84 @@ const router = createRouter({
         {
             path: '/',
             name: 'index',
-            component: () => import('../views/Index.vue')
+            component: () => import('../views/Home.vue')
         },
         {
             path: '/search',
             name: 'search',
-            component: () => import('../views/Search.vue')
+            component: () => import('../views/search/index.vue')
         },
         {
             path: '/rank',
             name: 'rank',
-            component: () => import('../views/Rank.vue')
+            component: () => import('../views/rank/index.vue')
         },
         {
             path: '/project',
             name: 'project',
-            component: () => import('../views/project/Index.vue'),
+            component: () => import('../views/project/index.vue'),
             children: [
                 {
                     path: 'create',
                     name: 'projectCreate',
-                    component: () => import('../views/project/Create.vue')
+                    component: () => import('../views/project/create/index.vue')
                 },
                 {
                     path: 'detail',
                     name: 'projectDetail',
-                    component: () => import('../views/project/Detail.vue')
+                    component: () => import('../views/project/detail/index.vue')
                 },
                 {
                     path: 'read',
                     name: 'projectRead',
-                    component: () => import('../views/project/read/Index.vue')
+                    component: () => import('../views/project/read/index.vue')
                 }
             ]
         },
+
         {
             path: '/auth',
             name: 'auth',
-            component: () => import('@/views/auth/Index.vue'),
+            component: () => import('@/views/auth/index.vue'),
             children: [
                 {
                     path: 'login',
                     name: 'login',
-                    component: () => import('@/views/auth/Login.vue')
+                    component: () => import('@/views/auth/AuthLogin.vue')
                 },
                 {
                     path: 'sign',
                     name: 'sign',
-                    component: () => import('@/views/auth/Sign.vue')
+                    component: () => import('@/views/auth/AuthSign.vue')
                 },
                 {
                     path: 'retrieve_pwd',
                     name: 'retrieve',
-                    component: () => import('@/views/auth/Retrieve.vue')
+                    component: () => import('@/views/auth/AuthRetrieve.vue')
                 }
             ]
         },
         {
             path: '/my',
             name: 'my',
-            component: () => import('@/views/user/my/Index.vue'),
+            component: () => import('@/views/user/my/index.vue'),
             children: [
                 {
                     path: 'personal_page',
                     name: 'myPersonal',
-                    component: () => import('@/views/user/my/personal/Index.vue')
+                    component: () => import('@/views/user/my/personal/index.vue')
                 },
                 {
                     path: 'account_settings',
                     name: 'mySettings',
-                    component: () => import('@/views/user/my/AccountSettings.vue')
+                    component: () => import('@/views/user/my/settings/index.vue')
                 }
             ]
         },
         {
             path: '/user',
             name: 'user',
-            component: () => import('@/views/user/Public.vue')
+            component: () => import('@/views/user/public/index.vue')
         },
         {
             path: '/:pathMatch(.*)*',

@@ -24,9 +24,9 @@ const states = ref<StatesType>({
 <template>
     <div class="personal-reading-root">
         <NoteItem
-            v-for="(proItem, index) in states.noteList"
+            v-for="(noteItem, index) in states.noteList"
             class="pb"
-            :data="proItem"
+            :data="noteItem"
             :key="index"
             type="user"
         />

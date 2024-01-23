@@ -93,7 +93,7 @@ watch(
                 "
                 :value="states.targetPageNo"
             >
-                <template #addAfter>
+                <template #addonAfter>
                     <span class="cp" @click="getData(states.targetPageNo)">确定</span>
                 </template>
             </InputNumber>
@@ -102,4 +102,11 @@ watch(
     </ARow>
 </template>
 
-<style scoped></style>
+<style scoped>
+.pagination-component-root {
+    .page-no-input {
+        width: 100px;
+        margin: 0 6px;
+    }
+}
+</style>

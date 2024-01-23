@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
-import { ref, toRefs, watch, h, defineComponent } from 'vue';
+import { ref, toRefs, watch, h, defineComponent, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { dateFormat, processOSSLogo } from '@/utils/tools';
 import { ParsedContent, Logo } from '@/components';
@@ -34,19 +34,6 @@ const props = defineProps<PropsType>();
 
 const { type, data } = toRefs(props);
 
-// const {
-//     project,
-//     user_info,
-//     count_liked,
-//     count_unliked,
-//     content,
-//     created_at,
-//     file_name,
-//     user_id,
-//     project_id,
-//     is_liked, //评论模式：是否点赞过，0否，1是；注解模式：0未反对，也未赞成，1 已赞成 2 已反对
-//     id: commentId
-// } = toRefs(data.value);
 const emits = defineEmits<{
     reply: [record: PropsType['data']]; //点击回复
     edit: [record: PropsType['data']]; //点击修改
@@ -61,13 +48,6 @@ const likeStates = ref<{ count_liked: number; count_unliked: number; is_liked: n
     is_liked: data?.value.is_liked
 });
 let complaintValue = ref<string>('');
-
-watch(
-    () => data.value.content,
-    (newValue) => {
-        console.log('newValue', newValue);
-    }
-);
 
 watch(data, (newValue) => {
     const { count_liked, count_unliked, is_liked } = newValue || {};

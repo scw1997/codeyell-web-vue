@@ -18,5 +18,13 @@ export default {
     // 获取积分支付二维码
     getPayCode: '/web/v1/order/buyPoint',
     // 获取支付状态信息
-    getPayStatusMsg: '/web/v1/order/statusPoint'
+    getPayStatusMsg: '/web/v1/order/statusPoint',
+    // 积分提现
+    addPointWithdraw: '/web/v1/my/point_withdraw/add',
+    // 提现记录
+    getPointWithdrawList: '/web/v1/my/point_withdraw/list',
+    //提现费用计算
+    getPointWithdrawFee: '/web/v1/my/point_withdraw/fee',
+    //用户的最后一次提现记录
+    getPointWithdrawLastone: '/web/v1/my/point_withdraw/lastone'
 };
