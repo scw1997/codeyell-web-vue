@@ -49,7 +49,7 @@ const router = createRouter({
         {
             path: '/auth',
             name: 'auth',
-            component: () => import('@/views/auth/Index.vue'),
+            component: () => import('@/views/auth/index.vue'),
             children: [
                 {
                     path: 'login',
