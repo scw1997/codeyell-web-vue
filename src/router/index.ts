@@ -39,7 +39,7 @@ const router = createRouter({
                 {
                     path: 'read',
                     name: 'project-read',
-                    component: () => import('../views/project/read/Read.vue')
+                    component: () => import('../views/project/read/ProjectRead.vue')
                 }
             ]
         },

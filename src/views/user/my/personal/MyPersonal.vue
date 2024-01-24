@@ -20,31 +20,28 @@ type StatesType = {
     tabConfig: TabConfigItem[];
     activeKey: TabConfigItem['key'];
 };
-// 定义各个模块的渲染内容
-const readComp = defineComponent({
-    components: {
-        Card,
-        Reading
-    },
-    template: `<Card class="main-card">
+// 定义各个模块的渲染组件
+
+const componentMap: Record<'read' | 'note' | 'integral', Component> = {
+    read: defineComponent({
+        components: {
+            Card,
+            Reading
+        },
+        template: `<Card class="main-card">
                         <Reading />
                     </Card>`
-});
-const notesComp = defineComponent({
-    components: {
-        Notes,
-        Card
-    },
-    template: `<Card class="main-card">
+    }),
+    note: defineComponent({
+        components: {
+            Notes,
+            Card
+        },
+        template: `<Card class="main-card">
                         <Notes />
                     </Card>`
-});
-const integralComp = Integral;
-
-const mainContentMap = {
-    read: readComp,
-    note: notesComp,
-    integral: integralComp
+    }),
+    integral: Integral
 };
 
 const states = ref<StatesType>({
@@ -101,7 +98,7 @@ watchEffect(() => {
             />
         </ACard>
         <KeepAlive>
-            <component :is="mainContentMap[states.activeKey]" />
+            <component :is="componentMap[states.activeKey]" />
         </KeepAlive>
     </div>
 </template>

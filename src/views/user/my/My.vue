@@ -19,22 +19,22 @@ const navList = [
     {
         icon: HomeOutlined,
         name: '个人首页',
-        pathName: 'myPersonal'
+        pathName: 'my-personal'
     },
     {
         icon: SettingOutlined,
         name: '账号设置',
-        pathName: 'mySettings'
+        pathName: 'my-settings'
     },
     {
         icon: UserSwitchOutlined,
         name: '退出登录',
-        pathName: 'login'
+        pathName: 'auth-login'
     }
 ];
 
 const handleGoPath = (pathName: string) => {
-    if (pathName === 'login') {
+    if (pathName === 'auth-login') {
         clearUserCache();
     }
     router.replace({ name: pathName });
