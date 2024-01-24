@@ -80,14 +80,14 @@ const jumpToPublicUserPage = (userid: number) => {
         if (props.type === 'read') {
             window.open('/my/personal_page');
         } else {
-            router.push({ name: 'myPersonal' });
+            router.push({ name: 'my-personal' });
         }
     } else {
         //其他用户头像
         if (type.value === 'read') {
-            window.open(`/user?id=${userid}`);
+            window.open(`/user/public?id=${userid}`);
         } else {
-            router.push({ name: 'user', query: { id: userid } });
+            router.push({ name: 'user-public', query: { id: userid } });
         }
     }
 };

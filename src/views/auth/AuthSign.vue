@@ -55,7 +55,7 @@ const handleSignClick = async () => {
         if (props.isControl) {
             emits('success');
         } else {
-            router.push({ name: 'login' });
+            router.push({ name: 'auth-login' });
         }
     } finally {
         submitLoading.value = false;
@@ -160,7 +160,7 @@ onMounted(() => {
                 class="cp"
                 @click="
                     () => {
-                        isControl ? emits('retrieveClick') : router.push({ name: 'retrieve' });
+                        isControl ? emits('retrieveClick') : router.push({ name: 'auth-retrieve' });
                     }
                 "
             >
@@ -170,7 +170,7 @@ onMounted(() => {
                 class="cp"
                 @click="
                     () => {
-                        isControl ? emits('login') : router.push({ name: 'login' });
+                        isControl ? emits('login') : router.push({ name: 'auth-login' });
                     }
                 "
             >

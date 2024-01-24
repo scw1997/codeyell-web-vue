@@ -15,7 +15,7 @@ const { data, type } = toRefs(props);
 const router = useRouter();
 //跳转到项目详情页
 const jumpToProjectDetailPage = (projectId: number) => {
-    router.push(`/project/detail?id=${projectId}`);
+    router.push({ name: 'project-detail', query: { id: projectId } });
 };
 
 //跳转到git仓库地址

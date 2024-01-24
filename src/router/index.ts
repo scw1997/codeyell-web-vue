@@ -1,47 +1,45 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
+const devRoutes: RouteRecordRaw[] = [
+    {
+        path: '/demo',
+        name: 'demo',
+        component: () => import('../views/demo/Demo.vue')
+    }
+];
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        {
-            path: '/test',
-            name: 'test',
-            component: () => import('../components/Test.vue')
-        },
+        ...(ENV === 'dev' ? devRoutes : []),
         {
             path: '/',
-            name: 'index',
+            name: 'home',
             component: () => import('../views/Home.vue')
         },
-        {
-            path: '/search',
-            name: 'search',
-            component: () => import('../views/search/index.vue')
-        },
-        {
-            path: '/rank',
-            name: 'rank',
-            component: () => import('../views/rank/index.vue')
-        },
+
         {
             path: '/project',
             name: 'project',
-            component: () => import('../views/project/index.vue'),
             children: [
                 {
                     path: 'create',
-                    name: 'projectCreate',
-                    component: () => import('../views/project/create/index.vue')
+                    name: 'project-create',
+                    component: () => import('../views/project/ProjectCreate.vue')
+                },
+                {
+                    path: 'search',
+                    name: 'project-search',
+                    component: () => import('../views/project/ProjectSearch.vue')
                 },
                 {
                     path: 'detail',
-                    name: 'projectDetail',
-                    component: () => import('../views/project/detail/index.vue')
+                    name: 'project-detail',
+                    component: () => import('../views/project/ProjectDetail.vue')
                 },
                 {
                     path: 'read',
-                    name: 'projectRead',
-                    component: () => import('../views/project/read/index.vue')
+                    name: 'project-read',
+                    component: () => import('../views/project/read/Read.vue')
                 }
             ]
         },
@@ -49,21 +47,21 @@ const router = createRouter({
         {
             path: '/auth',
             name: 'auth',
-            component: () => import('@/views/auth/index.vue'),
+            component: () => import('@/views/auth/Auth.vue'),
             children: [
                 {
                     path: 'login',
-                    name: 'login',
+                    name: 'auth-login',
                     component: () => import('@/views/auth/AuthLogin.vue')
                 },
                 {
                     path: 'sign',
-                    name: 'sign',
+                    name: 'auth-sign',
                     component: () => import('@/views/auth/AuthSign.vue')
                 },
                 {
                     path: 'retrieve_pwd',
-                    name: 'retrieve',
+                    name: 'auth-retrieve',
                     component: () => import('@/views/auth/AuthRetrieve.vue')
                 }
             ]
@@ -71,24 +69,35 @@ const router = createRouter({
         {
             path: '/my',
             name: 'my',
-            component: () => import('@/views/user/my/index.vue'),
+            component: () => import('@/views/user/my/My.vue'),
             children: [
                 {
                     path: 'personal_page',
-                    name: 'myPersonal',
-                    component: () => import('@/views/user/my/personal/index.vue')
+                    name: 'my-personal',
+                    component: () => import('@/views/user/my/personal/MyPersonal.vue')
                 },
                 {
                     path: 'account_settings',
-                    name: 'mySettings',
-                    component: () => import('@/views/user/my/settings/index.vue')
+                    name: 'my-settings',
+                    component: () => import('@/views/user/my/MySettings.vue')
                 }
             ]
         },
         {
             path: '/user',
             name: 'user',
-            component: () => import('@/views/user/public/index.vue')
+            children: [
+                {
+                    path: 'rank',
+                    name: 'user-rank',
+                    component: () => import('../views/user/UserRank.vue')
+                },
+                {
+                    path: 'public',
+                    name: 'user-public',
+                    component: () => import('../views/user/UserPublic.vue')
+                }
+            ]
         },
         {
             path: '/:pathMatch(.*)*',

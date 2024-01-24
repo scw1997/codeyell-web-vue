@@ -79,7 +79,7 @@ watch([userInfo, data], ([newUserInfo, newPropsData]) => {
 
 //跳转到项目阅读页
 const jumpToProjectReadPage = (id: number) => {
-    router.push({ name: 'projectRead', query: { id } });
+    router.push({ name: 'project-read', query: { id } });
 };
 
 //跳转到指定用户公开页
@@ -90,21 +90,21 @@ const jumpToPublicUserPage = (userid: number) => {
         if (type.value === 'read') {
             window.open('/my/personal_page');
         } else {
-            router.push({ name: 'myPersonal' });
+            router.push({ name: 'my-personal' });
         }
     } else {
         //其他用户头像
         if (type.value === 'read') {
-            window.open(`/user?id=${userid}`);
+            window.open(`/user/public?id=${userid}`);
         } else {
-            router.push({ name: 'user', query: { id: userid } });
+            router.push({ name: 'user-public', query: { id: userid } });
         }
     }
 };
 
 //跳转到项目详情页
 const jumpToProjectDetailPage = (id: number) => {
-    router.push({ name: 'projectDetail', query: { id } });
+    router.push({ name: 'project-detail', query: { id } });
 };
 
 //举报评论/注解

@@ -35,6 +35,7 @@ interface StatesType {
     pointListActiveKey: string;
     pointExtraTips: string;
     shareUrl: string;
+    withdrawFormModel: Record<string, any>;
 }
 
 const pointBuyTabConfig = [
@@ -70,7 +71,14 @@ const states = ref<StatesType>({
     pointListActiveKey: 'in',
     pointErrVisible: false,
     pointExtraTips: '平台收取5%手续费',
-    shareUrl: ''
+    shareUrl: '',
+    withdrawFormModel: {
+        point: '',
+        bank_receiver: '',
+        bank_account: '',
+        bank_name: '',
+        bank_deposit: ''
+    }
 });
 
 let payModalHandler = null;
@@ -127,7 +135,7 @@ const getPrice = debounce(async (point: number) => {
 
 const getWithdrawLastone = async () => {
     const data = await http.post(api.user.getPointWithdrawLastone);
-    states.value.withdrawLastone = data;
+    states.value.withdrawFormModel = data;
 };
 
 const handleBuyPointChange = (e) => {
@@ -278,13 +286,14 @@ watch(
                 <AForm
                     v-else
                     :colon="false"
-                    :labelACol="{ span: 8 }"
+                    :labelCol="{ span: 8 }"
                     name="nest-messages"
+                    :model="states.withdrawFormModel"
                     @finish="handleWithdrawFormFinish"
-                    :wrapperACol="{ span: 15 }"
+                    :wrapperCol="{ span: 15 }"
                 >
                     <ARow align="top" :gutter="24" justify="space-between">
-                        <ACol span="12">
+                        <ACol :span="12">
                             <FormItem
                                 :extra="states.pointExtraTips"
                                 label="提取积分数"
@@ -302,6 +311,7 @@ watch(
                                 ]"
                             >
                                 <AInput
+                                    v-model:value="states.withdrawFormModel.point"
                                     @change="pointChange"
                                     placeholder="请输入整数"
                                     type="number"
@@ -315,7 +325,7 @@ watch(
                                 :rules="[{ required: true }]"
                             >
                                 <AInput
-                                    :defaultValue="states.withdrawLastone.bank_name"
+                                    v-model:value="states.withdrawFormModel.bank_name"
                                     placeholder="如：中国银行"
                                 />
                             </FormItem>
@@ -326,7 +336,7 @@ watch(
                                 name="bank_deposit"
                                 :rules="[{ required: true }]"
                             >
-                                <AInput :defaultValue="states.withdrawLastone.bank_deposit" />
+                                <AInput v-model:value="states.withdrawFormModel.bank_deposit" />
                             </FormItem>
                         </ACol>
                         <ACol :span="12">
@@ -335,7 +345,7 @@ watch(
                                 name="bank_account"
                                 :rules="[{ required: true }]"
                             >
-                                <AInput :defaultValue="states.withdrawLastone.bank_account" />
+                                <AInput v-model:value="states.withdrawFormModel.bank_account" />
                             </FormItem>
                         </ACol>
                         <ACol :span="12">
@@ -344,7 +354,7 @@ watch(
                                 name="bank_receiver"
                                 :rules="[{ required: true }]"
                             >
-                                <AInput :defaultValue="states.withdrawLastone.bank_receiver" />
+                                <AInput v-model:value="states.withdrawFormModel.bank_receiver" />
                             </FormItem>
                         </ACol>
 
@@ -363,111 +373,112 @@ watch(
                 :config="pointListTabConfig"
                 @change="handleListTabChange"
             />
+            <KeepAlive>
+                <div v-if="states.pointListActiveKey == 'in'">
+                    <template v-if="states.logList?.length > 0">
+                        <ARow
+                            v-for="({ PointChange, Info, CreatedAt }, index) in states.logList"
+                            align="bottom"
+                            class="mb list-item"
+                            :gutter="15"
+                            justify="space-between"
+                            :key="index"
+                        >
+                            <ACol flex="none">
+                                <div :class="['amount', PointChange > 0 ? 'add' : 'subtract']">
+                                    {{ PointChange > 0 ? `+${PointChange}` : `${PointChange}积分` }}
+                                </div>
+                                <div class="desc" v-html="Info"></div>
+                            </ACol>
+                            <ACol flex="none">
+                                <span>
+                                    {{ CreatedAt ? dateFormat(CreatedAt).slice(0, 16) : '时间' }}
+                                </span>
+                            </ACol>
+                        </ARow>
+                    </template>
 
-            <div v-if="states.pointListActiveKey == 'in'">
-                <template v-if="states.logList?.length > 0">
-                    <ARow
-                        v-for="({ PointChange, Info, CreatedAt }, index) in states.logList"
-                        align="bottom"
-                        class="mb list-item"
-                        :gutter="15"
-                        justify="space-between"
-                        :key="index"
-                    >
-                        <ACol flex="none">
-                            <div :class="['amount', PointChange > 0 ? 'add' : 'subtract']">
-                                {{ PointChange > 0 ? `+${PointChange}` : `${PointChange}积分` }}
-                            </div>
-                            <div class="desc" v-html="Info"></div>
-                        </ACol>
-                        <ACol flex="none">
-                            <span>
-                                {{ CreatedAt ? dateFormat(CreatedAt).slice(0, 16) : '时间' }}
-                            </span>
-                        </ACol>
-                    </ARow>
-                </template>
+                    <Empty v-else description="暂无记录" :image="Empty.PRESENTED_IMAGE_SIMPLE" />
 
-                <Empty v-else description="暂无记录" :image="Empty.PRESENTED_IMAGE_SIMPLE" />
+                    <Pagination
+                        class="mt"
+                        @change="
+                            (data) => {
+                                states.logList = data;
+                            }
+                        "
+                        :params="states.logParams"
+                        :url="api.user.getMyIntegralLogList"
+                    />
+                </div>
 
-                <Pagination
-                    class="mt"
-                    @change="
-                        (data) => {
-                            states.logList = data;
-                        }
-                    "
-                    :params="states.logParams"
-                    :url="api.user.getMyIntegralLogList"
-                />
-            </div>
-
-            <div v-else>
-                <template v-if="states.withdrawList?.length > 0">
-                    <ARow
-                        v-for="(
-                            {
-                                fee_get,
-                                point,
-                                status,
-                                created_at,
-                                bank_account,
-
-                                bank_name,
-                                msg
-                            },
-                            index
-                        ) in states.logList"
-                        align="bottom"
-                        class="mb list-item"
-                        :gutter="15"
-                        justify="space-between"
-                        :key="index"
-                    >
-                        <ACol flex="none">
-                            <div>
-                                <TypographyText type="danger">
-                                    {{ fenToYuan(fee_get) }}元
-                                </TypographyText>
-                            </div>
-                            <TypographyText type="secondary">{{ point }}积分</TypographyText>
-                        </ACol>
-                        <ACol flex="none">
-                            <div>
+                <div v-else>
+                    <template v-if="states.withdrawList?.length > 0">
+                        <ARow
+                            v-for="(
                                 {
-                                <TypographyText v-if="status == 1">
-                                    处理中（{{ bank_name }} {{ bank_account }}）
-                                </TypographyText>
+                                    fee_get,
+                                    point,
+                                    status,
+                                    created_at,
+                                    bank_account,
 
-                                <TypographyText v-else-if="status == 2" type="success">
-                                    提现成功（{bank_name} {bank_account})
-                                </TypographyText>
+                                    bank_name,
+                                    msg
+                                },
+                                index
+                            ) in states.logList"
+                            align="bottom"
+                            class="mb list-item"
+                            :gutter="15"
+                            justify="space-between"
+                            :key="index"
+                        >
+                            <ACol flex="none">
+                                <div>
+                                    <TypographyText type="danger">
+                                        {{ fenToYuan(fee_get) }}元
+                                    </TypographyText>
+                                </div>
+                                <TypographyText type="secondary">{{ point }}积分</TypographyText>
+                            </ACol>
+                            <ACol flex="none">
+                                <div>
+                                    {
+                                    <TypographyText v-if="status == 1">
+                                        处理中（{{ bank_name }} {{ bank_account }}）
+                                    </TypographyText>
 
-                                <TypographyText v-else-if="status == 3" type="danger">
-                                    提现失败: {{ msg }}（{{ bank_name }} {{ bank_account }}）
-                                </TypographyText>
-                                }
-                            </div>
-                            <div class="text-right">
-                                <TypographyText type="secondary">
-                                    {{ dateFormat(created_at).slice(0, 16) }}
-                                </TypographyText>
-                            </div>
-                        </ACol>
-                    </ARow>
-                </template>
-                <Empty v-else description="暂无记录" :image="Empty.PRESENTED_IMAGE_SIMPLE" />
-                <Pagination
-                    class="mt"
-                    @change="
-                        (data) => {
-                            states.withdrawList = data;
-                        }
-                    "
-                    :params="states.withdrawParams"
-                    :url="api.user.getPointWithdrawList"
-                />
-            </div>
+                                    <TypographyText v-else-if="status == 2" type="success">
+                                        提现成功（{bank_name} {bank_account})
+                                    </TypographyText>
+
+                                    <TypographyText v-else-if="status == 3" type="danger">
+                                        提现失败: {{ msg }}（{{ bank_name }} {{ bank_account }}）
+                                    </TypographyText>
+                                    }
+                                </div>
+                                <div class="text-right">
+                                    <TypographyText type="secondary">
+                                        {{ dateFormat(created_at).slice(0, 16) }}
+                                    </TypographyText>
+                                </div>
+                            </ACol>
+                        </ARow>
+                    </template>
+                    <Empty v-else description="暂无记录" :image="Empty.PRESENTED_IMAGE_SIMPLE" />
+                    <Pagination
+                        class="mt"
+                        @change="
+                            (data) => {
+                                states.withdrawList = data;
+                            }
+                        "
+                        :params="states.withdrawParams"
+                        :url="api.user.getPointWithdrawList"
+                    />
+                </div>
+            </KeepAlive>
         </ACard>
     </div>
 </template>

@@ -7,6 +7,8 @@ declare module '*.bmp';
 declare module '*.webp';
 declare module '*.less';
 declare module '*.vue';
+declare const ENV: 'dev' | 'prod';
+declare const API_HOST: string;
 
 interface Window {
     publicPath: string;
@@ -14,5 +16,3 @@ interface Window {
 type EmptyObject = {
     [K in PropertyKey]: never;
 };
-
-declare const API_HOST: string;

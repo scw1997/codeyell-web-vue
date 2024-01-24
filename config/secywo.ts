@@ -3,6 +3,7 @@
 const env = process.env.SECYWO_ENV;
 export default {
     define: {
+        ENV: env,
         API_HOST: env === 'prod' ? 'https://api.codeyell.com' : 'https://codesecond-api.qidb.cn'
     }
 };

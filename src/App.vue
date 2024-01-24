@@ -17,7 +17,7 @@ const { userInfo } = storeToRefs(useGlobalStore());
 const navTabConfig = [
     {
         name: '首页',
-        key: 'index'
+        key: 'home'
     },
     {
         name: '项目',
@@ -25,16 +25,16 @@ const navTabConfig = [
     },
     {
         name: '排行榜',
-        key: 'rank'
+        key: 'user-rank'
     }
 ];
 
 const jumpToIndex = () => {
-    router.push({ name: 'index' });
+    router.push({ name: 'home' });
 };
 const handleSearch = (value: string) => {
     //跳转搜索结果页
-    router.push({ name: 'search', query: { keyword: value } });
+    router.push({ name: 'project-search', query: { keyword: value } });
 };
 </script>
 
@@ -75,7 +75,7 @@ const handleSearch = (value: string) => {
                                     class="avatar cp"
                                     @click="
                                         () => {
-                                            router.push({ name: 'myPersonal' });
+                                            router.push({ name: 'my-personal' });
                                         }
                                     "
                                     :size="40"
@@ -93,9 +93,9 @@ const handleSearch = (value: string) => {
                                         @click="
                                             () => {
                                                 router.push({
-                                                    name: 'login',
+                                                    name: 'auth-login',
                                                     query:
-                                                        name === 'index'
+                                                        name === 'home'
                                                             ? {}
                                                             : {
                                                                   redirect_path: encodeURIComponent(
@@ -112,7 +112,7 @@ const handleSearch = (value: string) => {
                                         class="cp"
                                         @click="
                                             () => {
-                                                router.push({ name: 'login' });
+                                                router.push({ name: 'auth-login' });
                                             }
                                         "
                                     >

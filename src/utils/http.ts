@@ -68,7 +68,7 @@ instance.interceptors.response.use(
                     return;
                 }
                 isNotifying = true;
-                router.push({ name: 'login' });
+                router.push({ name: 'auth-login' });
                 return Promise.reject({ code: 401, msg: '登录状态已失效，请重新登录' });
             case 403:
                 //登录失败（例如非管理员）
@@ -114,7 +114,7 @@ const handleRes = async (
                     isNotifying = false;
                 });
 
-                router.push({ name: 'login' });
+                router.push({ name: 'auth-login' });
 
                 return;
             default:

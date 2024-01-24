@@ -60,7 +60,7 @@ const handleUpdatePwdFormFinish = debounce(async (formValue: Record<string, any>
     await http.post(api.user.updateMyPwd, { old_password, new_password });
     Toast.success('修改成功，请用新密码重新登录');
     clearUserCache.value();
-    router.push({ name: 'login' });
+    router.push({ name: 'auth-login' });
 }, 200);
 
 //基本信息校验通过，点击保存

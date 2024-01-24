@@ -35,7 +35,7 @@ export const authFunc: (func: any) => (...args: any[]) => void = (func) => {
         };
     } else {
         return () => {
-            router.push({ name: 'login' });
+            router.push({ name: 'auth-login' });
         };
     }
 };

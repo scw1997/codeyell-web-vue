@@ -44,7 +44,7 @@ const formatLanguageData = computed<SelectProps['options']>(() => {
 });
 //跳转到项目详情
 const handleJumpToProjectDetail = (id: number | string) => {
-    router.push({ name: 'projectDetail', query: { id } });
+    router.push({ name: 'project-detail', query: { id } });
 };
 
 //跳转到git仓库地址
@@ -206,7 +206,7 @@ watchEffect(() => {
                             class="cp"
                             @click="
                                 () => {
-                                    router.push({ name: 'myPersonal' });
+                                    router.push({ name: 'my-personal' });
                                 }
                             "
                             shape="square"
@@ -320,7 +320,7 @@ watchEffect(() => {
                     <AButton
                         @click="
                             () => {
-                                router.push({ name: 'projectCreate' });
+                                router.push({ name: 'project-create' });
                             }
                         "
                         style="width: 100%"
