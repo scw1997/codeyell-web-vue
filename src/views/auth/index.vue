@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+a;
+</script>
 
 <template>
     <div class="auth">
