@@ -10,8 +10,8 @@
     "lint:staged": "lint-staged"
   },
   "lint-staged": {
-    "src/**/*.{js,ts,vue}": "eslint --fix",
-    "src/**/*.{js,ts,vue,css,less,json,html,md}": "prettier --write"
+    "src/**/*.{js,ts,vue}": ["prettier --write","eslint --fix"],
+    "src/**/*.{css,less,json,html,md}": "prettier --write"
   },
   "keywords": [
     "secywo-template-vue",
