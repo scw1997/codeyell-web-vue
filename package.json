@@ -10,7 +10,8 @@
     "lint:staged": "lint-staged"
   },
   "lint-staged": {
-    "src/**/*.{js,ts,vue}": "eslint --fix"
+    "src/**/*.{js,ts,vue}": "eslint --fix",
+    "src/**/*.{js,ts,vue,css,less,json,html,md}": "prettier --write"
   },
   "keywords": [
     "secywo-template-vue",
@@ -71,7 +72,7 @@
     "husky": "7.0.4",
     "less": "4.1.2",
     "less-loader": "10.0.1",
-    "lint-staged": "10.0.0",
+    "lint-staged": "15.2.0",
     "mini-css-extract-plugin": "2.4.2",
     "ora": "5.4.1",
     "portfinder": "1.0.32",
