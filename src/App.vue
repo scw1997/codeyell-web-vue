@@ -21,7 +21,7 @@ const navTabConfig = [
     },
     {
         name: '项目',
-        key: 'project'
+        key: 'project-list'
     },
     {
         name: '排行榜',

@@ -30,8 +30,8 @@ const rangeOptions = [
     }
 ];
 
-const modelRange = defineModel<number>('range', { default: 1 }); //热门项目的筛选日期
-const modelLanguage = defineModel<number>('language', { default: -1 }); //热门项目的筛选语言,-1表示全部，不选
+const modelRange = ref(1); //热门项目的筛选日期
+const modelLanguage = ref(-1); //热门项目的筛选语言,-1表示全部，不选
 
 const { getMyProjectData, myProData } = useMyPro();
 const { getRecentProjectData, recentProData } = useRecentPro();

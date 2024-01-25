@@ -5,8 +5,8 @@ import Notes from '@/views/user/my/personal/MyPersonalNotes.vue';
 import Integral from '@/views/user/my/personal/MyPersonalIntegral.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Title, PureTabs } from '@/components';
-import type { TabConfigItem } from '../../../../components/PureTabs.vue';
-import { Component, defineAsyncComponent, defineComponent, ref, watchEffect } from 'vue';
+import type { TabConfigItem } from '@/components/PureTabs.vue';
+import { Component, h, defineComponent, ref, watchEffect } from 'vue';
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
 const router = useRouter();
@@ -23,25 +23,9 @@ type StatesType = {
 // 定义各个模块的渲染组件
 
 const componentMap: Record<'read' | 'note' | 'integral', Component> = {
-    read: defineComponent({
-        components: {
-            Card,
-            Reading
-        },
-        template: `<Card class="main-card">
-                        <Reading />
-                    </Card>`
-    }),
-    note: defineComponent({
-        components: {
-            Notes,
-            Card
-        },
-        template: `<Card class="main-card">
-                        <Notes />
-                    </Card>`
-    }),
-    integral: Integral
+    integral: Integral,
+    read: h(Card, { class: 'main-card' }, [h(Reading)]),
+    note: h(Card, { class: 'main-card' }, [h(Notes)])
 };
 
 const states = ref<StatesType>({

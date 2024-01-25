@@ -22,6 +22,11 @@ const router = createRouter({
             name: 'project',
             children: [
                 {
+                    path: 'list',
+                    name: 'project-list',
+                    component: () => import('../views/project/ProjectList.vue')
+                },
+                {
                     path: 'create',
                     name: 'project-create',
                     component: () => import('../views/project/ProjectCreate.vue')
