@@ -55,9 +55,9 @@ defineExpose({
 });
 
 watch(
-    [() => props.params],
-    async (newValue) => {
-        if (newValue) {
+    [() => props.params, () => props.isReady],
+    async ([newParams, newIsReady]) => {
+        if (newParams || newIsReady) {
             states.value = {
                 ...states.value,
                 curPageNo: 1,

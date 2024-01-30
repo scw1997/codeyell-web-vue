@@ -48,12 +48,10 @@ const handleGetGitMsg = (url: string) => {
         });
         Toast.loading(false);
         states.value.repoData = data;
-
-        // //优先使用返回的仓库信息中的language
-        // form.setFieldValue(
-        //     'language',
-        //     languageData?.find((item) => item.label === data?.info?.Language)?.value
-        // );
+        //优先使用返回的仓库信息中的language
+        formModelStates.value.language = languageData.value?.find(
+            (item) => item.label === data?.info?.Language
+        )?.value;
     });
 };
 
@@ -146,12 +144,12 @@ watch(
                         {
                             pattern: Reg.url,
                             message: '请输入正确格式的git地址',
-                            validator: (_, value) => {
+                            validator: (_, value, callback) => {
                                 const formatValue = value?.trim();
                                 if (Reg.url.test(formatValue)) {
-                                    return Promise.resolve();
+                                    callback();
                                 }
-                                return Promise.reject('请输入正确格式的git地址');
+                                callback(new Error('请输入正确格式的git地址'));
                             }
                         }
                     ]"
@@ -193,7 +191,7 @@ watch(
 
                 <template v-if="!!states.repoData">
                     <ARow class="mt mb">
-                        <ACol class="project-message" :offset="4" :span="14">
+                        <ACol class="project-message pt" :offset="4" :span="14">
                             <p class="ellipsis">项目名称：{{ states.repoData?.info?.Name }}</p>
                             <p class="ellipsis">仓库地址：{{ states.repoData?.info?.CloneUrl }}</p>
                             <p class="ellipsis">

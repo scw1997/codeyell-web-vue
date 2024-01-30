@@ -173,7 +173,7 @@ const handleAgreeOrDisagree = async (isLike: boolean) => {
 
 //打开举报弹窗
 const openComplaintModal = () => {
-    const modalTitle = defineComponent({
+    const modalTitle = /*#__PURE__*/ defineComponent({
         components: {
             ASpace: Space
         },
@@ -182,7 +182,7 @@ const openComplaintModal = () => {
             '<ASpace>  <span v-if="type">{{type === "detail" ? "举报评论" : "举报注解"}}</span></ASpace>'
     });
 
-    const content = defineComponent({
+    const content = /*#__PURE__*/ defineComponent({
         components: {
             ATextarea: Textarea
         },

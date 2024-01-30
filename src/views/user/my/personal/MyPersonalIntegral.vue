@@ -165,7 +165,7 @@ const handleWithdrawFormFinish = debounce(async (formValue: Record<string, any>)
 }, 200);
 
 const pointChange = async (e: any) => {
-    if (parseInt(e.target.value) < 50) {
+    if (parseInt(e.target.value) < 200) {
         return;
     }
     const data = await http.post(api.user.getPointWithdrawFee, { point: parseInt(e.target.value) });
@@ -302,8 +302,8 @@ watch(
                                     { required: true },
                                     {
                                         type: 'integer',
-                                        min: 50,
-                                        message: '请输入大于50的整数',
+                                        min: 200,
+                                        message: '请输入大于200的整数',
                                         transform(value) {
                                             return parseInt(value);
                                         }

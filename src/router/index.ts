@@ -89,6 +89,17 @@ const router = createRouter({
             ]
         },
         {
+            path: '/article',
+            name: 'article',
+            children: [
+                {
+                    path: 'detail',
+                    name: 'article-detail',
+                    component: () => import('@/views/article/ArticleDetail.vue')
+                }
+            ]
+        },
+        {
             path: '/user',
             name: 'user',
             children: [

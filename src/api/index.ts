@@ -5,6 +5,7 @@ import comment from './comment';
 import code from './code';
 import rank from './rank';
 import user from './user';
+import article from './article';
 
 export default {
     global,
@@ -13,5 +14,6 @@ export default {
     code,
     comment,
     rank,
-    user
+    user,
+    article
 };

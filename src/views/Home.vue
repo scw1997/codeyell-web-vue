@@ -4,7 +4,7 @@ import { processOSSLogo } from '@/utils/tools';
 import { GithubOutlined, ReadOutlined, UserAddOutlined, UserOutlined } from '@ant-design/icons-vue';
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
-import { SelectProps, Empty } from 'ant-design-vue';
+import { SelectProps, Empty, Alert } from 'ant-design-vue';
 import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import Logo from '@/components/Logo.vue';
 import { useRouter } from 'vue-router';
@@ -58,6 +58,10 @@ const jumpToGitPath = (url: string, e: MouseEvent) => {
 const getLanguageName = (languageValue) => {
     return languageData.value?.find((item) => item.value === languageValue)?.label;
 };
+//跳转到文章详情
+const handleJumpToArticleDetail = () => {
+    router.push({ name: 'article-detail', query: { id: '658b9ce84a0dff467027438d' } });
+};
 
 onMounted(() => {
     const func = async () => {
@@ -86,6 +90,12 @@ watchEffect(() => {
     <div class="index-page-layout">
         <Title value="CodeYell - 源码阅读交流平台" />
         <section class="left-side-container">
+            <Alert message="读源码 赚现金，从此不缺私房钱" class="mb" type="info">
+                <template #action>
+                    <AButton @click="handleJumpToArticleDetail" size="small">查看详情</AButton>
+                </template>
+            </Alert>
+
             <ACard class="top-card mb">
                 <section>
                     <ASpace size="large">

@@ -58,8 +58,9 @@ instance.interceptors.response.use(
         const store = useGlobalStore();
 
         if (!navigator.onLine) {
-            return Promise.reject({ code: -1, msg: '当前网络存在问题，请检查后重试' });
+            return Promise.reject(new AxiosError('当前网络存在问题，请检查后重试', '-1'));
         }
+
         switch (err?.response?.status) {
             case 401:
                 //登录状态失效
@@ -69,16 +70,18 @@ instance.interceptors.response.use(
                 }
                 isNotifying = true;
                 router.push({ name: 'auth-login' });
-                return Promise.reject({ code: 401, msg: '登录状态已失效，请重新登录' });
+                return Promise.reject(new AxiosError('登录状态已失效，请重新登录', '401'));
             case 403:
                 //登录失败（例如非管理员）
-                return Promise.reject({ code: 403, msg: '您当前无权限访问此资源，请联系管理员' });
+                return Promise.reject(
+                    new AxiosError('您当前无权限访问此资源，请联系管理员', '403')
+                );
             case 404:
-                return Promise.reject({ code: 404, msg: '抱歉，您访问的接口地址貌似不存在' });
+                return Promise.reject(new AxiosError('抱歉，您访问的接口地址貌似不存在', '404'));
             case 500:
-                return Promise.reject({ code: 500, msg: '抱歉，当前服务器异常，请稍后再试' });
+                return Promise.reject(new AxiosError('抱歉，当前服务器异常，请稍后再试', '500'));
         }
-        return Promise.reject({ code: err.response?.status, msg: err.message });
+        return Promise.reject(new AxiosError(err.message, err.response?.status.toString()));
     }
 );
 
