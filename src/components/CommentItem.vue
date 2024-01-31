@@ -36,7 +36,6 @@ const emits = defineEmits<{
     refresh: [type: 'delete']; //触发刷新列表，点赞相关/删除/举报等操作成功后调用
 }>();
 
-const { data, type } = toRefs(props);
 const router = useRouter();
 const { isJoined, setRightShowMode } = useReadStore();
 const { userInfo, token } = storeToRefs(useGlobalStore());
@@ -48,7 +47,7 @@ const likeStates = ref<{ count_liked: number; count_unliked: number; is_liked: n
     is_liked: null
 });
 
-watch([userInfo, data], ([newUserInfo, newPropsData]) => {
+watch([userInfo, () => props.data], ([newUserInfo, newPropsData]) => {
     const newItems = [
         {
             key: '2',
@@ -73,7 +72,7 @@ watch([userInfo, data], ([newUserInfo, newPropsData]) => {
 
 //跳转到指定用户公开页
 const jumpToPublicUserPage = (userid: number) => {
-    const { user_info } = data.value;
+    const { user_info } = props.data;
     if (user_info && userid === userInfo.value?.id) {
         //如果点击是登录人自己的头像信息，则跳转到我的个人首页
 
@@ -84,7 +83,7 @@ const jumpToPublicUserPage = (userid: number) => {
         }
     } else {
         //其他用户头像
-        if (type.value === 'read') {
+        if (props.type === 'read') {
             window.open(`/user/public?id=${userid}`);
         } else {
             router.push({ name: 'user-public', query: { id: userid } });
@@ -98,7 +97,7 @@ const handleMenuClick: MenuClickEventHandler = ({ item, keyPath, key }) => {
 
 //赞成/反对（注解模式）
 const handleAgreeOrDisagree = async (isLike: boolean) => {
-    const { user_id, project_id, id } = data.value;
+    const { user_id, project_id, id } = props.data;
     if (!token || !isJoined) {
         setRightShowMode(!token ? 'login' : 'join');
         return;

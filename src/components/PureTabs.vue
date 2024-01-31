@@ -14,24 +14,24 @@ interface PropsType {
 }
 
 const props = defineProps<PropsType>();
-const { config, activeKey, defaultActiveKey } = toRefs(props);
+
 const emits = defineEmits<{
     change: [key: TabConfigItem['key']];
 }>();
-const activeKeyState = ref<typeof defaultActiveKey.value>(
-    activeKey.value ?? defaultActiveKey.value
+const activeKeyState = ref<typeof props.defaultActiveKey>(
+    props.activeKey ?? props.defaultActiveKey
 );
 
 const handleTabClick = (item: TabConfigItem) => {
     //没有传activeKey prop则可以内部切换activeKeyState，否则以activeKey prop为准
-    if (!activeKey.value) {
+    if (!props.activeKey.value) {
         activeKeyState.value = item.key;
     }
     emits('change', item.key);
 };
 
 watch(
-    activeKey,
+    () => props.activeKey,
     (value, oldValue, onCleanup) => {
         if (value) {
             activeKeyState.value = value;

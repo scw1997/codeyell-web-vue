@@ -17,10 +17,9 @@ const emits = defineEmits<{
 }>();
 
 const props = withDefaults(defineProps<PropsType>(), { initCount: 60 });
-const { initCount, text, beforeStart } = toRefs(props);
 
 const states = ref<StatesType>({
-    count: initCount.value,
+    count: props.initCount,
     btnDisabled: false,
     isCountdown: false
 });
@@ -34,7 +33,7 @@ const createInterval = (endTime: dayjs.Dayjs) => {
         if (diff <= 0 || !diff) {
             //重置状态
             states.value = {
-                count: initCount.value,
+                count: props.initCount,
                 btnDisabled: false,
                 isCountdown: false
             };
@@ -51,13 +50,14 @@ const createInterval = (endTime: dayjs.Dayjs) => {
 };
 
 const handleBtnClick = async () => {
-    if (beforeStart.value) {
+    const { beforeStart, initCount } = props;
+    if (beforeStart) {
         //点击按钮回调方法返回true或值时则开始倒计时
         states.value.btnDisabled = true;
-        Promise.resolve(beforeStart.value())
+        Promise.resolve(beforeStart())
             .then((res) => {
                 if (res) {
-                    const endTime = dayjs().add(initCount.value, 'second');
+                    const endTime = dayjs().add(initCount, 'second');
                     createInterval(endTime);
                     states.value.isCountdown = true;
                 } else {

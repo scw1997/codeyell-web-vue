@@ -1,24 +1,16 @@
 <script setup lang="ts">
 import { defineComponent, ref } from 'vue';
+import CommentModal from '@/components/CommentModal.vue';
 
-const comp1 = defineComponent({
-    template: '<div><input/>1</div>'
-});
-const comp2 = defineComponent({
-    template: '<div><input/>2</div>'
-});
+const text = ref('1');
 
-const comp = ref(1);
+interface Type {
+    xxx(): void;
+}
 </script>
 
 <template>
-    <button @click="comp = comp === 1 ? 2 : 1">切换</button>
-    <KeepAlive>
-        <input v-if="comp === 1" />
-
-        <input v-else />
-    </KeepAlive>
-    <span>{{ comp }}</span>
+    <CommentModal v-model="text" type="drawer" :open="true" />
 </template>
 
 <style scoped lang="less"></style>

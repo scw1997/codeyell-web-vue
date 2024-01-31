@@ -15,7 +15,6 @@ const route = useRoute();
 const { query } = toRefs(route);
 const redirect_path = query.value['redirect_path'] || '/';
 const props = withDefaults(defineProps<{ isControl?: boolean }>(), { isControl: false });
-const { isControl } = toRefs(props);
 const formRef = ref<FormInstance>();
 
 const modelStates = ref<{ username: string; password: string }>({ username: '', password: '' });
@@ -33,7 +32,7 @@ const handleFormFinish = debounce(async (values: Record<string, any>) => {
     Toast.success('登录成功');
     globalStore.setUserInfo(user);
     globalStore.setToken(token);
-    if (isControl.value) {
+    if (props.isControl) {
         emits('success');
     } else {
         router.push(redirect_path as string);

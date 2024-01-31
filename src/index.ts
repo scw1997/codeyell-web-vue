@@ -1,4 +1,4 @@
-import { createApp } from 'vue';
+import vue, { createApp } from 'vue';
 import App from './App.vue';
 import router from '@/router';
 import {
@@ -25,11 +25,11 @@ import {
 } from 'ant-design-vue';
 import 'ant-design-vue/dist/reset.css';
 import './index.less';
-const app = createApp(App);
+
 import { createPinia } from 'pinia';
 
+const app = createApp(App);
 app.use(createPinia());
-
 app.use(router);
 app.use(ConfigProvider)
     .use(Input)

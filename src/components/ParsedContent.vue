@@ -35,7 +35,6 @@ interface PropsType {
 }
 
 const props = withDefaults(defineProps<PropsType>(), { content: '' });
-const { content } = toRefs(props);
 
 const previewConfig = ref<ImagePreviewType>({
     src: undefined,
@@ -57,7 +56,7 @@ const handleContentClick = (e) => {
 };
 
 watchEffect(() => {
-    parsedContent.value = marked.parse(content.value || '');
+    parsedContent.value = marked.parse(props.content || '');
 });
 </script>
 

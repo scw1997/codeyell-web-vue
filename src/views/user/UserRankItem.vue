@@ -14,8 +14,6 @@ interface RankItemProps {
 
 const props = withDefaults(defineProps<RankItemProps>(), { data: null, mode: 'comment' });
 
-const { data, mode } = toRefs(props);
-
 const jumpToUserPublicPage = (userid: number) => {
     router.push({ name: 'user-public', query: { id: userid } });
 };

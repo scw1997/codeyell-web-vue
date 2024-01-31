@@ -32,8 +32,6 @@ const { setRightShowMode } = readStore;
 const { isJoined } = storeToRefs(readStore);
 const props = defineProps<PropsType>();
 
-const { type, data } = toRefs(props);
-
 const emits = defineEmits<{
     reply: [record: PropsType['data']]; //点击回复
     edit: [record: PropsType['data']]; //点击修改
@@ -43,18 +41,18 @@ const emits = defineEmits<{
 const router = useRouter();
 const dropdownItems = ref<MenuProps['items']>([]);
 const likeStates = ref<{ count_liked: number; count_unliked: number; is_liked: number | null }>({
-    count_liked: data?.value.count_liked,
-    count_unliked: data?.value.count_unliked,
-    is_liked: data?.value.is_liked
+    count_liked: props.data?.count_liked,
+    count_unliked: props.data?.count_unliked,
+    is_liked: props.data?.is_liked
 });
 let complaintValue = ref<string>('');
 
-watch(data, (newValue) => {
+watch(props.data, (newValue) => {
     const { count_liked, count_unliked, is_liked } = newValue || {};
     likeStates.value = { count_liked, count_unliked, is_liked };
 });
 
-watch([userInfo, data], ([newUserInfo, newPropsData]) => {
+watch([userInfo, () => props.data], ([newUserInfo, newPropsData]) => {
     const newItems = [
         {
             key: 'edit',
@@ -87,14 +85,14 @@ const jumpToPublicUserPage = (userid: number) => {
     if (userInfo && userid === userInfo?.value.id) {
         //如果点击是登录人自己的头像信息，则跳转到我的个人首页
 
-        if (type.value === 'read') {
+        if (props.type === 'read') {
             window.open('/my/personal_page');
         } else {
             router.push({ name: 'my-personal' });
         }
     } else {
         //其他用户头像
-        if (type.value === 'read') {
+        if (props.type === 'read') {
             window.open(`/user/public?id=${userid}`);
         } else {
             router.push({ name: 'user-public', query: { id: userid } });
@@ -119,7 +117,7 @@ const handleComplaintComment = async () => {
     Toast.loading(true);
     await http.post(api.global.complaintComment, {
         content_id: commentId, //内容id，content_type=1时，是评论的id, content_type=2时，是注解的id
-        content_type: type.value === 'detail' ? 1 : 2, //内容类型，1 项目评论 2代码注解
+        content_type: props.type === 'detail' ? 1 : 2, //内容类型，1 项目评论 2代码注解
         reason //原因说明，可选
     });
     Toast.success('举报成功');
@@ -129,7 +127,7 @@ const handleComplaintComment = async () => {
 const handleDelComment = async () => {
     const { project_id, commentId } = props.data;
     Toast.loading(true);
-    await http.post(type.value === 'detail' ? api.comment.deleteComment : api.code.deleteNote, {
+    await http.post(props.type === 'detail' ? api.comment.deleteComment : api.code.deleteNote, {
         project_id,
         comment_id: commentId
     });
@@ -196,7 +194,7 @@ const openComplaintModal = () => {
     });
 
     Modal.confirm({
-        title: h(modalTitle, { type }),
+        title: h(modalTitle, { type: props.type }),
         class: 'complaint-modal',
         width: 600,
         maskClosable: true,
@@ -210,7 +208,7 @@ const handleMenuClick: MenuClickEventHandler = ({ item, key, keyPath }) => {
     console.log('xxxx', item, key, keyPath);
     switch (key) {
         case 'edit':
-            emits('edit', data);
+            emits('edit', props.data);
             break;
         case 'delete':
             handleDelComment();

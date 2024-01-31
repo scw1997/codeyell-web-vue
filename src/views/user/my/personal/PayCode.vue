@@ -19,7 +19,6 @@ interface PropsType {
 }
 
 const props = defineProps<PropsType>();
-const { data } = toRefs(props);
 
 const emits = defineEmits<{
     success: [orderId: string];
@@ -33,14 +32,14 @@ let timer = null;
 
 //获取支付状态
 const getPayStatus = async () => {
-    const res = await http.post(api.user.getPayStatusMsg, { order_id: data.value.orderId });
+    const res = await http.post(api.user.getPayStatusMsg, { order_id: props.data?.orderId });
     const { is_paid, trade_state_desc } = res;
     states.value = { status: is_paid, statusMsg: trade_state_desc };
     //如果支付成功，销毁定时器
     if (is_paid === 1) {
         clearInterval(timer);
         timer = null;
-        emits('success', data.value.orderId);
+        emits('success', props.data?.orderId);
     }
 };
 onMounted(() => {

@@ -10,7 +10,6 @@ interface PropsType {
 }
 
 const props = defineProps<PropsType>();
-const { data, type } = toRefs(props);
 
 const router = useRouter();
 //跳转到项目详情页
