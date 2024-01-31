@@ -24,8 +24,8 @@ type StatesType = {
 
 const componentMap: Record<'read' | 'note' | 'integral', Component> = {
     integral: Integral,
-    read: h(Card, { class: 'main-card' }, [h(Reading)]),
-    note: h(Card, { class: 'main-card' }, [h(Notes)])
+    read: h(Card, { class: 'main-card' }, () => h(Reading)),
+    note: h(Card, { class: 'main-card' }, () => h(Notes))
 };
 
 const states = ref<StatesType>({

@@ -30,7 +30,7 @@ interface EmitsType {
 const model = defineModel({ default: '' }); //评论内容
 const props = defineProps<PropsType>();
 const emits = defineEmits<EmitsType>();
-const slots = defineSlots<{ title(): void; default(): void }>();
+const slots = defineSlots<{ title(): void }>();
 
 //选择本地图片后的回调
 const handleAddImg = async (events, inserImage, files: File) => {

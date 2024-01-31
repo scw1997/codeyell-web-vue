@@ -1,4 +1,7 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHistory, RouteRecordRaw, useRouter } from 'vue-router';
+import useReadStore from '@/store/read';
+import useGlobalStore from '@/store/global';
+import { toRefs } from 'vue';
 
 const devRoutes: RouteRecordRaw[] = [
     {
@@ -121,6 +124,29 @@ const router = createRouter({
             component: () => import('../views/404.vue')
         }
     ]
+});
+
+router.beforeEach((to, from, next) => {
+    console.log('to', to);
+    const { name, path, fullPath } = to;
+    const readStore = useReadStore();
+    const { token } = toRefs(useGlobalStore());
+    if (name === 'project-read') {
+        //访问项目阅读页判断跳转来源，若是新开独立页面，则点击阅读页左上角时返回到项目详情页，否则返回上一页
+        readStore.setIsPush(!(from.path === '/'));
+        next();
+    } else if (
+        ['my-personal', 'my-settings', 'project-create'].includes(name as string) &&
+        !token.value
+    ) {
+        //部分页面只能登录后访问
+        next({
+            name: 'auth-login',
+            query: path === '/' ? {} : { redirect_path: fullPath }
+        });
+    } else {
+        next();
+    }
 });
 
 export default router;

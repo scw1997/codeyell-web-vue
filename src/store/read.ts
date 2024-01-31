@@ -57,8 +57,9 @@ interface StoreStatesType {
     isJoined: boolean;
     //当前项目的详情信息
     curDetailData: Record<string, any> | null;
+    isPush: boolean; // 阅读页的跳转来源
 }
-const useReadStore = defineStore('global', {
+const useReadStore = defineStore('read', {
     state: (): StoreStatesType => ({
         tabList: [],
         tabChangeType: 'increase',
@@ -68,7 +69,8 @@ const useReadStore = defineStore('global', {
         noteListPageRef: null,
         curNoteFileData: null,
         isJoined: false,
-        curDetailData: null
+        curDetailData: null,
+        isPush: false
     }),
     actions: {
         //重置数据
@@ -80,6 +82,9 @@ const useReadStore = defineStore('global', {
             this.curNoteFileData = null;
             this.isJoined = false;
             this.curDetailData = null;
+        },
+        setIsPush(isPush) {
+            this.isPush = isPush;
         },
         setTabList(tabList: TabItem[]) {
             const newLength = tabList.length;
