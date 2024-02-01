@@ -15,13 +15,13 @@ import {
     ShareAltOutlined,
     UserOutlined
 } from '@ant-design/icons-vue';
-import { App, QRCode, Tooltip, Typography, TypographyLink, TypographyText } from 'ant-design-vue';
+import { App, QRCode, Tooltip, Space, TypographyLink, TypographyText } from 'ant-design-vue';
 import { processOSSLogo } from '@/utils/tools';
 import { CurNoteModalData, TabItem } from '@/store/read';
 import useReadStore from '@/store/read';
 import { storeToRefs } from 'pinia';
 import { useRoute, useRouter } from 'vue-router';
-import { defineComponent, h } from 'vue';
+import { defineComponent, h, onMounted, onUnmounted, watch } from 'vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -143,12 +143,7 @@ const handleOpenNoteModal = (
             visible: true,
             mode: type,
             record: record,
-            content:
-                type === 'edit'
-                    ? record?.content
-                    : type && ['create', 'createInNotes'].includes(type)
-                    ? noteModel.value
-                    : curNoteModalData.value
+            content: type === 'edit' ? record?.content : curNoteModalData.value.content
         });
     }
 };
@@ -156,7 +151,6 @@ const handleOpenNoteModal = (
 //注解弹窗点击确定
 const handleCommentModalOk = async () => {
     const { content, mode, record } = curNoteModalData.value || {};
-    console.log('noteContent', content);
 
     if (!content) {
         return Toast.info('注解内容不能为空');
@@ -266,11 +260,121 @@ const getModalTitle = () => {
     let modalTitle;
     switch (true) {
         case mode && ['create', 'createInNotes'].includes(mode):
-        // modalTitle = defineComponent({
-        //     t
-        // });
+            modalTitle = defineComponent({
+                components: {
+                    Space,
+                    CaretRightOutlined,
+                    Tooltip
+                },
+                props: {
+                    activeTab: {
+                        default: activeTab
+                    },
+                    record: {
+                        default: record
+                    }
+                },
+                template: `  <Space>
+                        <span>发表注解</span>
+                        <CaretRightOutlined />
+                        <span>
+                            <Tooltip :title="activeTab?.name">
+                                <span style="padding-right: 10px">{{activeTab?.shortName}}</span>
+                            </Tooltip>
+                            （起始行:
+                            <span style= "color: #f3aa26;padding-right: 10px ">
+                                {{record?.start_line}}
+                            </span>
+                            结束行:
+                            <span style= "color: #f3aa26">{{record?.end_line}}</span>）
+                        </span>
+                    </Space>`
+            });
+            break;
+        case mode === 'reply':
+            modalTitle = defineComponent({
+                components: {
+                    Space,
+                    CaretRightOutlined
+                },
+                props: {
+                    record: {
+                        default: record
+                    }
+                },
+                template: `  <Space>
+                        <span>回复注解</span>
+                        <CaretRightOutlined />
+                        <span>{{record?.user_info?.nickname}}</span>
+                    </Space>`
+            });
+            break;
+        case mode === 'edit':
+            modalTitle = defineComponent({
+                components: {
+                    Space,
+                    CaretRightOutlined
+                },
+                props: {
+                    record: {
+                        default: record
+                    }
+                },
+                template: `  <Space>
+                        <span>修改注解</span>
+                        <CaretRightOutlined />
+                        <span>{{record?.id}}</span>
+                    </Space>`
+            });
+            break;
+        case mode === 'childReply':
+            modalTitle = defineComponent({
+                components: {
+                    Space,
+                    CaretRightOutlined
+                },
+                props: {
+                    record: {
+                        default: record
+                    }
+                },
+                template: `  <Space>
+                  <span>回复注解</span>
+                  <CaretRightOutlined />
+                  <span>{{record?.user_info?.nickname}}</span>
+                </Space>`
+            });
+            break;
     }
+    return modalTitle;
 };
+
+const openMyPage = () => {
+    window.open('/my/personal_page');
+};
+
+onMounted(() => {
+    if (projectId) {
+        getProjectDetailData();
+        if (token) {
+            getJoinOrNot(projectId as string);
+        }
+    }
+    if (inviteId) {
+        globalStore.setInviteId(inviteId as string);
+    }
+});
+onUnmounted(() => {
+    //离开时清除数据
+    clearStoreData();
+});
+
+watch(noteModel, (newNoteValue) => {
+    setCurNoteModalData({
+        ...(curNoteModalData.value || {}),
+        content: newNoteValue
+    });
+});
 </script>
 
 <template>
@@ -309,11 +413,7 @@ const getModalTitle = () => {
                         </div>
                         <AAvatar
                             class="cp"
-                            @click="
-                                () => {
-                                    window.open('/my/personal_page');
-                                }
-                            "
+                            @click="openMyPage"
                             shape="square"
                             :size="26"
                             :src="processOSSLogo(userInfo?.avatar, true) || null"
@@ -355,13 +455,11 @@ const getModalTitle = () => {
             autoFocus
             @cancel="() => { setCurNoteModalData({ ...curNoteModalData!,
         visible: false }); }"
-            @change="(value) => { console.log('value', value);
-        setCurNoteModalData({ ...curNoteModalData!, content: value });} "
             @ok="handleCommentModalOk"
             :open="!!curNoteModalData?.visible"
-            :title="modalTitle"
+            :title="getModalTitle()"
             type="drawer"
-            :value="curNoteModalData?.content"
+            v-model="noteModel"
         />
     </div>
 </template>

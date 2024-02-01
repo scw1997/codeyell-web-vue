@@ -8,10 +8,11 @@ import { processOSSLogo } from '@/utils/tools';
 import { Layout } from 'ant-design-vue';
 import { watch, ref, toRefs, watchEffect } from 'vue';
 import { storeToRefs } from 'pinia';
+import Loading from '@/components/Loading.vue';
 
 const { Header, Content, Footer } = Layout;
 const router = useRouter();
-const { path, query, name } = toRefs(useRoute());
+const route = useRoute();
 const { userInfo } = storeToRefs(useGlobalStore());
 
 const navTabConfig = [
@@ -39,134 +40,140 @@ const handleSearch = (value: string) => {
 </script>
 
 <template>
-    <AConfigProvider :locale="zhCN" v-if="path === '/project/read'">
-        <AApp className="layout-app">
-            <RouterView />
-        </AApp>
-    </AConfigProvider>
-    <AConfigProvider :locale="zhCN" v-else>
-        <AApp>
-            <Layout class="page-layout">
-                <Header class="layout-header">
-                    <main class="layout-main">
-                        <section class="item logo-text">
-                            <span class="logo cp" @click="jumpToIndex"></span>
-                            <span class="text cp" @click="jumpToIndex">CodeYell</span>
-                        </section>
-                        <section class="item nav-bar">
-                            <PureTabs
-                                :activeKey="name"
-                                :config="navTabConfig"
-                                @change="(key) => router.push({ name: key })"
-                            />
-                        </section>
-                        <AInputSearch
-                            allowClear
-                            class="item search-bar"
-                            maxLength="50"
-                            @search="handleSearch"
-                            placeholder="搜索项目"
-                        />
-
-                        <section class="item register-login">
-                            <ASpace size="middle">
-                                <AAvatar
-                                    v-if="!!userInfo"
-                                    class="avatar cp"
-                                    @click="
-                                        () => {
-                                            router.push({ name: 'my-personal' });
-                                        }
-                                    "
-                                    :size="40"
-                                    shape="square"
-                                    :src="processOSSLogo(userInfo?.avatar, true) || null"
-                                >
-                                    <template #icon>
-                                        <UserOutlined />
-                                    </template>
-                                </AAvatar>
-
-                                <template v-else>
-                                    <span
-                                        class="cp"
-                                        @click="
-                                            () => {
-                                                router.push({
-                                                    name: 'auth-login',
-                                                    query:
-                                                        name === 'home'
-                                                            ? {}
-                                                            : {
-                                                                  redirect_path: encodeURIComponent(
-                                                                      path + query
-                                                                  )
-                                                              }
-                                                });
-                                            }
-                                        "
-                                    >
-                                        登录
-                                    </span>
-                                    <span
-                                        class="cp"
-                                        @click="
-                                            () => {
-                                                router.push({ name: 'auth-login' });
-                                            }
-                                        "
-                                    >
-                                        注册
-                                    </span>
-                                </template>
-
-                                <ASelect
-                                    defaultValue="chinese"
-                                    :options="[
-                                        {
-                                            value: 'chinese',
-                                            label: '中文'
-                                        },
-                                        {
-                                            value: 'english',
-                                            label: 'English'
-                                        }
-                                    ]"
-                                    style="width: 120px"
-                                />
-                            </ASpace>
-                        </section>
-                    </main>
-                </Header>
-                <Content class="layout-content">
-                    <main class="layout-main">
-                        <RouterView />
-                    </main>
-                    <Footer class="layout-footer">
+    <template v-if="route.name">
+        <AConfigProvider :locale="zhCN" v-if="route.name === 'project-read'">
+            <AApp className="layout-app">
+                <RouterView />
+            </AApp>
+        </AConfigProvider>
+        <AConfigProvider :locale="zhCN" v-else>
+            <AApp>
+                <Layout class="page-layout">
+                    <Header class="layout-header">
                         <main class="layout-main">
-                            <span class="logo"></span>
-                            <ASpace class="item text" size="large">
-                                <span>
-                                    邮箱：
-                                    <a href="mailto:i@lifang.biz">i@lifang.biz</a>
-                                </span>
-                                <span>@2024 西安立方网络科技有限公司</span>
-                                <span>
-                                    <a
-                                        href="https://beian.miit.gov.cn"
-                                        rel="noreferrer"
-                                        target="_blank"
+                            <section class="item logo-text">
+                                <span class="logo cp" @click="jumpToIndex"></span>
+                                <span class="text cp" @click="jumpToIndex">CodeYell</span>
+                            </section>
+                            <section class="item nav-bar">
+                                <PureTabs
+                                    :activeKey="route.name"
+                                    :config="navTabConfig"
+                                    @change="(key) => router.push({ name: key })"
+                                />
+                            </section>
+                            <AInputSearch
+                                allowClear
+                                class="item search-bar"
+                                maxLength="50"
+                                @search="handleSearch"
+                                placeholder="搜索项目"
+                            />
+
+                            <section class="item register-login">
+                                <ASpace size="middle">
+                                    <AAvatar
+                                        v-if="!!userInfo"
+                                        class="avatar cp"
+                                        @click="
+                                            () => {
+                                                router.push({ name: 'my-personal' });
+                                            }
+                                        "
+                                        :size="40"
+                                        shape="square"
+                                        :src="processOSSLogo(userInfo?.avatar, true) || null"
                                     >
-                                        陕ICP备15013641号-10
-                                    </a>
-                                </span>
-                            </ASpace>
+                                        <template #icon>
+                                            <UserOutlined />
+                                        </template>
+                                    </AAvatar>
+
+                                    <template v-else>
+                                        <span
+                                            class="cp"
+                                            @click="
+                                                () => {
+                                                    router.push({
+                                                        name: 'auth-login',
+                                                        query:
+                                                            route.name === 'home'
+                                                                ? {}
+                                                                : {
+                                                                      redirect_path:
+                                                                          encodeURIComponent(
+                                                                              route.path +
+                                                                                  route.query
+                                                                          )
+                                                                  }
+                                                    });
+                                                }
+                                            "
+                                        >
+                                            登录
+                                        </span>
+                                        <span
+                                            class="cp"
+                                            @click="
+                                                () => {
+                                                    router.push({ name: 'auth-login' });
+                                                }
+                                            "
+                                        >
+                                            注册
+                                        </span>
+                                    </template>
+
+                                    <ASelect
+                                        defaultValue="chinese"
+                                        :options="[
+                                            {
+                                                value: 'chinese',
+                                                label: '中文'
+                                            },
+                                            {
+                                                value: 'english',
+                                                label: 'English'
+                                            }
+                                        ]"
+                                        style="width: 120px"
+                                    />
+                                </ASpace>
+                            </section>
                         </main>
-                    </Footer>
-                </Content>
-            </Layout>
-        </AApp>
-    </AConfigProvider>
+                    </Header>
+                    <Content class="layout-content">
+                        <main class="layout-main">
+                            <RouterView />
+                        </main>
+                        <Footer class="layout-footer">
+                            <main class="layout-main">
+                                <span class="logo"></span>
+                                <ASpace class="item text" size="large">
+                                    <span>
+                                        邮箱：
+                                        <a href="mailto:i@lifang.biz">i@lifang.biz</a>
+                                    </span>
+                                    <span>@2024 西安立方网络科技有限公司</span>
+                                    <span>
+                                        <a
+                                            href="https://beian.miit.gov.cn"
+                                            rel="noreferrer"
+                                            target="_blank"
+                                        >
+                                            陕ICP备15013641号-10
+                                        </a>
+                                    </span>
+                                </ASpace>
+                            </main>
+                        </Footer>
+                    </Content>
+                </Layout>
+            </AApp>
+        </AConfigProvider>
+    </template>
+
+    <Loading v-else />
 </template>
 
 <style scoped lang="less">
