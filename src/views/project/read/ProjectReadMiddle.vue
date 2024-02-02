@@ -321,6 +321,7 @@ const createEditor = () => {
     //更新为当前active tab的代码内容，语言等配置，
     tempEditor.setModel(model);
     //如果含有注解数据，将指定注解行进行下划线高亮
+
     currentDecorationConfig = tempEditor.createDecorationsCollection([
         ...(noteLineData || [])
             .map(({ start_line, end_line, color }) => {
@@ -358,17 +359,17 @@ const createEditor = () => {
         ]);
     }
 
-    // const newTabList = tabList.value.slice();
-    // const activeTabIndex = tabList.value.findIndex((item) => item.key === activeTab.value?.key);
-    // if (activeTabIndex !== -1) {
-    //     newTabList[activeTabIndex] = {
-    //         ...activeTab.value!,
-    //         editor: tempEditor,
-    //         decorations: currentDecorationConfig
-    //     };
-    // }
-    //
-    // setTabList(newTabList);
+    const newTabList = tabList.value.slice();
+    const activeTabIndex = newTabList.findIndex((item) => item.key === activeTab.value?.key);
+    if (activeTabIndex !== -1) {
+        newTabList[activeTabIndex] = {
+            ...activeTab.value!,
+            editor: tempEditor,
+            decorations: currentDecorationConfig
+        };
+    }
+
+    setTabList(newTabList, true);
 };
 
 //处理editor模式下的编辑器渲染逻辑
@@ -384,8 +385,7 @@ watch(
             } else if (newTabChangeType === 'update') {
                 //更新tab，不增删tab
                 const { line, editor, noteLineData, content, language, decorations } = activeTab!;
-
-                //文件注解数据有更新（例如右侧发表了新注解或删除了注解）
+                //可能文件注解数据有更新（例如右侧发表了新注解或删除了注解）
 
                 const model = monaco.editor.createModel(content, language);
                 const newDecorationsData = [
@@ -409,9 +409,11 @@ watch(
                         })
                         .flat()
                 ] as any;
-                console.log('newDecorationsData', decorations, newDecorationsData);
-                //如果含有注解数据，更新代码行下划线高亮的数据
-                decorations?.set(newDecorationsData);
+
+                // //如果含有注解数据，更新代码行下划线高亮的数据
+
+                console.log('nnnn', decorations, newDecorationsData);
+                decorations.set(newDecorationsData);
 
                 if (line) {
                     //跳转到指定行
@@ -469,7 +471,7 @@ const handleTabActiveChange = (index: number) => {
     //先重置active状态
     const newTabList = tabList.value.map((item) => ({ ...item, active: false, line: undefined }));
     newTabList[index].active = true;
-    setTabList(newTabList);
+    setTabList(newTabList, true);
 };
 
 const closeTabItem = (tabIndex: number, e?) => {
@@ -752,7 +754,7 @@ onUnmounted(() => {
                 overflow: auto;
                 padding-right: 12px;
 
-                .editor-container {
+                :deep(.editor-container) {
                     height: 100%;
 
                     .jump-line-margin-style {

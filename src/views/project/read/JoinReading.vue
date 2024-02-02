@@ -30,7 +30,7 @@ const { getIntegralRules } = globalStore;
 const { integralRulesData, userInfo } = storeToRefs(globalStore);
 const { curDetailData: detailData } = storeToRefs(readStore);
 
-const buyPointStates = ref<StatesType['buyPointData']>();
+const buyPointStates = ref<StatesType['buyPointData'] | null>(null);
 const { id: projectId } = route.query;
 const { modal } = App.useApp();
 let payModalHandler;
@@ -111,13 +111,13 @@ const openMyIntegralPage = () => {
 
 <template>
     <div class="join-reading-root">
-        <h3>你尚未加入阅读</h3>
+        <h3 class="pt">你尚未加入阅读</h3>
         <p>未加入项目只能查看根目录下的注解，加入后可拥有全部权限</p>
         <div class="mb">
             <AButton @click="handleJoinReading(false)" type="primary">
                 花费{{ detailData?.point }}积分立即加入
             </AButton>
-            <p class="gray cp" @click="openMyIntegralPage">
+            <p class="gray cp mt" @click="openMyIntegralPage">
                 你当前拥有{{userInfo!.count_point}}积分
             </p>
         </div>
@@ -125,13 +125,15 @@ const openMyIntegralPage = () => {
         <section :class="{ 'extra-msg-root': true, hide: !buyPointStates }">
             <div class="buy-point">
                 <div class="red mb">
-                    积分不够，加入项目需要花费{{ buyPointStates.point_need }}积分，您当前积分为{{
-                        buyPointStates.point_my
+                    积分不够，加入项目需要花费{{ buyPointStates?.point_need }}积分，您当前积分为{{
+                        buyPointStates?.point_my
                     }}
                 </div>
                 <p>
                     <AButton @click="handlePay" type="default">
-                        支付{{ buyPointStates.buy_fee_yuan }}元，获得{{ buyPointStates.buy_point }}
+                        支付{{ buyPointStates?.buy_fee_yuan }}元，获得{{
+                            buyPointStates?.buy_point
+                        }}
                         积分，立即加入
                     </AButton>
                 </p>
@@ -143,7 +145,6 @@ const openMyIntegralPage = () => {
                         <li :key="index" v-for="(item, index) in integralRulesData?.increase">
                             {{ item }}
                         </li>
-                        ;
                     </template>
                     <Empty
                         v-else
@@ -157,7 +158,6 @@ const openMyIntegralPage = () => {
                         <li :key="index" v-for="(item, index) in integralRulesData?.decrease">
                             {{ item }}
                         </li>
-                        ;
                     </template>
                     <Empty
                         v-else

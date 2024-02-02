@@ -457,6 +457,7 @@ watch(noteModel, (newNoteValue) => {
         visible: false }); }"
             @ok="handleCommentModalOk"
             :open="!!curNoteModalData?.visible"
+            getContainer="#right-part"
             :title="getModalTitle()"
             type="drawer"
             v-model="noteModel"

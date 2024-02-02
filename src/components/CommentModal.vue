@@ -5,7 +5,7 @@ import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
 import '@kangc/v-md-editor/lib/theme/style/github.css';
 import { Drawer } from 'ant-design-vue';
 import { uploadFile } from '@/utils/tools';
-import { h, isVNode, Slot, toRefs, watch } from 'vue';
+import { h, isVNode, Slot, toRefs, useCssModule, watch } from 'vue';
 
 import hljs from 'highlight.js';
 
@@ -31,6 +31,8 @@ const model = defineModel({ default: '' }); //评论内容
 const props = defineProps<PropsType>();
 const emits = defineEmits<EmitsType>();
 const slots = defineSlots<{ title(): void }>();
+const style = useCssModule('module');
+console.log('sss', style);
 
 //选择本地图片后的回调
 const handleAddImg = async (events, inserImage, files: File) => {
@@ -52,7 +54,7 @@ watch(
 </script>
 
 <template>
-    <div class="comment-modal-root">
+    <div class="comment-modal-drawer">
         <Drawer
             v-if="type === 'drawer'"
             closable
@@ -61,7 +63,7 @@ watch(
             :open="open"
             :getContainer="getContainer"
             placement="bottom"
-            rootClassName="comment-modal-drawer"
+            :rootClassName="style['comment-modal-drawer']"
         >
             <VMdEditor
                 left-toolbar="undo redo clear | h bold italic strikethrough quote | ul ol table hr | link image code "
@@ -75,7 +77,7 @@ watch(
             </template>
             <template #footer>
                 <ARow justify="space-between">
-                    <span class="gray">发表无价值的注解很容易被删除或者惩罚</span>
+                    <span class="gray">发表1无价值的注解很容易被删除或者惩罚</span>
                     <ASpace size="large">
                         <AButton @click="emits('cancel')" type="default">取消</AButton>
                         <AButton @click="emits('ok')" type="primary">确定</AButton>
@@ -86,23 +88,21 @@ watch(
     </div>
 </template>
 
-<style scoped lang="less">
+<style lang="less" module="module">
 .comment-modal-drawer {
     position: absolute;
-
-    .ant-drawer-content-wrapper {
-        max-height: calc(100vh - var(--readPageHeaderHeigt));
-        overflow: auto;
+    .xx {
+        color: red;
     }
-
-    .ant-drawer-body {
-        padding: 0;
-        height: max-content;
-        max-height: 50vh;
-    }
-
-    .for-container .for-toolbar {
-        flex-wrap: wrap;
-    }
+    //:deep(.ant-drawer-content-wrapper) {
+    //    max-height: calc(100vh - var(--readPageHeaderHeigt));
+    //    overflow: auto;
+    //}
+    //
+    //:deep(.ant-drawer-body) {
+    //    padding: 0;
+    //    height: max-content;
+    //    max-height: 50vh;
+    //}
 }
 </style>

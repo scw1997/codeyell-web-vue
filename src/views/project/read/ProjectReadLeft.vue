@@ -145,7 +145,7 @@ const handleTreeNodeSelect = async (
                 active: true,
                 line: undefined
             };
-            setTabList(newTabList);
+            setTabList(newTabList, true);
         } else {
             //之前没打开过，添加到tabList中
             //获取对应文件代码内容及其含注解的行数据

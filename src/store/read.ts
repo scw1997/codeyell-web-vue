@@ -42,7 +42,7 @@ interface StoreStatesType {
     //tab选项卡数据
     tabList: TabItem[];
     //每次tabList变化时的类型，增加/删除/内部更新
-    tabChangeType: 'increase' | 'decrease' | 'update';
+    tabChangeType: 'increase' | 'decrease' | 'update' | 'keep';
     //阅读页的右侧部分的显示模式
     rightShowMode: 'sign' | 'login' | 'retrieve' | 'join' | 'note' | 'hidden';
     //阅读页的右侧部分是否自动显示
@@ -86,7 +86,7 @@ const useReadStore = defineStore('read', {
         setIsPush(isPush) {
             this.isPush = isPush;
         },
-        setTabList(tabList: TabItem[]) {
+        setTabList(tabList: TabItem[], isKeep = false) {
             const newLength = tabList.length;
             const oldLength = this.tabList.length;
             let changeType: typeof this.tabChangeType;
@@ -101,7 +101,9 @@ const useReadStore = defineStore('read', {
                     changeType = 'update';
                     break;
             }
-            this.tabChangeType = changeType;
+
+            this.tabChangeType = isKeep ? 'keep' : changeType;
+
             this.tabList = tabList;
         },
         setRightShowMode(mode: typeof this.rightShowMode) {
