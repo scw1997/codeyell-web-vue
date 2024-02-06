@@ -1,16 +1,12 @@
-<script setup lang="ts">
-import { defineComponent, ref } from 'vue';
-import CommentModal from '@/components/CommentModal.vue';
-
-const text = ref('1');
-
-interface Type {
-    xxx(): void;
-}
-</script>
-
+<script setup lang="ts"></script>
 <template>
-    <CommentModal v-model="text" type="drawer" :open="true" />
+    <div class="about">
+        <h1>This is an about 22rtyrt3p微软age1134534534fgdfreteer 34</h1>
+    </div>
 </template>
 
-<style scoped lang="less"></style>
+<style module>
+.about {
+    color: red;
+}
+</style>

@@ -16,8 +16,8 @@ import {
     MessageOutlined,
     UserOutlined
 } from '@ant-design/icons-vue';
-import { MenuProps, Menu } from 'ant-design-vue';
-import { ref, render, toRefs, watch } from 'vue';
+import { MenuProps, Menu, Space, Textarea, Modal } from 'ant-design-vue';
+import { defineComponent, h, ref, render, toRefs, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import useReadStore from '@/store/read';
 import Toast from '@/utils/Toast';
@@ -27,18 +27,20 @@ import { MenuClickEventHandler } from 'ant-design-vue/es/menu/src/interface';
 interface PropsType {
     data: Record<string, any>; //当前评论相关数据
     type?: 'detail' | 'read';
+    refresh?: (type: 'delete') => void; //触发刷新列表，点赞相关/删除/举报等操作成功后调用
 }
 
 const props = defineProps<PropsType>();
 const emits = defineEmits<{
     reply: [record: PropsType['data']]; //点击回复
     edit: [record: PropsType['data']]; //点击修改
-    refresh: [type: 'delete']; //触发刷新列表，点赞相关/删除/举报等操作成功后调用
 }>();
 
 const router = useRouter();
 const { isJoined, setRightShowMode } = useReadStore();
 const { userInfo, token } = storeToRefs(useGlobalStore());
+
+let complaintValue = ref<string>('');
 
 const dropdownItems = ref<MenuProps['items']>([]);
 const likeStates = ref<{ count_liked: number; count_unliked: number; is_liked: number | null }>({
@@ -47,28 +49,63 @@ const likeStates = ref<{ count_liked: number; count_unliked: number; is_liked: n
     is_liked: null
 });
 
-watch([userInfo, () => props.data], ([newUserInfo, newPropsData]) => {
-    const newItems = [
-        {
-            key: '2',
-            label: '修改',
-            visible: newUserInfo && newPropsData?.user_id === newUserInfo?.id //仅作者可见
-        },
-        {
-            key: '3',
+watch(
+    [userInfo, () => props.data],
+    ([newUserInfo, newPropsData]) => {
+        const newItems = [
+            {
+                key: 'edit',
+                label: '修改',
+                visible: newUserInfo && newPropsData?.user_id === newUserInfo?.id //仅作者可见
+            },
+            {
+                key: 'delete',
 
-            label: '删除',
-            visible: newUserInfo && newPropsData?.user_id === newUserInfo?.id //仅作者可见
-        },
-        {
-            key: '4',
-            label: '举报',
-            visible: newUserInfo
-        }
-    ];
+                label: '删除',
+                visible: newUserInfo && newPropsData?.user_id === newUserInfo?.id //仅作者可见
+            },
+            {
+                key: 'complaint',
+                label: '举报',
+                visible: newUserInfo
+            }
+        ];
 
-    dropdownItems.value = newItems.filter((item) => !!item.visible);
-});
+        dropdownItems.value = newItems.filter((item) => !!item.visible);
+    },
+    { immediate: true }
+);
+
+//举报评论/注解
+const handleComplaintComment = async () => {
+    const { id } = props.data;
+    const reason = complaintValue.value;
+    if (!reason) {
+        const msg = '举报原因不可为空';
+        Toast.info(msg);
+        return Promise.reject(msg);
+    }
+    Toast.loading(true);
+    await http.post(api.global.complaintComment, {
+        content_id: id, //内容id，content_type=1时，是评论的id, content_type=2时，是注解的id
+        content_type: props.type === 'detail' ? 1 : 2, //内容类型，1 项目评论 2代码注解
+        reason //原因说明，可选
+    });
+    Toast.success('举报成功');
+};
+
+//删除评论/注解
+const handleDelComment = async () => {
+    console.log('dddd', props.data);
+    const { project_id, id } = props.data;
+    Toast.loading(true);
+    await http.post(props.type === 'detail' ? api.comment.deleteComment : api.code.deleteNote, {
+        project_id,
+        comment_id: id
+    });
+    Toast.success('删除成功');
+    props.refresh('delete');
+};
 
 //跳转到指定用户公开页
 const jumpToPublicUserPage = (userid: number) => {
@@ -90,9 +127,52 @@ const jumpToPublicUserPage = (userid: number) => {
         }
     }
 };
+const openComplaintModal = () => {
+    const modalTitle = /*#__PURE__*/ defineComponent({
+        components: {
+            ASpace: Space
+        },
+        props: ['type'],
+        template:
+            '<ASpace>  <span v-if="type">{{type === "detail" ? "举报评论" : "举报注解"}}</span></ASpace>'
+    });
 
+    const content = /*#__PURE__*/ defineComponent({
+        components: {
+            ATextarea: Textarea
+        },
+        methods: {
+            handleChange(e) {
+                complaintValue.value = e.target.value;
+            }
+        },
+        template:
+            '<div><ATextarea :maxlength="300" placeholder="填写举报原因" @change="handleChange"/></div>'
+    });
+
+    Modal.confirm({
+        title: h(modalTitle, { type: props.type }),
+        class: 'complaint-modal',
+        width: 600,
+        maskClosable: true,
+        onOk: handleComplaintComment,
+        footer: null,
+        content: h(content, null)
+    });
+};
 const handleMenuClick: MenuClickEventHandler = ({ item, keyPath, key }) => {
-    console.log('item', item);
+    console.log('xxxx', item, key, keyPath);
+    switch (key) {
+        case 'edit':
+            emits('edit', props.data);
+            break;
+        case 'delete':
+            handleDelComment();
+            break;
+        case 'complaint':
+            openComplaintModal();
+            break;
+    }
 };
 
 //赞成/反对（注解模式）
@@ -131,13 +211,13 @@ const handleAgreeOrDisagree = async (isLike: boolean) => {
 
 <template>
     <div class="comment-item-component-root">
-        <ARow class="top" gutter="{{15}}" justify="space-between">
+        <ARow class="top" :gutter="15" justify="space-between">
             <ACol flex="none">
                 <AAvatar
                     class="cp"
                     @click="jumpToPublicUserPage(data?.user_info?.id)"
                     shape="square"
-                    size="{{30}}"
+                    :size="30"
                     :src="processOSSLogo(data?.user_info?.avatar, true) || null"
                 >
                     <template #icon><UserOutlined /></template>
@@ -168,7 +248,6 @@ const handleAgreeOrDisagree = async (isLike: boolean) => {
                     </span>
                 </ADropdown>
             </ACol>
-            )}
         </ARow>
 
         <div class="main">
@@ -213,7 +292,6 @@ const handleAgreeOrDisagree = async (isLike: boolean) => {
                                 class="cp"
                                 @click="() => handleAgreeOrDisagree(false)"
                             />
-                            )} &nbsp;
                             <span class="amount">{{ likeStates?.count_unliked || 0 }}</span>
                         </span>
                     </template>

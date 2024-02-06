@@ -25,6 +25,7 @@ import { MenuClickEventHandler } from 'ant-design-vue/es/menu/src/interface';
 interface PropsType {
     type?: 'user' | 'index' | 'detail' | 'read'; //展示样式类型，用户资料页/首页/项目详情页/项目阅读页
     data: Record<string, any>; //数据源
+    refresh?: (type: 'delete') => void; //触发刷新列表，点赞相关/删除/举报等操作成功后调用
 }
 const { userInfo, token } = storeToRefs(useGlobalStore());
 const readStore = useReadStore();
@@ -35,7 +36,6 @@ const props = defineProps<PropsType>();
 const emits = defineEmits<{
     reply: [record: PropsType['data']]; //点击回复
     edit: [record: PropsType['data']]; //点击修改
-    refresh: [type: 'delete']; //触发刷新列表，点赞相关/删除/举报等操作成功后调用
 }>();
 //
 const router = useRouter();
@@ -52,28 +52,32 @@ watch(props.data, (newValue) => {
     likeStates.value = { count_liked, count_unliked, is_liked };
 });
 
-watch([userInfo, () => props.data], ([newUserInfo, newPropsData]) => {
-    const newItems = [
-        {
-            key: 'edit',
-            label: '修改',
-            visible: newUserInfo && newPropsData?.user_id === newUserInfo?.id //仅作者可见
-        },
-        {
-            key: 'delete',
+watch(
+    [userInfo, () => props.data],
+    ([newUserInfo, newPropsData]) => {
+        const newItems = [
+            {
+                key: 'edit',
+                label: '修改',
+                visible: newUserInfo && newPropsData?.user_id === newUserInfo?.id //仅作者可见
+            },
+            {
+                key: 'delete',
 
-            label: '删除',
-            visible: newUserInfo && newPropsData?.user_id === newUserInfo?.id //仅作者可见
-        },
-        {
-            key: 'complaint',
-            label: '举报',
-            visible: newUserInfo
-        }
-    ];
+                label: '删除',
+                visible: newUserInfo && newPropsData?.user_id === newUserInfo?.id //仅作者可见
+            },
+            {
+                key: 'complaint',
+                label: '举报',
+                visible: newUserInfo
+            }
+        ];
 
-    dropdownItems.value = newItems.filter((item) => !!item.visible);
-});
+        dropdownItems.value = newItems.filter((item) => !!item.visible);
+    },
+    { immediate: true }
+);
 
 //跳转到项目阅读页
 const jumpToProjectReadPage = (id: number) => {
@@ -107,7 +111,7 @@ const jumpToProjectDetailPage = (id: number) => {
 
 //举报评论/注解
 const handleComplaintComment = async () => {
-    const { commentId } = props.data;
+    const { id } = props.data;
     const reason = complaintValue.value;
     if (!reason) {
         const msg = '举报原因不可为空';
@@ -116,7 +120,7 @@ const handleComplaintComment = async () => {
     }
     Toast.loading(true);
     await http.post(api.global.complaintComment, {
-        content_id: commentId, //内容id，content_type=1时，是评论的id, content_type=2时，是注解的id
+        content_id: id, //内容id，content_type=1时，是评论的id, content_type=2时，是注解的id
         content_type: props.type === 'detail' ? 1 : 2, //内容类型，1 项目评论 2代码注解
         reason //原因说明，可选
     });
@@ -125,19 +129,20 @@ const handleComplaintComment = async () => {
 
 //删除评论/注解
 const handleDelComment = async () => {
-    const { project_id, commentId } = props.data;
+    console.log('dddd', props.data);
+    const { project_id, id } = props.data;
     Toast.loading(true);
     await http.post(props.type === 'detail' ? api.comment.deleteComment : api.code.deleteNote, {
         project_id,
-        comment_id: commentId
+        comment_id: id
     });
     Toast.success('删除成功');
-    emits('refresh', 'delete');
+    props.refresh('delete');
 };
 
 //赞成/反对（注解模式）
 const handleAgreeOrDisagree = async (isLike: boolean) => {
-    const { project_id, commentId, user_id } = props.data;
+    const { project_id, id, user_id } = props.data;
     if (!token || !isJoined) {
         setRightShowMode(!token ? 'login' : 'join');
         return;
@@ -160,7 +165,7 @@ const handleAgreeOrDisagree = async (isLike: boolean) => {
     Toast.loading(true);
     const data = await http.post(api.code.agreeOrDisagreeNote, {
         project_id,
-        comment_id: commentId,
+        comment_id: id,
         is_like: isLikeParam //1点赞2反对3中立
     });
     Toast.success(msg);

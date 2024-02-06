@@ -63,7 +63,7 @@ watch(
             :open="open"
             :getContainer="getContainer"
             placement="bottom"
-            :rootClassName="style['comment-modal-drawer']"
+            :rootClassName="style.commentModalDrawer"
         >
             <VMdEditor
                 left-toolbar="undo redo clear | h bold italic strikethrough quote | ul ol table hr | link image code "
@@ -88,21 +88,8 @@ watch(
     </div>
 </template>
 
-<style lang="less" module="module">
-.comment-modal-drawer {
+<style lang="css" module="module">
+.commentModalDrawer {
     position: absolute;
-    .xx {
-        color: red;
-    }
-    //:deep(.ant-drawer-content-wrapper) {
-    //    max-height: calc(100vh - var(--readPageHeaderHeigt));
-    //    overflow: auto;
-    //}
-    //
-    //:deep(.ant-drawer-body) {
-    //    padding: 0;
-    //    height: max-content;
-    //    max-height: 50vh;
-    //}
 }
 </style>

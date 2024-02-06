@@ -378,7 +378,7 @@ watch(
     ([newMode, newTabChangeType, newTabList]) => {
         if (newMode === 'editor' && newTabList.length > 0) {
             const activeTab = newTabList?.find((item) => item.active);
-
+            console.log('activeTab', activeTab, newTabList);
             if (newTabChangeType === 'increase') {
                 //只有tab增加时即打开新tab时才重新初始化编辑器渲染
                 createEditor();
@@ -412,9 +412,10 @@ watch(
 
                 // //如果含有注解数据，更新代码行下划线高亮的数据
 
-                console.log('nnnn', decorations, newDecorationsData);
-                decorations.set(newDecorationsData);
-
+                console.log('nnnn', decorations.set);
+                // editor.createDecorationsCollection(newDecorationsData);
+                activeTab.editor.createDecorationsCollection(newDecorationsData);
+                //
                 if (line) {
                     //跳转到指定行
                     editor?.setScrollTop(getScrollHeight(line, editor));
@@ -429,6 +430,7 @@ watch(
                         }
                     ]);
                 }
+                console.log('end');
             }
         }
     },

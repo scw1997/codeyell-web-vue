@@ -21,7 +21,17 @@ import { CurNoteModalData, TabItem } from '@/store/read';
 import useReadStore from '@/store/read';
 import { storeToRefs } from 'pinia';
 import { useRoute, useRouter } from 'vue-router';
-import { defineComponent, h, onMounted, onUnmounted, watch } from 'vue';
+import {
+    Component,
+    defineComponent,
+    h,
+    markRaw,
+    onMounted,
+    onUnmounted,
+    ref,
+    shallowRef,
+    watch
+} from 'vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -57,9 +67,11 @@ const { modal } = App.useApp();
 
 const noteModel = defineModel({ default: '' });
 
+const modalTitle = shallowRef<Component>(null);
+
 //阅读页点击返回
 const goBack = () => {
-    if (!isPush) {
+    if (!isPush.value) {
         //不是从项目详情跳转过来的情况
         router.replace({ name: 'project-detail', query: { id: projectId } });
     } else {
@@ -115,6 +127,8 @@ const handleOpenNoteModal = (
     type: CurNoteModalData['mode'],
     record?: CurNoteModalData['record']
 ) => {
+    console.log('type', type);
+    console.log('record', record);
     //中间区域右击发表注解/右边区域点击发表注解
     if (type && ['create', 'createInNotes'].includes(type)) {
         setCurNoteFileData({
@@ -139,12 +153,14 @@ const handleOpenNoteModal = (
         setRightShowMode(!token.value ? 'login' : 'join');
     } else {
         setRightShowMode('note');
+
         setCurNoteModalData({
             visible: true,
             mode: type,
             record: record,
             content: type === 'edit' ? record?.content : curNoteModalData.value.content
         });
+        noteModel.value = type === 'edit' ? record?.content : curNoteModalData.value.content;
     }
 };
 
@@ -232,17 +248,18 @@ const handleCommentModalOk = async () => {
             (item) => item.key === activeTab.value!.name
         );
         const newTabList = tabList.value.slice();
+        console.log('newTabList', newTabList, matchTabItemIndex);
         if (matchTabItemIndex !== -1) {
             //更新当前tab的noteLineData字段
             newTabList[matchTabItemIndex] = {
-                ...tabList[matchTabItemIndex],
+                ...newTabList[matchTabItemIndex],
                 noteLineData
             };
             setTabList(newTabList);
         }
     }
     //刷新注解列表数据
-
+    console.log('noteListPageRef', noteListPageRef.value);
     const { getData, pageNo } = noteListPageRef.value!;
     getData(pageNo);
 };
@@ -255,12 +272,12 @@ const getProjectDetailData = async () => {
     setCurDetailData(data);
 };
 
-const getModalTitle = () => {
-    const { mode, content, record } = curNoteModalData.value || {};
-    let modalTitle;
+watch(curNoteModalData, (newNoteModalData) => {
+    const { mode, content, record } = newNoteModalData || {};
+    let newModalTitle;
     switch (true) {
         case mode && ['create', 'createInNotes'].includes(mode):
-            modalTitle = defineComponent({
+            newModalTitle = defineComponent({
                 components: {
                     Space,
                     CaretRightOutlined,
@@ -268,7 +285,7 @@ const getModalTitle = () => {
                 },
                 props: {
                     activeTab: {
-                        default: activeTab
+                        default: activeTab.value
                     },
                     record: {
                         default: record
@@ -292,7 +309,7 @@ const getModalTitle = () => {
             });
             break;
         case mode === 'reply':
-            modalTitle = defineComponent({
+            newModalTitle = defineComponent({
                 components: {
                     Space,
                     CaretRightOutlined
@@ -310,7 +327,7 @@ const getModalTitle = () => {
             });
             break;
         case mode === 'edit':
-            modalTitle = defineComponent({
+            newModalTitle = defineComponent({
                 components: {
                     Space,
                     CaretRightOutlined
@@ -328,7 +345,7 @@ const getModalTitle = () => {
             });
             break;
         case mode === 'childReply':
-            modalTitle = defineComponent({
+            newModalTitle = defineComponent({
                 components: {
                     Space,
                     CaretRightOutlined
@@ -346,8 +363,8 @@ const getModalTitle = () => {
             });
             break;
     }
-    return modalTitle;
-};
+    modalTitle.value = markRaw(newModalTitle);
+});
 
 const openMyPage = () => {
     window.open('/my/personal_page');
@@ -453,15 +470,19 @@ watch(noteModel, (newNoteValue) => {
 
         <CommentModal
             autoFocus
-            @cancel="() => { setCurNoteModalData({ ...curNoteModalData!,
-        visible: false }); }"
+            @cancel="
+                () => {
+                    setCurNoteModalData({ ...curNoteModalData!, visible: false });
+                }
+            "
             @ok="handleCommentModalOk"
             :open="!!curNoteModalData?.visible"
             getContainer="#right-part"
-            :title="getModalTitle()"
             type="drawer"
             v-model="noteModel"
-        />
+        >
+            <template #title><component v-if="modalTitle" :is="modalTitle" /></template>
+        </CommentModal>
     </div>
 </template>
 

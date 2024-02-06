@@ -151,19 +151,17 @@ watch(
     .left-card {
         flex: 4;
         padding-right: 20px;
-        :deep {
-            .tab-card {
-                .ant-card-body {
-                    padding-bottom: 0;
-                }
+        :deep(.tab-card) {
+            .ant-card-body {
+                padding-bottom: 0;
+            }
 
-                .pure-tabs {
-                    justify-content: flex-start;
+            .pure-tabs {
+                justify-content: flex-start;
 
-                    .tab-item {
-                        height: 50px;
-                        margin-right: 50px;
-                    }
+                .tab-item {
+                    height: 50px;
+                    margin-right: 50px;
                 }
             }
         }

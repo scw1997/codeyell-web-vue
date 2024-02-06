@@ -67,6 +67,11 @@ watch([curNoteFileData, rightShowMode], ([newCurNoteFileData, newRightShowMode])
         getNoteListData();
     }
 });
+
+const handleNoteListChange = (data) => {
+    console.log('data', data);
+    states.value.noteListData = data;
+};
 </script>
 
 <template>
@@ -99,9 +104,11 @@ watch([curNoteFileData, rightShowMode], ([newCurNoteFileData, newRightShowMode])
                         <Switch
                             :checked="rightAutoVisible"
                             checkedChildren="自动显示"
-                            @change="(value) => {
-        setRightAutoVisible(value as boolean);
-        }"
+                            @change="
+                                (value) => {
+                                    setRightAutoVisible(value as boolean);
+                                }
+                            "
                             unCheckedChildren="手动显示"
                         />
                     </ATooltip>
@@ -124,8 +131,8 @@ watch([curNoteFileData, rightShowMode], ([newCurNoteFileData, newRightShowMode])
                         <NoteItem
                             class="mb"
                             :data="noteItem"
-                            @edit="openNoteModal('edit')"
-                            @reply="openNoteModal('reply')"
+                            @edit="(record) => openNoteModal('edit', record)"
+                            @reply="(record) => openNoteModal('reply', record)"
                             :refresh="handleRefresh"
                             type="read"
                         />
@@ -140,8 +147,8 @@ watch([curNoteFileData, rightShowMode], ([newCurNoteFileData, newRightShowMode])
                                 }"
                                 :data="childrenItem"
                                 :key="index"
-                                @edit="openNoteModal('edit')"
-                                @reply="openNoteModal('childReply')"
+                                @edit="(record) => openNoteModal('edit', record)"
+                                @reply="(record) => openNoteModal('childReply', record)"
                                 :refresh="handleRefresh"
                                 type="read"
                             />
@@ -158,7 +165,7 @@ watch([curNoteFileData, rightShowMode], ([newCurNoteFileData, newRightShowMode])
                         class="mt"
                         @change="
                             (data) => {
-                                states.noteListData = data;
+                                handleNoteListChange(data);
                             }
                         "
                         :params="states.noteParams"

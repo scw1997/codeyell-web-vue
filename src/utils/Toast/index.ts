@@ -15,7 +15,7 @@ message.config({
 });
 
 const Toast: ToastType = {
-    success: (content = '操作成功', duration) => {
+    success: (content = '操作成功', duration = 3) => {
         message.destroy();
         return new Promise((resolve, reject) => {
             message.success({
@@ -25,7 +25,7 @@ const Toast: ToastType = {
             });
         });
     },
-    fail: (content = '操作失败', duration) => {
+    fail: (content = '操作失败', duration = 3) => {
         message.destroy();
         return new Promise((resolve, reject) => {
             message.error({
@@ -35,7 +35,7 @@ const Toast: ToastType = {
             });
         });
     },
-    info: (content, duration) => {
+    info: (content, duration = 3) => {
         message.destroy();
         return new Promise((resolve, reject) => {
             message.info({
