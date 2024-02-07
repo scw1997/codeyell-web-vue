@@ -129,7 +129,6 @@ const handleComplaintComment = async () => {
 
 //删除评论/注解
 const handleDelComment = async () => {
-    console.log('dddd', props.data);
     const { project_id, id } = props.data;
     Toast.loading(true);
     await http.post(props.type === 'detail' ? api.comment.deleteComment : api.code.deleteNote, {
@@ -210,7 +209,6 @@ const openComplaintModal = () => {
 };
 
 const handleMenuClick: MenuClickEventHandler = ({ item, key, keyPath }) => {
-    console.log('xxxx', item, key, keyPath);
     switch (key) {
         case 'edit':
             emits('edit', props.data);

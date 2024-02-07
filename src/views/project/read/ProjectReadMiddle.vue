@@ -221,9 +221,8 @@ const createEditor = () => {
     //监听点击事件
     tempEditor.onMouseUp(
         debounce((e: monaco.editor.IEditorMouseEvent) => {
-            console.log('clickEvent', e);
             const selection = tempEditor.getSelection();
-            console.log('selection', selection);
+
             //是否选中了文字
             const hasSelectText =
                 selection &&
@@ -349,14 +348,14 @@ const createEditor = () => {
         tempEditor.setScrollTop(getScrollHeight(line, tempEditor));
         tempEditor.setPosition({ lineNumber: line, column: 1 });
         //添加侧边行高亮标记
-        tempEditor.createDecorationsCollection([
-            {
-                range: new monaco.Range(line, 0, line, 1),
-                options: {
-                    glyphMarginClassName: 'jump-line-margin-style'
-                }
-            }
-        ]);
+        // currentDecorationConfig.set([
+        //     {
+        //         range: new monaco.Range(line, 0, line, 1),
+        //         options: {
+        //             glyphMarginClassName: 'jump-line-margin-style'
+        //         }
+        //     }
+        // ]);
     }
 
     const newTabList = tabList.value.slice();
@@ -372,22 +371,51 @@ const createEditor = () => {
     setTabList(newTabList, true);
 };
 
+//获取从顶部滚动到使指定行显示在编辑器中间所需要的垂直距离
+const getScrollHeight = (targetLineNum: number, editor: TabItem['editor']) => {
+    const containerHeight = editor!.getContainerDomNode().clientHeight;
+    const positionHeight = editor!.getTopForPosition(targetLineNum, 0) + 0.5 * containerHeight;
+    const distance = positionHeight - containerHeight;
+    return distance < 0 ? 0 : distance;
+};
+
 //处理editor模式下的编辑器渲染逻辑
 watch(
     [() => states.value.mode, tabChangeType, tabList],
     ([newMode, newTabChangeType, newTabList]) => {
         if (newMode === 'editor' && newTabList.length > 0) {
             const activeTab = newTabList?.find((item) => item.active);
-            console.log('activeTab', activeTab, newTabList);
             if (newTabChangeType === 'increase') {
                 //只有tab增加时即打开新tab时才重新初始化编辑器渲染
                 createEditor();
             } else if (newTabChangeType === 'update') {
                 //更新tab，不增删tab
-                const { line, editor, noteLineData, content, language, decorations } = activeTab!;
+                const { line, editor, noteLineData, content, language, decorations, fileId } =
+                    activeTab!;
                 //可能文件注解数据有更新（例如右侧发表了新注解或删除了注解）
 
                 const model = monaco.editor.createModel(content, language);
+                document.getElementById(`${fileId}-monaco-ref`).innerHTML = '';
+                const tempEditor = monaco.editor.create(
+                    document.getElementById(`${fileId}-monaco-ref`)!,
+                    {
+                        value: content || '',
+                        language: language || 'javascript',
+                        lineNumbers: 'on', //是否显示行号
+                        scrollBeyondLastLine: false, //控制编辑器是否可以滚动到最后一行之后
+                        readOnly: true,
+                        glyphMargin: true,
+                        automaticLayout: true, //宽高自适应
+                        scrollbar: {
+                            useShadows: false,
+                            verticalHasArrows: true,
+                            horizontalHasArrows: true,
+                            vertical: 'auto',
+                            horizontal: 'auto',
+                            arrowSize: 30
+                        }
+                    }
+                );
                 const newDecorationsData = [
                     ...(noteLineData || [])
                         .map(({ start_line, end_line, color }) => {
@@ -412,25 +440,22 @@ watch(
 
                 // //如果含有注解数据，更新代码行下划线高亮的数据
 
-                console.log('nnnn', decorations.set);
-                // editor.createDecorationsCollection(newDecorationsData);
-                activeTab.editor.createDecorationsCollection(newDecorationsData);
+                tempEditor.createDecorationsCollection(newDecorationsData);
                 //
-                if (line) {
-                    //跳转到指定行
-                    editor?.setScrollTop(getScrollHeight(line, editor));
-                    editor?.setPosition({ lineNumber: line, column: 1 });
-                    //添加侧边行高亮标记
-                    editor?.createDecorationsCollection([
-                        {
-                            range: new monaco.Range(line, 0, line, 1),
-                            options: {
-                                glyphMarginClassName: 'jump-line-margin-style'
-                            }
-                        }
-                    ]);
-                }
-                console.log('end');
+                // if (line) {
+                //     //跳转到指定行
+                //     editor?.setScrollTop(getScrollHeight(line, editor));
+                //     editor?.setPosition({ lineNumber: line, column: 1 });
+                //     //添加侧边行高亮标记
+                //     // decorations.set([
+                //     //     {
+                //     //         range: new monaco.Range(line, 0, line, 1),
+                //     //         options: {
+                //     //             glyphMarginClassName: 'jump-line-margin-style'
+                //     //         }
+                //     //     }
+                //     // ]);
+                // }
             }
         }
     },
@@ -455,17 +480,8 @@ watch(tabList, (newTabList) => {
     }
 });
 
-//获取从顶部滚动到使指定行显示在编辑器中间所需要的垂直距离
-const getScrollHeight = (targetLineNum: number, editor: TabItem['editor']) => {
-    const containerHeight = editor!.getContainerDomNode().clientHeight;
-    const positionHeight = editor!.getTopForPosition(targetLineNum, 0) + 0.5 * containerHeight;
-    const distance = positionHeight - containerHeight;
-    return distance < 0 ? 0 : distance;
-};
-
 //tab item鼠标右击事件
 const handleTabMouseRightClick = (index: number, e) => {
-    console.log('e', e);
     states.value.tabMenuOpenIndex = index;
 };
 //tab的active 切换
@@ -477,16 +493,13 @@ const handleTabActiveChange = (index: number) => {
 };
 
 const closeTabItem = (tabIndex: number, e?) => {
-    if (e) {
-        e.stopPropagation();
-    }
-
     const newTabList = tabList.value.slice();
     newTabList.splice(tabIndex, 1);
 
     if (newTabList.length == 0) {
         //如果关闭的是最后一个
         setTabList([]);
+        states.value.tabMenuOpenIndex = null;
         return;
     } else if (tabIndex === tabList.value.findIndex((item) => item.active)) {
         //如果关闭的是当前的active tab，则使左侧tab active
@@ -676,7 +689,7 @@ onUnmounted(() => {
                                     {{ shortName }}
                                 </ATooltip>
                                 <CloseOutlined
-                                    @click="closeTabItem(index)"
+                                    @click.stop="closeTabItem(index)"
                                     :size="10"
                                     style="font-size: 12px; padding-left: 4px"
                                 />

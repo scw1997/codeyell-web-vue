@@ -129,7 +129,6 @@ const handleTreeNodeSelect = async (
     e: { node: TreeDataNode; selected: boolean }
 ) => {
     const { node, selected } = e;
-    console.log('node', node);
     const { isLeaf, key, shortPath, language, path, fileId } = node;
     if (selected && isLeaf === true) {
         //选中某个文件
@@ -194,7 +193,6 @@ const handleResultItemSelect = async (filePath: string, lineNumber: number, file
             active: true,
             line: lineNumber
         };
-        console.log('newTaaaa', newTabList);
         setTabList(newTabList);
     } else {
         //获取代码内容

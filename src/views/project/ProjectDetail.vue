@@ -278,8 +278,6 @@ watch(
                         :isReady="states.isCommentReady"
                         @change="
                             (data) => {
-                                console.log('data', data);
-
                                 states.commentList = data;
                             }
                         "

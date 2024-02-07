@@ -69,7 +69,6 @@ watch([curNoteFileData, rightShowMode], ([newCurNoteFileData, newRightShowMode])
 });
 
 const handleNoteListChange = (data) => {
-    console.log('data', data);
     states.value.noteListData = data;
 };
 </script>

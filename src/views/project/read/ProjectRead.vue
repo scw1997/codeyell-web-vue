@@ -248,7 +248,7 @@ const handleCommentModalOk = async () => {
             (item) => item.key === activeTab.value!.name
         );
         const newTabList = tabList.value.slice();
-        console.log('newTabList', newTabList, matchTabItemIndex);
+
         if (matchTabItemIndex !== -1) {
             //更新当前tab的noteLineData字段
             newTabList[matchTabItemIndex] = {
@@ -259,7 +259,6 @@ const handleCommentModalOk = async () => {
         }
     }
     //刷新注解列表数据
-    console.log('noteListPageRef', noteListPageRef.value);
     const { getData, pageNo } = noteListPageRef.value!;
     getData(pageNo);
 };

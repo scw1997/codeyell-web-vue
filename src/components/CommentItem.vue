@@ -16,7 +16,7 @@ import {
     MessageOutlined,
     UserOutlined
 } from '@ant-design/icons-vue';
-import { MenuProps, Menu, Space, Textarea, Modal } from 'ant-design-vue';
+import { MenuProps, Menu, Space, Textarea, Modal, App } from 'ant-design-vue';
 import { defineComponent, h, ref, render, toRefs, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import useReadStore from '@/store/read';
@@ -39,7 +39,7 @@ const emits = defineEmits<{
 const router = useRouter();
 const { isJoined, setRightShowMode } = useReadStore();
 const { userInfo, token } = storeToRefs(useGlobalStore());
-
+const { modal } = App.useApp();
 let complaintValue = ref<string>('');
 
 const dropdownItems = ref<MenuProps['items']>([]);
@@ -96,7 +96,6 @@ const handleComplaintComment = async () => {
 
 //删除评论/注解
 const handleDelComment = async () => {
-    console.log('dddd', props.data);
     const { project_id, id } = props.data;
     Toast.loading(true);
     await http.post(props.type === 'detail' ? api.comment.deleteComment : api.code.deleteNote, {
@@ -147,10 +146,10 @@ const openComplaintModal = () => {
             }
         },
         template:
-            '<div><ATextarea :maxlength="300" placeholder="填写举报原因" @change="handleChange"/></div>'
+            '<div><ATextarea :maxlength="300" placeholder="填写举报原因" @change="handleChange" :rows="5"/></div>'
     });
 
-    Modal.confirm({
+    modal.confirm({
         title: h(modalTitle, { type: props.type }),
         class: 'complaint-modal',
         width: 600,
@@ -161,7 +160,6 @@ const openComplaintModal = () => {
     });
 };
 const handleMenuClick: MenuClickEventHandler = ({ item, keyPath, key }) => {
-    console.log('xxxx', item, key, keyPath);
     switch (key) {
         case 'edit':
             emits('edit', props.data);

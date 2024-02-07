@@ -127,7 +127,6 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    console.log('to', to);
     const { name, path, fullPath } = to;
     const readStore = useReadStore();
     const { token } = toRefs(useGlobalStore());

@@ -32,7 +32,6 @@ const props = defineProps<PropsType>();
 const emits = defineEmits<EmitsType>();
 const slots = defineSlots<{ title(): void }>();
 const style = useCssModule('module');
-console.log('sss', style);
 
 //选择本地图片后的回调
 const handleAddImg = async (events, inserImage, files: File) => {
@@ -77,7 +76,7 @@ watch(
             </template>
             <template #footer>
                 <ARow justify="space-between">
-                    <span class="gray">发表1无价值的注解很容易被删除或者惩罚</span>
+                    <span class="gray">发表无价值的注解很容易被删除或者惩罚</span>
                     <ASpace size="large">
                         <AButton @click="emits('cancel')" type="default">取消</AButton>
                         <AButton @click="emits('ok')" type="primary">确定</AButton>
