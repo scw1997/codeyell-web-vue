@@ -2,7 +2,7 @@
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
 import { ref, toRefs, watch, h, defineComponent, reactive } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter } from 'secywo-template-cli';
 import { dateFormat, processOSSLogo } from '@/utils/tools';
 import { ParsedContent, Logo } from '@/components';
 import { Modal, Space, Textarea } from 'ant-design-vue';

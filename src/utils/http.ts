@@ -2,7 +2,6 @@ import Toast from '@/utils/Toast';
 import { notification } from 'ant-design-vue';
 import Axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import useGlobalStore from '@/store/global';
-import router from '@/router';
 
 const CancelToken = Axios.CancelToken;
 
@@ -69,7 +68,7 @@ instance.interceptors.response.use(
                     return;
                 }
                 isNotifying = true;
-                router.push({ name: 'auth-login' });
+                Navigation.push({ name: 'auth-login' });
                 return Promise.reject(new AxiosError('登录状态已失效，请重新登录', '401'));
             case 403:
                 //登录失败（例如非管理员）
@@ -117,7 +116,7 @@ const handleRes = async (
                     isNotifying = false;
                 });
 
-                router.push({ name: 'auth-login' });
+                Navigation.push({ name: 'auth-login' });
 
                 return;
             default:

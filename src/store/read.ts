@@ -5,7 +5,7 @@ import api from '@/api';
 import monaco from 'monaco-editor';
 import { getContentFromBase64 } from '@/utils/tools';
 import { TreeDataNode } from 'ant-design-vue/es/vc-tree-select/interface';
-import { languageRules } from '@/views/project/read/config';
+import { languageRules } from '@/pages/project/read/config';
 
 export type Editor = monaco.editor.IStandaloneCodeEditor | null;
 export interface TabItem {

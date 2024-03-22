@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
+import { useRouter } from 'secywo-template-cli';
 import { toRefs } from 'vue';
 import { GithubOutlined, UserOutlined, ReadOutlined, LikeOutlined } from '@ant-design/icons-vue';
 import { dateFormat, processOSSLogo } from '@/utils/tools';

@@ -9,6 +9,8 @@ declare module '*.less';
 declare module '*.vue';
 declare const ENV: 'dev' | 'prod';
 declare const API_HOST: string;
+declare const Navigation: any;
+declare const App: any;
 
 interface Window {
     publicPath: string;

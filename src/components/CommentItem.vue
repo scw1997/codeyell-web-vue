@@ -18,7 +18,7 @@ import {
 } from '@ant-design/icons-vue';
 import { MenuProps, Menu, Space, Textarea, Modal, App } from 'ant-design-vue';
 import { defineComponent, h, ref, render, toRefs, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter } from 'secywo-template-cli';
 import useReadStore from '@/store/read';
 import Toast from '@/utils/Toast';
 import { storeToRefs } from 'pinia';
