@@ -38,7 +38,7 @@
     "marked": "^4.2.12",
     "monaco-editor": "^0.34.1",
     "pinia": "^2.1.7",
-    "secywo-template-cli": "2.0.0-beta30"
+    "secywo-template-cli": "2.0.0-beta31"
   },
   "engines": {
     "node": ">=18.0.0"
