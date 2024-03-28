@@ -30,8 +30,6 @@ declare type SecywoHistoryType = {
     back: () => void;
 };
 
-declare module '*.vue';
-
 declare type SecywoType = {
     history: SecywoHistoryType;
     app?: any;

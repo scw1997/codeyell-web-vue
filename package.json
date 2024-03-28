@@ -4,9 +4,9 @@
   "description": "secywo-template-vue",
   "main": "index.js",
   "scripts": {
-    "start": "npx husky init & cross-env  SECYWO_ENV=dev secywo start",
-    "build": "cross-env TEMPLATE=vue SECYWO_ENV=prod secywo build",
-    "build:analyze": "cross-env ANALYZE=true  SECYWO_ENV=prod secywo build",
+    "start": "npx husky init & secywo start",
+    "build": "secywo build",
+    "build:analyze": "cross-env ANALYZE=true secywo build",
     "test": "lint-staged",
     "prepare": "husky"
   },
@@ -29,7 +29,7 @@
   "license": "ISC",
   "dependencies": {
     "vue": "~3.4.14",
-    "secywo-template-cli": "2.0.0-beta43",
+    "secywo-template-cli": "2.0.0-beta45",
     "@ant-design/icons-vue": "^7.0.1",
     "@kangc/v-md-editor": "^2.3.18",
     "ali-oss": "^6.17.1",

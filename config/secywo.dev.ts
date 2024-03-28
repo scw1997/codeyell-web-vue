@@ -2,7 +2,7 @@
 
 import routes, { devRoutes } from './routes';
 const env = process.env.SECYWO_ENV;
-
+console.log('env', env);
 export default {
     router: {
         type: 'browser',
