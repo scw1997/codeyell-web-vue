@@ -9,12 +9,30 @@ declare module '*.less';
 declare module '*.vue';
 declare const ENV: 'dev' | 'prod';
 declare const API_HOST: string;
-declare const Navigation: any;
-declare const App: any;
+declare const Secywo: SecywoType;
 
-interface Window {
-    publicPath: string;
-}
 type EmptyObject = {
     [K in PropertyKey]: never;
+};
+
+declare type SecywoHistoryOptionType = {
+    query?: Record<string, any>;
+    params?: Record<string, any>;
+    hash?: string;
+    path?: string;
+    name?: string;
+};
+
+declare type SecywoHistoryType = {
+    push: (to: string | SecywoHistoryOptionType) => void;
+    replace: SecywoHistoryType['push'];
+    go: (delta: number) => void;
+    back: () => void;
+};
+
+declare module '*.vue';
+
+declare type SecywoType = {
+    history: SecywoHistoryType;
+    app?: any;
 };

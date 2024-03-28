@@ -2,7 +2,6 @@
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
 import { ref, toRefs, watch, h, defineComponent, reactive } from 'vue';
-import { useRouter } from 'secywo-template-cli';
 import { dateFormat, processOSSLogo } from '@/utils/tools';
 import { ParsedContent, Logo } from '@/components';
 import { Modal, Space, Textarea } from 'ant-design-vue';
@@ -38,7 +37,7 @@ const emits = defineEmits<{
     edit: [record: PropsType['data']]; //点击修改
 }>();
 //
-const router = useRouter();
+const { history } = Secywo;
 const dropdownItems = ref<MenuProps['items']>([]);
 const likeStates = ref<{ count_liked: number; count_unliked: number; is_liked: number | null }>({
     count_liked: props.data?.count_liked,
@@ -81,7 +80,7 @@ watch(
 
 //跳转到项目阅读页
 const jumpToProjectReadPage = (id: number) => {
-    router.push({ name: 'project-read', query: { id } });
+    history.push({ name: 'project-read', query: { id } });
 };
 
 //跳转到指定用户公开页
@@ -92,21 +91,21 @@ const jumpToPublicUserPage = (userid: number) => {
         if (props.type === 'read') {
             window.open('/my/personal_page');
         } else {
-            router.push({ name: 'my-personal' });
+            history.push({ name: 'my-personal' });
         }
     } else {
         //其他用户头像
         if (props.type === 'read') {
             window.open(`/user/public?id=${userid}`);
         } else {
-            router.push({ name: 'user-public', query: { id: userid } });
+            history.push({ name: 'user-public', query: { id: userid } });
         }
     }
 };
 
 //跳转到项目详情页
 const jumpToProjectDetailPage = (id: number) => {
-    router.push({ name: 'project-detail', query: { id } });
+    history.push({ name: 'project-detail', query: { id } });
 };
 
 //举报评论/注解

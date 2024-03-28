@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useRouter } from 'secywo-template-cli';
 import { toRefs } from 'vue';
 import { GithubOutlined, UserOutlined, ReadOutlined, LikeOutlined } from '@ant-design/icons-vue';
 import { dateFormat, processOSSLogo } from '@/utils/tools';
@@ -11,10 +10,11 @@ interface PropsType {
 
 const props = defineProps<PropsType>();
 
-const router = useRouter();
+const { history } = Secywo;
+
 //跳转到项目详情页
 const jumpToProjectDetailPage = (projectId: number) => {
-    router.push({ name: 'project-detail', query: { id: projectId } });
+    history.push({ name: 'project-detail', query: { id: projectId } });
 };
 
 //跳转到git仓库地址

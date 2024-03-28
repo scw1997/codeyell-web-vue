@@ -7,14 +7,14 @@ import Toast from '@/utils/Toast';
 import api from '@/api';
 import http from '@/utils/http';
 import useGlobalStore from '@/store/global';
-import { useRoute, useRouter } from 'secywo-template-cli';
+import { useLocation } from 'secywo-template-cli';
 import { storeToRefs } from 'pinia';
 import { CountDown } from '@/components';
 
 const globalStore = useGlobalStore();
 
-const router = useRouter();
-const route = useRoute();
+const { history } = Secywo;
+const route = useLocation();
 const props = withDefaults(defineProps<{ isControl?: boolean }>(), { isControl: false });
 const formRef = ref<FormInstance>();
 const submitLoading = ref<boolean>(false);
@@ -51,7 +51,7 @@ const handleSubmit = async (values: Record<string, any>) => {
         if (props.isControl) {
             emits('success');
         } else {
-            router.push({ name: 'auth-login' });
+            history.push({ name: 'auth-login' });
         }
     } finally {
         submitLoading.value = false;
@@ -131,7 +131,7 @@ const handleSubmit = async (values: Record<string, any>) => {
                 class="cp"
                 @click="
                     () => {
-                        isControl ? emits('loginClick') : router.push({ name: 'auth-login' });
+                        isControl ? emits('loginClick') : history.push({ name: 'auth-login' });
                     }
                 "
             >
@@ -141,7 +141,7 @@ const handleSubmit = async (values: Record<string, any>) => {
                 class="cp"
                 @click="
                     () => {
-                        isControl ? emits('signClick') : router.push({ name: 'auth-sign' });
+                        isControl ? emits('signClick') : history.push({ name: 'auth-sign' });
                     }
                 "
             >

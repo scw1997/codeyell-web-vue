@@ -91,7 +91,6 @@ export default [
             {
                 path: 'detail',
                 name: 'article-detail',
-                auth: 'test',
                 component: 'article/ArticleDetail'
             }
         ]

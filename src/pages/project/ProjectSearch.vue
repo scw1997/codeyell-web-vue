@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from 'secywo-template-cli';
+import { useLocation } from 'secywo-template-cli';
 import { Title, ProjectItem, Pagination, Logo } from '@/components';
 import { Empty } from 'ant-design-vue';
 import { onMounted, ref, toRefs, watch } from 'vue';
@@ -8,9 +8,9 @@ import http from '@/utils/http';
 import api from '@/api';
 import useGlobalStore from '@/store/global';
 import { processOSSLogo } from '@/utils/tools';
-const router = useRouter();
-const route = useRoute();
+const { history } = Secywo;
 const globalStore = useGlobalStore();
+const route = useLocation();
 const { getLanguageData } = globalStore;
 
 interface StatesType {
@@ -26,7 +26,7 @@ const states = ref<StatesType>({
 
 //跳转到项目详情
 const handleJumpToProjectDetail = (id: number | string) => {
-    router.push({ name: 'project-detail', query: { id } });
+    history.push({ name: 'project-detail', query: { id } });
 };
 //获取最近项目列表
 const getRecentData = async () => {
@@ -151,7 +151,7 @@ const getLanguageName = (languageId) =>
                     <AButton
                         @click="
                             () => {
-                                router.push({ name: 'project-create' });
+                                history.push({ name: 'project-create' });
                             }
                         "
                         style="width: 100%"

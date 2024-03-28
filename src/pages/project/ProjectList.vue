@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Title, ProjectItem, Pagination } from '@/components';
 import { Radio, RadioGroup, RadioButton, Empty } from 'ant-design-vue';
-import { useRoute, useRouter } from 'secywo-template-cli';
+import { useLocation } from 'secywo-template-cli';
 import { onMounted, ref, toRefs, watch, watchEffect } from 'vue';
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
@@ -11,8 +11,8 @@ interface StatesType {
     projectDataList: any[]; //当前页码搜索的数据列表
     searchParams: Record<string, any>; //搜索参数
 }
-const router = useRouter();
-const route = useRoute();
+const { history } = Secywo;
+const route = useLocation();
 const { query } = route;
 const globalStore = useGlobalStore();
 const { getLanguageData } = globalStore;
@@ -46,7 +46,7 @@ watch(
 
 //跳转到项目详情
 const handleJumpToProjectList = (id: number | string) => {
-    router.push({
+    history.push({
         name: 'project-list',
         query: { language_id: id, order_by: states.value.searchParams.order_by }
     });
@@ -54,7 +54,7 @@ const handleJumpToProjectList = (id: number | string) => {
 const setOrderBy = (order: string) => {
     // router.push(`/project?language_id=${language_id}&order_by=${order}`);
 
-    router.push({
+    history.push({
         name: 'project-list',
         query: { language_id: states.value.searchParams.language_id, order_by: order }
     });

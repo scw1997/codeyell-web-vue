@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from 'secywo-template-cli';
+import { useLocation } from 'secywo-template-cli';
 import { Title, PureTabs, Pagination } from '@/components';
 import { Radio, RadioGroup, RadioButton, Empty, Card } from 'ant-design-vue';
 import { Component, onMounted, ref, h, watch, watchEffect } from 'vue';
@@ -18,8 +18,8 @@ interface StatesType {
     activeKey: TabConfigItem['key'];
     mainContent: Component | null;
 }
-const route = useRoute();
-const router = useRouter();
+const route = useLocation();
+const { history } = Secywo;
 const userId = route.query.id;
 
 const states = ref<StatesType>({
@@ -41,7 +41,7 @@ const userStates = ref<Record<string, any> | null>(null); //当前指定用户�
 
 //未携带用户id参数
 if (!userId) {
-    router.replace({ name: '404' });
+    history.replace({ name: '404' });
 }
 
 const handleTabChange = (key: string) => {

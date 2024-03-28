@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { FormInstance, RadioChangeEvent, RadioGroup, Radio, SelectProps } from 'ant-design-vue';
-import { useRouter } from 'secywo-template-cli';
+import { useLocation } from 'secywo-template-cli';
 import { onMounted, ref, toRefs, watch } from 'vue';
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
@@ -17,7 +17,7 @@ interface StatesType {
     branchAndTagData: { branchList: SelectProps['options']; tagList: SelectProps['options'] }; //格式化当前所拉项目的分支和tag数据
 }
 
-const router = useRouter();
+const { history } = Secywo;
 const globalStore = useGlobalStore();
 const { getLanguageData } = globalStore;
 const { languageData } = storeToRefs(globalStore);
@@ -91,7 +91,7 @@ const handleCreatClick = debounce(async (values: Record<string, any>) => {
         Toast.success('创建成功');
 
         //拿到创建后的项目id跳转到项目详情页
-        router.push({ name: 'project-detail', query: { id: data?.project_id } });
+        history.push({ name: 'project-detail', query: { id: data?.project_id } });
     } else {
         notifyError(code, msg);
     }
@@ -169,7 +169,7 @@ watch(
                             <AButton
                                 @click="
                                     () => {
-                                        router.push({
+                                        history.push({
                                             name: 'project-detail',
                                             query: { id: states.existedProId }
                                         });

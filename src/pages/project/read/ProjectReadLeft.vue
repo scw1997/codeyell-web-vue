@@ -15,11 +15,13 @@ import http from '@/utils/http';
 import api from '@/api';
 import Toast from '@/utils/Toast';
 import useReadStore from '@/store/read';
-import { useRoute, useRouter } from 'secywo-template-cli';
+import { useLocation } from 'secywo-template-cli';
 import { onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { Key } from 'ant-design-vue/es/_util/type';
 import { useSearch } from '@/use/projectRead';
+
+const { history } = Secywo;
 
 interface StatesType {
     mode: 'directory' | 'search'; //查看模式，目录模式/搜索模式
@@ -38,8 +40,8 @@ export interface TreeDataNode extends DataNode {
 }
 
 const readStore = useReadStore();
-const router = useRouter();
-const route = useRoute();
+
+const route = useLocation();
 const { id: projectId } = route.query;
 const {
     getShortPath,

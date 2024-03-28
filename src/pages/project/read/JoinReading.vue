@@ -8,7 +8,7 @@ import { debounce, EMPTY } from '@/utils/tools';
 import { App, Empty } from 'ant-design-vue';
 import useGlobalStore from '@/store/global';
 import { h, onMounted, ref } from 'vue';
-import { useRoute, useRouter } from 'secywo-template-cli';
+import { useLocation } from 'secywo-template-cli';
 import { storeToRefs } from 'pinia';
 
 interface StatesType {
@@ -21,8 +21,7 @@ interface StatesType {
     }; //额外提示信息
 }
 
-const router = useRouter();
-const route = useRoute();
+const route = useLocation();
 const emits = defineEmits<{ success: [] }>();
 const readStore = useReadStore();
 const globalStore = useGlobalStore();

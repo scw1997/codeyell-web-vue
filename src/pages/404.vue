@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Result } from 'ant-design-vue';
-import { useRouter } from 'secywo-template-cli';
-const router = useRouter();
+const { history } = Secywo;
+
 const type = 'primary';
 </script>
 <template>
@@ -10,7 +10,7 @@ const type = 'primary';
             <AButton
                 @click="
                     () => {
-                        router.replace('/');
+                        history.replace('/');
                     }
                 "
             >

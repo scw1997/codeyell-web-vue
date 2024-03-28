@@ -7,11 +7,10 @@ import { storeToRefs } from 'pinia';
 import { SelectProps, Empty, Alert } from 'ant-design-vue';
 import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import Logo from '@/components/Logo.vue';
-import { useRouter } from 'secywo-template-cli';
 import { useMyPro, useHotPro, useHotNote, useRecentPro } from '@/use/dashboard';
 
 const globalStore = useGlobalStore();
-const router = useRouter();
+const { history } = Secywo;
 const { getLanguageData } = globalStore;
 const { userInfo, languageData } = storeToRefs(globalStore);
 
@@ -44,7 +43,7 @@ const formatLanguageData = computed<SelectProps['options']>(() => {
 });
 //跳转到项目详情
 const handleJumpToProjectDetail = (id: number | string) => {
-    router.push({ name: 'project-detail', query: { id } });
+    history.push({ name: 'project-detail', query: { id } });
 };
 
 //跳转到git仓库地址
@@ -60,7 +59,7 @@ const getLanguageName = (languageValue) => {
 };
 //跳转到文章详情
 const handleJumpToArticleDetail = () => {
-    router.push({ name: 'article-detail', query: { id: '658b9ce84a0dff467027438d' } });
+    history.push({ name: 'article-detail', query: { id: '658b9ce84a0dff467027438d' } });
 };
 
 onMounted(() => {
@@ -216,7 +215,7 @@ watchEffect(() => {
                             class="cp"
                             @click="
                                 () => {
-                                    router.push({ name: 'my-personal' });
+                                    history.push({ name: 'my-personal' });
                                 }
                             "
                             shape="square"
@@ -330,7 +329,7 @@ watchEffect(() => {
                     <AButton
                         @click="
                             () => {
-                                router.push({ name: 'project-create' });
+                                history.push({ name: 'project-create' });
                             }
                         "
                         style="width: 100%"

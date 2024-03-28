@@ -7,11 +7,11 @@ import Toast from '@/utils/Toast';
 import api from '@/api';
 import http from '@/utils/http';
 import useGlobalStore from '@/store/global';
-import { useRoute, useRouter } from 'secywo-template-cli';
+import { useLocation } from 'secywo-template-cli';
 
 const globalStore = useGlobalStore();
-const router = useRouter();
-const route = useRoute();
+const { history } = Secywo;
+const route = useLocation();
 const { query } = toRefs(route);
 const redirect_path = query.value['redirect_path'] || '/';
 const props = withDefaults(defineProps<{ isControl?: boolean }>(), { isControl: false });
@@ -35,7 +35,7 @@ const handleFormFinish = debounce(async (values: Record<string, any>) => {
     if (props.isControl) {
         emits('success');
     } else {
-        router.push(redirect_path as string);
+        history.push(redirect_path as string);
     }
 }, 200);
 </script>
@@ -86,7 +86,9 @@ const handleFormFinish = debounce(async (values: Record<string, any>) => {
                 class="cp"
                 @click="
                     () => {
-                        isControl ? emits('retrieveClick') : router.push({ name: 'auth-retrieve' });
+                        isControl
+                            ? emits('retrieveClick')
+                            : history.push({ name: 'auth-retrieve' });
                     }
                 "
             >
@@ -96,7 +98,7 @@ const handleFormFinish = debounce(async (values: Record<string, any>) => {
                 class="cp"
                 @click="
                     () => {
-                        isControl ? emits('signClick') : router.push({ name: 'auth-sign' });
+                        isControl ? emits('signClick') : history.push({ name: 'auth-sign' });
                     }
                 "
             >

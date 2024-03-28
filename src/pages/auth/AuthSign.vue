@@ -7,14 +7,13 @@ import Toast from '@/utils/Toast';
 import api from '@/api';
 import http from '@/utils/http';
 import useGlobalStore from '@/store/global';
-import { useRoute, useRouter } from 'secywo-template-cli';
+import { useLocation } from 'secywo-template-cli';
 import { storeToRefs } from 'pinia';
 import { CountDown } from '@/components';
 
 const globalStore = useGlobalStore();
-
-const router = useRouter();
-const route = useRoute();
+const { history } = Secywo;
+const route = useLocation();
 //分享链接中的邀请人id
 const inviteId = route.query['invite_id'] || undefined;
 const formRef = ref<FormInstance>();
@@ -55,7 +54,7 @@ const handleSignClick = async () => {
         if (props.isControl) {
             emits('success');
         } else {
-            router.push({ name: 'auth-login' });
+            history.push({ name: 'auth-login' });
         }
     } finally {
         submitLoading.value = false;
@@ -160,7 +159,9 @@ onMounted(() => {
                 class="cp"
                 @click="
                     () => {
-                        isControl ? emits('retrieveClick') : router.push({ name: 'auth-retrieve' });
+                        isControl
+                            ? emits('retrieveClick')
+                            : history.push({ name: 'auth-retrieve' });
                     }
                 "
             >
@@ -170,7 +171,7 @@ onMounted(() => {
                 class="cp"
                 @click="
                     () => {
-                        isControl ? emits('login') : router.push({ name: 'auth-login' });
+                        isControl ? emits('login') : history.push({ name: 'auth-login' });
                     }
                 "
             >

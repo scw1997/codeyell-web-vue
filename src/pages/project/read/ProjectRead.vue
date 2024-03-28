@@ -20,7 +20,7 @@ import { processOSSLogo } from '@/utils/tools';
 import { CurNoteModalData, TabItem } from '@/store/read';
 import useReadStore from '@/store/read';
 import { storeToRefs } from 'pinia';
-import { useRoute, useRouter } from 'secywo-template-cli';
+import { useLocation } from 'secywo-template-cli';
 import {
     Component,
     defineComponent,
@@ -33,8 +33,8 @@ import {
     watch
 } from 'vue';
 
-const router = useRouter();
-const route = useRoute();
+const { history } = Secywo;
+const route = useLocation();
 const { id: projectId, invite_id: inviteId } = route.query;
 const globalStore = useGlobalStore();
 const readStore = useReadStore();
@@ -73,10 +73,10 @@ const modalTitle = shallowRef<Component>(null);
 const goBack = () => {
     if (!isPush.value) {
         //不是从项目详情跳转过来的情况
-        router.replace({ name: 'project-detail', query: { id: projectId } });
+        history.replace({ name: 'project-detail', query: { id: projectId } });
     } else {
         //返回到项目详情页
-        router.back();
+        history.back();
     }
 };
 

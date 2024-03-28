@@ -8,6 +8,8 @@ import { debounce, uploadFile } from '@/utils/tools';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons-vue';
 import { Title } from '@/components';
 import useGlobalStore from '@/store/global';
+
+const { history } = Secywo;
 const formRef = ref<FormInstance>();
 const { languageData, getLanguageData, userInfo, refreshMyData, clearUserCache } =
     toRefs(useGlobalStore());
@@ -58,7 +60,7 @@ const handleUpdatePwdFormFinish = debounce(async (formValue: Record<string, any>
     await http.post(api.user.updateMyPwd, { old_password, new_password });
     Toast.success('修改成功，请用新密码重新登录');
     clearUserCache.value();
-    Navigation.push({ name: 'auth-login' });
+    history.push({ name: 'auth-login' });
 }, 200);
 
 //基本信息校验通过，点击保存

@@ -18,12 +18,12 @@ import {
 } from '@ant-design/icons-vue';
 import { MenuProps, Menu, Space, Textarea, Modal, App } from 'ant-design-vue';
 import { defineComponent, h, ref, render, toRefs, watch } from 'vue';
-import { useRouter } from 'secywo-template-cli';
 import useReadStore from '@/store/read';
 import Toast from '@/utils/Toast';
 import { storeToRefs } from 'pinia';
 import { MenuClickEventHandler } from 'ant-design-vue/es/menu/src/interface';
 
+const { history } = Secywo;
 interface PropsType {
     data: Record<string, any>; //当前评论相关数据
     type?: 'detail' | 'read';
@@ -36,7 +36,6 @@ const emits = defineEmits<{
     edit: [record: PropsType['data']]; //点击修改
 }>();
 
-const router = useRouter();
 const { isJoined, setRightShowMode } = useReadStore();
 const { userInfo, token } = storeToRefs(useGlobalStore());
 const { modal } = App.useApp();
@@ -115,14 +114,14 @@ const jumpToPublicUserPage = (userid: number) => {
         if (props.type === 'read') {
             window.open('/my/personal_page');
         } else {
-            router.push({ name: 'my-personal' });
+            history.push({ name: 'my-personal' });
         }
     } else {
         //其他用户头像
         if (props.type === 'read') {
             window.open(`/user/public?id=${userid}`);
         } else {
-            router.push({ name: 'user-public', query: { id: userid } });
+            history.push({ name: 'user-public', query: { id: userid } });
         }
     }
 };

@@ -4,7 +4,7 @@ import http from '@/utils/http';
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
 import { App, TypographyLink, QRCode } from 'ant-design-vue';
-import { useRoute, useRouter } from 'secywo-template-cli';
+import { useLocation } from 'secywo-template-cli';
 import { defineComponent, h, onMounted, ref } from 'vue';
 import { ShareAltOutlined } from '@ant-design/icons-vue';
 import api from '@/api';
@@ -14,8 +14,8 @@ interface StatesType {
 }
 
 const globalStore = useGlobalStore();
-const route = useRoute();
-const router = useRouter();
+const route = useLocation();
+const { history } = Secywo;
 const { userInfo } = storeToRefs(globalStore);
 
 const { id: articleID, invite_id: inviteId } = route.query;
@@ -27,7 +27,7 @@ const states = ref<StatesType>({
 
 //未携带项目id参数
 if (!articleID) {
-    router.replace('/404');
+    history.replace('/404');
 }
 
 //点击分享按钮

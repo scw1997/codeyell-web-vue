@@ -68,7 +68,7 @@ instance.interceptors.response.use(
                     return;
                 }
                 isNotifying = true;
-                Navigation.push({ name: 'auth-login' });
+                Secywo.history.push({ name: 'auth-login' });
                 return Promise.reject(new AxiosError('登录状态已失效，请重新登录', '401'));
             case 403:
                 //登录失败（例如非管理员）
@@ -116,7 +116,7 @@ const handleRes = async (
                     isNotifying = false;
                 });
 
-                Navigation.push({ name: 'auth-login' });
+                Secywo.history.push({ name: 'auth-login' });
 
                 return;
             default:

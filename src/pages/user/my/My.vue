@@ -8,11 +8,12 @@ import allIcons, {
 } from '@ant-design/icons-vue';
 import useGlobalStore from '@/store/global';
 import { onMounted, toRefs, h } from 'vue';
-import { useRoute } from 'secywo-template-cli';
+import { useLocation } from 'secywo-template-cli';
+const { history } = Secywo;
 const globalStore = useGlobalStore();
 const { refreshMyData, clearUserCache } = globalStore;
 const { userInfo } = toRefs(globalStore);
-const { path, query, name: routeName } = toRefs(useRoute());
+const { path, query, name: routeName } = toRefs(useLocation());
 
 const navList = [
     {
@@ -36,7 +37,7 @@ const handleGoPath = (pathName: string) => {
     if (pathName === 'auth-login') {
         clearUserCache();
     }
-    Navigation.replace({ name: pathName });
+    history.replace({ name: pathName });
 };
 
 onMounted(() => {

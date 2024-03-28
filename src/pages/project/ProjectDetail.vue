@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from 'secywo-template-cli';
+import { useLocation } from 'secywo-template-cli';
 import { CommentItem, CommentModal, NoteItem, Pagination, Title, Logo } from '@/components';
 import Toast from '@/utils/Toast';
 import { CaretRightOutlined, GithubOutlined, ShareAltOutlined } from '@ant-design/icons-vue';
@@ -19,10 +19,10 @@ import {
 } from 'ant-design-vue';
 import { defineComponent, h, onMounted, ref, watch } from 'vue';
 
-const router = useRouter();
+const { history } = Secywo;
 const globalStore = useGlobalStore();
 const { userInfo } = storeToRefs(globalStore);
-const route = useRoute();
+const route = useLocation();
 interface StatesType {
     commentList: any[]; //当前项目评论数据
     orderType: 'time' | 'liked'; //评论排序方式，time最近/liked最热
@@ -30,7 +30,7 @@ interface StatesType {
     isCommentReady: boolean; //是否可以获取评论数据
 }
 const { modal } = App.useApp();
-const { id: projectId, invite_id: inviteId } = useRoute().query;
+const { id: projectId, invite_id: inviteId } = route.query;
 
 const states = ref<StatesType>({
     commentList: [],
@@ -43,7 +43,7 @@ const detailStates = ref<Record<string, any>>(null); //当前项目详情信息
 
 //未携带项目id参数
 if (!projectId) {
-    router.replace('/404');
+    history.replace('/404');
 }
 
 //点击分享按钮

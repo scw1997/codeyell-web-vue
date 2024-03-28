@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { toRefs } from 'vue';
-import { useRouter } from 'secywo-template-cli';
 import { Avatar } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { processOSSLogo } from '@/utils/tools';
 
-const router = useRouter();
+const { history } = Secywo;
 
 interface RankItemProps {
     data: Record<string, any> | null;
@@ -15,7 +14,7 @@ interface RankItemProps {
 const props = withDefaults(defineProps<RankItemProps>(), { data: null, mode: 'comment' });
 
 const jumpToUserPublicPage = (userid: number) => {
-    router.push({ name: 'user-public', query: { id: userid } });
+    history.push({ name: 'user-public', query: { id: userid } });
 };
 </script>
 

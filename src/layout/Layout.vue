@@ -1,32 +1,4 @@
 <script setup lang="ts">
-App.use(createPinia());
-App.use(ConfigProvider)
-    .use(Input)
-    .use(Spin)
-    .use(AntdApp)
-    .use(Button)
-    .use(Form)
-    .use(Select)
-    .use(Upload)
-    .use(Avatar)
-    .use(Tabs)
-    .use(Image)
-    .use(Space)
-    .use(Row)
-    .use(Col)
-    .use(Dropdown)
-    .use(Card)
-    .use(Empty)
-    .use(Popover)
-    .use(Tooltip)
-    .use(Tag);
-
-import zhCN from 'ant-design-vue/locale/zh_CN';
-import { PureTabs } from '@/components';
-import { useRoute, useRouter } from 'secywo-template-cli';
-import useGlobalStore from '@/store/global';
-import { UserOutlined } from '@ant-design/icons-vue';
-import { processOSSLogo } from '@/utils/tools';
 import {
     Avatar,
     Button,
@@ -49,14 +21,48 @@ import {
     Tooltip,
     Upload
 } from 'ant-design-vue';
-import { watch, ref, toRefs, watchEffect } from 'vue';
 import { createPinia, storeToRefs } from 'pinia';
+Secywo.app.use(createPinia());
+Secywo.app
+    .use(ConfigProvider)
+    .use(Input)
+    .use(Spin)
+    .use(AntdApp)
+    .use(Button)
+    .use(Form)
+    .use(Select)
+    .use(Upload)
+    .use(Avatar)
+    .use(Tabs)
+    .use(Image)
+    .use(Space)
+    .use(Row)
+    .use(Col)
+    .use(Dropdown)
+    .use(Card)
+    .use(Empty)
+    .use(Popover)
+    .use(Tooltip)
+    .use(Tag);
+
+import zhCN from 'ant-design-vue/locale/zh_CN';
+import { PureTabs } from '@/components';
+import { useLocation } from 'secywo-template-cli';
+import useGlobalStore from '@/store/global';
+import { UserOutlined } from '@ant-design/icons-vue';
+import { processOSSLogo } from '@/utils/tools';
+import { useRoute } from 'vue-router';
+
+import { watch, ref, toRefs, watchEffect, reactive } from 'vue';
+
 import Loading from '@/components/Loading.vue';
 import { App as AntdApp } from 'ant-design-vue/es/components';
 
 const { Header, Content, Footer } = Layout;
-const router = useRouter();
-const route = useRoute();
+const { history } = Secywo;
+
+const route = useLocation();
+
 const { userInfo } = storeToRefs(useGlobalStore());
 
 const navTabConfig = [
@@ -75,19 +81,19 @@ const navTabConfig = [
 ];
 
 const jumpToIndex = () => {
-    router.push({ name: 'home' });
+    history.push({ name: 'home' });
 };
 const handleSearch = (value: string) => {
     //跳转搜索结果页
-    Navigation.push({ name: 'project-search', query: { keyword: value } });
+    history.push({ name: 'project-search', query: { keyword: value } });
 };
 
 const handleTabChange = (key) => {
-    Navigation.push({ name: key });
+    history.push({ name: key });
 };
 
 const handleAvatarClick = () => {
-    Navigation.push({ name: 'my-personal' });
+    history.push({ name: 'my-personal' });
 };
 </script>
 
@@ -146,7 +152,7 @@ const handleAvatarClick = () => {
                                             class="cp"
                                             @click="
                                                 () => {
-                                                    router.push({
+                                                    history.push({
                                                         name: 'auth-login',
                                                         query:
                                                             route.name === 'home'
@@ -168,7 +174,7 @@ const handleAvatarClick = () => {
                                             class="cp"
                                             @click="
                                                 () => {
-                                                    router.push({ name: 'auth-login' });
+                                                    history.push({ name: 'auth-login' });
                                                 }
                                             "
                                         >

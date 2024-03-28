@@ -1,9 +1,9 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { useRouter } from 'secywo-template-cli';
-const router = useRouter();
+
+const { history } = Secywo;
 onMounted(() => {
-    router.push({ name: 'article-list', hash: 'dddd' });
+    history.push({ name: 'article-list', hash: 'dddd' });
 });
 </script>
 
