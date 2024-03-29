@@ -8,7 +8,7 @@ import { Empty, Switch } from 'ant-design-vue';
 import useGlobalStore from '@/store/global';
 import useReadStore, { CurNoteModalData } from '@/store/read';
 import { storeToRefs } from 'pinia';
-import { useRoute } from 'secywo-template-cli';
+import { useLocation } from 'secywo-template-cli';
 import { ref, watch } from 'vue';
 interface PropsType {
     openNoteModal: (type: CurNoteModalData['mode'], record?: Record<string, any>) => void; //打开注解弹窗
@@ -18,7 +18,7 @@ interface StatesType {
     noteListData: any[];
     noteParams: null | Record<string, any>;
 }
-const route = useRoute();
+const route = useLocation();
 const { id: projectId } = route.query;
 const globalStore = useGlobalStore();
 const readStore = useReadStore();

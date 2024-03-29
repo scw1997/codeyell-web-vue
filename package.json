@@ -29,7 +29,7 @@
   "license": "ISC",
   "dependencies": {
     "vue": "~3.4.14",
-    "secywo-template-cli": "2.0.0-beta45",
+    "secywo-template-cli": "2.0.0-beta47",
     "@ant-design/icons-vue": "^7.0.1",
     "@kangc/v-md-editor": "^2.3.18",
     "ali-oss": "^6.17.1",

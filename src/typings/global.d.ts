@@ -32,5 +32,4 @@ declare type SecywoHistoryType = {
 
 declare type SecywoType = {
     history: SecywoHistoryType;
-    app?: any;
 };

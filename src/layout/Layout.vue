@@ -22,32 +22,10 @@ import {
     Upload
 } from 'ant-design-vue';
 import { createPinia, storeToRefs } from 'pinia';
-Secywo.app.use(createPinia());
-Secywo.app
-    .use(ConfigProvider)
-    .use(Input)
-    .use(Spin)
-    .use(AntdApp)
-    .use(Button)
-    .use(Form)
-    .use(Select)
-    .use(Upload)
-    .use(Avatar)
-    .use(Tabs)
-    .use(Image)
-    .use(Space)
-    .use(Row)
-    .use(Col)
-    .use(Dropdown)
-    .use(Card)
-    .use(Empty)
-    .use(Popover)
-    .use(Tooltip)
-    .use(Tag);
 
 import zhCN from 'ant-design-vue/locale/zh_CN';
 import { PureTabs } from '@/components';
-import { useLocation } from 'secywo-template-cli';
+import { useLocation, Outlet } from 'secywo-template-cli';
 import useGlobalStore from '@/store/global';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { processOSSLogo } from '@/utils/tools';
@@ -101,7 +79,7 @@ const handleAvatarClick = () => {
     <template v-if="route.name">
         <AConfigProvider :locale="zhCN" v-if="route.name === 'project-read'">
             <AApp className="layout-app">
-                <RouterView />
+                <Outlet />
             </AApp>
         </AConfigProvider>
         <AConfigProvider :locale="zhCN" v-else>
@@ -202,7 +180,7 @@ const handleAvatarClick = () => {
                     </Header>
                     <Content class="layout-content">
                         <main class="layout-main">
-                            <RouterView />
+                            <Outlet />
                         </main>
                         <Footer class="layout-footer">
                             <main class="layout-main">

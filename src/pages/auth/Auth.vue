@@ -1,9 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { Outlet } from 'secywo-template-cli';
+</script>
 
 <template>
     <div class="auth">
         <div class="auth-container">
-            <RouterView />
+            <Outlet />
         </div>
     </div>
 </template>

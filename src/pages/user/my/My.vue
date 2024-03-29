@@ -8,7 +8,7 @@ import allIcons, {
 } from '@ant-design/icons-vue';
 import useGlobalStore from '@/store/global';
 import { onMounted, toRefs, h } from 'vue';
-import { useLocation } from 'secywo-template-cli';
+import { useLocation, Outlet } from 'secywo-template-cli';
 const { history } = Secywo;
 const globalStore = useGlobalStore();
 const { refreshMyData, clearUserCache } = globalStore;
@@ -48,7 +48,7 @@ onMounted(() => {
 <template>
     <div class="user-home-layout">
         <section class="children-routes-container">
-            <RouterView />
+            <Outlet />
         </section>
         <section class="right-side-container">
             <ACard class="top-card mb">
