@@ -1,7 +1,7 @@
 {
-  "name": "swico-template-vue",
+  "name": "codeyell-web-vue",
   "version": "1.1.0",
-  "description": "Vue template for front-end framework Swico",
+  "description": "codeyell-web-vue",
   "main": "index.js",
   "scripts": {
     "start": "npx husky init & swico start",
@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://gitee.com/fanlaBoy/swico-template-vue.git"
+    "url": "https://gitee.com/fanlaBoy/codeyell-web-vue.git"
   },
   "keywords": [
     "swico-template-vue",
