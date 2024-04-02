@@ -23,7 +23,7 @@ import Toast from '@/utils/Toast';
 import { storeToRefs } from 'pinia';
 import { MenuClickEventHandler } from 'ant-design-vue/es/menu/src/interface';
 
-const { history } = Secywo;
+const { history } = Swico;
 interface PropsType {
     data: Record<string, any>; //当前评论相关数据
     type?: 'detail' | 'read';

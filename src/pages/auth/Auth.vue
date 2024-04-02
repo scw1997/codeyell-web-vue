@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Outlet } from 'secywo-template-cli';
+import { Outlet } from 'swico';
 </script>
 
 <template>

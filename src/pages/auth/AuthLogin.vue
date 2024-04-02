@@ -7,10 +7,10 @@ import Toast from '@/utils/Toast';
 import api from '@/api';
 import http from '@/utils/http';
 import useGlobalStore from '@/store/global';
-import { useLocation } from 'secywo-template-cli';
+import { useLocation } from 'swico';
 
 const globalStore = useGlobalStore();
-const { history } = Secywo;
+const { history } = Swico;
 const route = useLocation();
 const { query } = toRefs(route);
 const redirect_path = query.value['redirect_path'] || '/';

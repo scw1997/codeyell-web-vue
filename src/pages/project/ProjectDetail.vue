@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useLocation } from 'secywo-template-cli';
+import { useLocation } from 'swico';
 import { CommentItem, CommentModal, NoteItem, Pagination, Title, Logo } from '@/components';
 import Toast from '@/utils/Toast';
 import { CaretRightOutlined, GithubOutlined, ShareAltOutlined } from '@ant-design/icons-vue';
@@ -19,7 +19,7 @@ import {
 } from 'ant-design-vue';
 import { defineComponent, h, onMounted, ref, watch } from 'vue';
 
-const { history } = Secywo;
+const { history } = Swico;
 const globalStore = useGlobalStore();
 const { userInfo } = storeToRefs(globalStore);
 const route = useLocation();

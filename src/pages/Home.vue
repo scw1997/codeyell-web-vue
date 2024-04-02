@@ -10,7 +10,7 @@ import Logo from '@/components/Logo.vue';
 import { useMyPro, useHotPro, useHotNote, useRecentPro } from '@/use/dashboard';
 
 const globalStore = useGlobalStore();
-const { history } = Secywo;
+const { history } = Swico;
 const { getLanguageData } = globalStore;
 const { userInfo, languageData } = storeToRefs(globalStore);
 

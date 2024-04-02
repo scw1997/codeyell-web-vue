@@ -4,7 +4,7 @@ import { Avatar } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { processOSSLogo } from '@/utils/tools';
 
-const { history } = Secywo;
+const { history } = Swico;
 
 interface RankItemProps {
     data: Record<string, any> | null;

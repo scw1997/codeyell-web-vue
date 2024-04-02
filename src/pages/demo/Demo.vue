@@ -1,13 +1,13 @@
 <script setup>
 import { defineComponent, onMounted, ref } from 'vue';
-import { useLocation, Link } from 'secywo-template-cli';
+import { useLocation, Link } from 'swico';
 import { RouterLink } from 'vue-router';
 const { name } = useLocation();
 
 const text = ref('xxx');
 console.log('name', name);
 const click = () => {
-    Secywo.history.push({ name: 'project-list', hash: '#dddd' });
+    Swico.history.push({ name: 'project-list', hash: '#dddd' });
 };
 </script>
 

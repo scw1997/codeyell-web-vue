@@ -8,7 +8,7 @@ import { Empty, Switch } from 'ant-design-vue';
 import useGlobalStore from '@/store/global';
 import useReadStore, { CurNoteModalData } from '@/store/read';
 import { storeToRefs } from 'pinia';
-import { useLocation } from 'secywo-template-cli';
+import { useLocation } from 'swico';
 import { ref, watch } from 'vue';
 interface PropsType {
     openNoteModal: (type: CurNoteModalData['mode'], record?: Record<string, any>) => void; //打开注解弹窗

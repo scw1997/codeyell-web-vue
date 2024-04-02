@@ -10,7 +10,7 @@ interface PropsType {
 
 const props = defineProps<PropsType>();
 
-const { history } = Secywo;
+const { history } = Swico;
 
 //跳转到项目详情页
 const jumpToProjectDetailPage = (projectId: number) => {

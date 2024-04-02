@@ -1,9 +1,9 @@
 //secywo脚手架公共自定义配置
 // import { defineConfig } from 'secywo-template-cli';
 
-import { defineConfig } from 'secywo-template-cli';
+import { defineConfig } from 'swico';
 
-const env = process.env.SECYWO_ENV;
+const env = process.env.SWICO_ENV;
 import routes from './routes';
 export default defineConfig('base', {
     template: 'vue',

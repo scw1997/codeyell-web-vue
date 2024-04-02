@@ -20,7 +20,7 @@ import { processOSSLogo } from '@/utils/tools';
 import { CurNoteModalData, TabItem } from '@/store/read';
 import useReadStore from '@/store/read';
 import { storeToRefs } from 'pinia';
-import { useLocation } from 'secywo-template-cli';
+import { useLocation } from 'swico';
 import {
     Component,
     defineComponent,
@@ -33,7 +33,7 @@ import {
     watch
 } from 'vue';
 
-const { history } = Secywo;
+const { history } = Swico;
 const route = useLocation();
 const { id: projectId, invite_id: inviteId } = route.query;
 const globalStore = useGlobalStore();

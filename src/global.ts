@@ -1,4 +1,4 @@
-import { defineGlobal } from 'secywo-template-cli';
+import { defineGlobal } from 'swico';
 import { createPinia } from 'pinia';
 import {
     Avatar,

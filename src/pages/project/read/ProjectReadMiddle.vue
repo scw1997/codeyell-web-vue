@@ -8,7 +8,7 @@ import useGlobalStore from '@/store/global';
 import useReadStore, { TabItem } from '@/store/read';
 import { storeToRefs } from 'pinia';
 import { onMounted, onUnmounted, ref, watch } from 'vue';
-import { useLocation } from 'secywo-template-cli';
+import { useLocation } from 'swico';
 import { MenuClickEventHandler } from 'ant-design-vue/es/menu/src/interface';
 
 export type Editor = monaco.editor.IStandaloneCodeEditor | null;
@@ -43,7 +43,7 @@ const {
     isJoined
 } = storeToRefs(readStore);
 const { token } = storeToRefs(globalStore);
-const { history } = Secywo;
+const { history } = Swico;
 const route = useLocation();
 const { file: initActiveFileData, id: projectId } = route.query;
 const states = ref<StatesType>({

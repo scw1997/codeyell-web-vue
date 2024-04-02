@@ -8,7 +8,7 @@ import { debounce, EMPTY } from '@/utils/tools';
 import { App, Empty } from 'ant-design-vue';
 import useGlobalStore from '@/store/global';
 import { h, onMounted, ref } from 'vue';
-import { useLocation } from 'secywo-template-cli';
+import { useLocation } from 'swico';
 import { storeToRefs } from 'pinia';
 
 interface StatesType {

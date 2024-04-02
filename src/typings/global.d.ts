@@ -9,13 +9,13 @@ declare module '*.less';
 declare module '*.vue';
 declare const ENV: 'dev' | 'prod';
 declare const API_HOST: string;
-declare const Secywo: SecywoType;
+declare const Swico: SwicoType;
 
 type EmptyObject = {
     [K in PropertyKey]: never;
 };
 
-declare type SecywoHistoryOptionType = {
+declare type SwicoHistoryOptionType = {
     query?: Record<string, any>;
     params?: Record<string, any>;
     hash?: string;
@@ -23,13 +23,13 @@ declare type SecywoHistoryOptionType = {
     name?: string;
 };
 
-declare type SecywoHistoryType = {
-    push: (to: string | SecywoHistoryOptionType) => void;
-    replace: SecywoHistoryType['push'];
+declare type SwicoHistoryType = {
+    push: (to: string | SwicoHistoryOptionType) => void;
+    replace: SwicoHistoryType['push'];
     go: (delta: number) => void;
     back: () => void;
 };
 
-declare type SecywoType = {
-    history: SecywoHistoryType;
+declare type SwicoType = {
+    history: SwicoHistoryType;
 };

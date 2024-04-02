@@ -4,7 +4,7 @@ import http from '@/utils/http';
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
 import { App, TypographyLink, QRCode } from 'ant-design-vue';
-import { useLocation } from 'secywo-template-cli';
+import { useLocation } from 'swico';
 import { defineComponent, h, onMounted, ref } from 'vue';
 import { ShareAltOutlined } from '@ant-design/icons-vue';
 import api from '@/api';
@@ -15,7 +15,7 @@ interface StatesType {
 
 const globalStore = useGlobalStore();
 const route = useLocation();
-const { history } = Secywo;
+const { history } = Swico;
 const { userInfo } = storeToRefs(globalStore);
 
 const { id: articleID, invite_id: inviteId } = route.query;

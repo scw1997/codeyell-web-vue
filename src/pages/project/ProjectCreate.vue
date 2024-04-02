@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { FormInstance, RadioChangeEvent, RadioGroup, Radio, SelectProps } from 'ant-design-vue';
-import { useLocation } from 'secywo-template-cli';
+import { useLocation } from 'swico';
 import { onMounted, ref, toRefs, watch } from 'vue';
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
@@ -17,7 +17,7 @@ interface StatesType {
     branchAndTagData: { branchList: SelectProps['options']; tagList: SelectProps['options'] }; //格式化当前所拉项目的分支和tag数据
 }
 
-const { history } = Secywo;
+const { history } = Swico;
 const globalStore = useGlobalStore();
 const { getLanguageData } = globalStore;
 const { languageData } = storeToRefs(globalStore);

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useLocation } from 'secywo-template-cli';
+import { useLocation } from 'swico';
 import { Title, ProjectItem, Pagination, Logo } from '@/components';
 import { Empty } from 'ant-design-vue';
 import { onMounted, ref, toRefs, watch } from 'vue';
@@ -8,7 +8,7 @@ import http from '@/utils/http';
 import api from '@/api';
 import useGlobalStore from '@/store/global';
 import { processOSSLogo } from '@/utils/tools';
-const { history } = Secywo;
+const { history } = Swico;
 const globalStore = useGlobalStore();
 const route = useLocation();
 const { getLanguageData } = globalStore;

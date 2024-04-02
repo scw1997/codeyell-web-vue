@@ -1,12 +1,12 @@
 {
-  "name": "secywo-template-vue",
-  "version": "1.0.0",
-  "description": "secywo-template-vue",
+  "name": "swico-template-vue",
+  "version": "1.1.0",
+  "description": "Vue template for front-end framework Swico",
   "main": "index.js",
   "scripts": {
-    "start": "npx husky init & secywo start",
-    "build": "secywo build",
-    "build:analyze": "cross-env ANALYZE=true secywo build",
+    "start": "npx husky init & swico start",
+    "build": "swico build",
+    "build:analyze": "cross-env ANALYZE=true swico build",
     "test": "lint-staged",
     "prepare": "husky"
   },
@@ -17,19 +17,23 @@
     ],
     "src/**/*.{css,less,json,html,md}": "prettier --write"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/fanlaBoy/swico-template-vue.git"
+  },
   "keywords": [
-    "secywo-template-vue",
-    "secywo",
-    "secywo-template-cli",
+    "swico-template-vue",
+    "swico",
     "typescript",
     "vue",
+    "javascript",
     "webpack"
   ],
   "author": "scw",
   "license": "ISC",
   "dependencies": {
     "vue": "~3.4.14",
-    "secywo-template-cli": "2.0.0-beta56",
+    "swico": "0.2.2",
     "@ant-design/icons-vue": "^7.0.1",
     "@kangc/v-md-editor": "^2.3.18",
     "ali-oss": "^6.17.1",
@@ -52,7 +56,7 @@
     "webpack": "5.88.2",
     "webpack-bundle-analyzer": "4.9.1",
     "webpack-cli": "5.1.4",
-    "webpack-dev-server": "5.0.2",
+    "webpack-dev-server": "4.15.2",
     "webpack-merge": "5.9.0",
     "webpackbar": "6.0.0",
     "@babel/types": "7.23.9",

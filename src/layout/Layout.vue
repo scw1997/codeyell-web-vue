@@ -25,7 +25,7 @@ import { createPinia, storeToRefs } from 'pinia';
 
 import zhCN from 'ant-design-vue/locale/zh_CN';
 import { PureTabs } from '@/components';
-import { useLocation, Outlet } from 'secywo-template-cli';
+import { useLocation, Outlet } from 'swico';
 import useGlobalStore from '@/store/global';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { processOSSLogo } from '@/utils/tools';
@@ -37,7 +37,7 @@ import Loading from '@/components/Loading.vue';
 import { App as AntdApp } from 'ant-design-vue/es/components';
 
 const { Header, Content, Footer } = Layout;
-const { history } = Secywo;
+const { history } = Swico;
 
 const route = useLocation();
 

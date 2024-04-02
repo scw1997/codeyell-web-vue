@@ -33,7 +33,7 @@ export const authFunc: (func: any) => (...args: any[]) => void = (func) => {
         };
     } else {
         return () => {
-            Secywo.history.push({ name: 'auth-login' });
+            Swico.history.push({ name: 'auth-login' });
         };
     }
 };

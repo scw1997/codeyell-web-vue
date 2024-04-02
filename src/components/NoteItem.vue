@@ -37,7 +37,7 @@ const emits = defineEmits<{
     edit: [record: PropsType['data']]; //点击修改
 }>();
 //
-const { history } = Secywo;
+const { history } = Swico;
 const dropdownItems = ref<MenuProps['items']>([]);
 const likeStates = ref<{ count_liked: number; count_unliked: number; is_liked: number | null }>({
     count_liked: props.data?.count_liked,

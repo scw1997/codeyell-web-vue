@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useLocation } from 'secywo-template-cli';
+import { useLocation } from 'swico';
 import { Title, PureTabs, Pagination } from '@/components';
 import { Radio, RadioGroup, RadioButton, Empty, Card } from 'ant-design-vue';
 import { Component, onMounted, ref, h, watch, watchEffect } from 'vue';
@@ -19,7 +19,7 @@ interface StatesType {
     mainContent: Component | null;
 }
 const route = useLocation();
-const { history } = Secywo;
+const { history } = Swico;
 const userId = route.query.id;
 
 const states = ref<StatesType>({

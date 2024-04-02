@@ -8,8 +8,8 @@ import allIcons, {
 } from '@ant-design/icons-vue';
 import useGlobalStore from '@/store/global';
 import { onMounted, toRefs, h } from 'vue';
-import { useLocation, Outlet } from 'secywo-template-cli';
-const { history } = Secywo;
+import { useLocation, Outlet } from 'swico';
+const { history } = Swico;
 const globalStore = useGlobalStore();
 const { refreshMyData, clearUserCache } = globalStore;
 const { userInfo } = toRefs(globalStore);

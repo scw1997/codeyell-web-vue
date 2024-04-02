@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Title, ProjectItem, Pagination } from '@/components';
 import { Radio, RadioGroup, RadioButton, Empty } from 'ant-design-vue';
-import { useLocation } from 'secywo-template-cli';
+import { useLocation } from 'swico';
 import { onMounted, ref, toRefs, watch, watchEffect } from 'vue';
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
@@ -11,7 +11,7 @@ interface StatesType {
     projectDataList: any[]; //当前页码搜索的数据列表
     searchParams: Record<string, any>; //搜索参数
 }
-const { history } = Secywo;
+const { history } = Swico;
 const route = useLocation();
 const { query } = route;
 const globalStore = useGlobalStore();
