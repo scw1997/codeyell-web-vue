@@ -3,7 +3,6 @@
 import routes, { devRoutes } from './routes';
 import { defineConfig } from 'secywo-template-cli';
 const env = process.env.SECYWO_ENV;
-console.log('env', env);
 export default defineConfig('dev', {
     router: {
         type: 'browser',
