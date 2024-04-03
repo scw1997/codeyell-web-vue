@@ -1,5 +1,4 @@
-//secywo脚手架公共自定义配置
-// import { defineConfig } from 'secywo-template-cli';
+//swico 公共自定义配置
 
 import { defineConfig } from 'swico';
 

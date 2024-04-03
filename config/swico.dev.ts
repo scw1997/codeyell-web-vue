@@ -1,4 +1,4 @@
-//secywo脚手架自dev环境自定义配置
+//swico dev环境自定义配置
 
 import routes, { devRoutes } from './routes';
 import { defineConfig } from 'swico';
