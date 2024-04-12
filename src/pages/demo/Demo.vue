@@ -4,16 +4,14 @@ import { useLocation, Link } from 'swico';
 import { RouterLink } from 'vue-router';
 const { name } = useLocation();
 
-const text = ref('xxx');
-console.log('name', name);
 const click = () => {
-    Swico.history.push({ name: 'project-list', hash: '#dddd' });
+    const { history } = Swico;
+    console.log('xxx', history.location);
 };
 </script>
 
 <template>
-    <Link to="/" class="xx" style="color: red">{{ text }}</Link>
-    <AButton @click="text = 'yyy'">选项</AButton>
+    <AButton @click="click">选项</AButton>
 </template>
 
 <style scoped></style>

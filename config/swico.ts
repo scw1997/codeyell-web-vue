@@ -11,6 +11,7 @@ export default defineConfig('base', {
         API_HOST: env === 'prod' ? 'https://api.codeyell.com' : 'https://codesecond-api.qidb.cn'
     },
     router: {
+        base: '/',
         type: 'browser',
         routes
     }

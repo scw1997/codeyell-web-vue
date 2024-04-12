@@ -5,7 +5,6 @@ import { defineConfig } from 'swico';
 const env = process.env.SWICO_ENV;
 export default defineConfig('dev', {
     router: {
-        type: 'browser',
         routes: [...(env === 'dev' ? devRoutes : []), ...routes]
     }
 });
