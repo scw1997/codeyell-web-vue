@@ -8,11 +8,10 @@ import api from '@/api';
 import http from '@/utils/http';
 import useGlobalStore from '@/store/global';
 import { useLocation } from 'swico';
-import { storeToRefs } from 'pinia';
+import { history } from 'swico';
 import { CountDown } from '@/components';
 
 const globalStore = useGlobalStore();
-const { history } = Swico;
 const route = useLocation();
 //分享链接中的邀请人id
 const inviteId = route.query['invite_id'] || undefined;

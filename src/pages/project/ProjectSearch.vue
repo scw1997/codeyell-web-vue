@@ -8,7 +8,8 @@ import http from '@/utils/http';
 import api from '@/api';
 import useGlobalStore from '@/store/global';
 import { processOSSLogo } from '@/utils/tools';
-const { history } = Swico;
+import { history } from 'swico';
+
 const globalStore = useGlobalStore();
 const route = useLocation();
 const { getLanguageData } = globalStore;

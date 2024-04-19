@@ -3,8 +3,7 @@ import { toRefs } from 'vue';
 import { Avatar } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { processOSSLogo } from '@/utils/tools';
-
-const { history } = Swico;
+import { history } from 'swico';
 
 interface RankItemProps {
     data: Record<string, any> | null;

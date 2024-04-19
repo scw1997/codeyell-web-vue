@@ -9,7 +9,8 @@ import allIcons, {
 import useGlobalStore from '@/store/global';
 import { onMounted, toRefs, h } from 'vue';
 import { useLocation, Outlet } from 'swico';
-const { history } = Swico;
+import { history } from 'swico';
+
 const globalStore = useGlobalStore();
 const { refreshMyData, clearUserCache } = globalStore;
 const { userInfo } = toRefs(globalStore);

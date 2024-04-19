@@ -8,8 +8,8 @@ import { debounce, uploadFile } from '@/utils/tools';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons-vue';
 import { Title } from '@/components';
 import useGlobalStore from '@/store/global';
+import { history } from 'swico';
 
-const { history } = Swico;
 const formRef = ref<FormInstance>();
 const { languageData, getLanguageData, userInfo, refreshMyData, clearUserCache } =
     toRefs(useGlobalStore());

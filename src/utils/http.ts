@@ -2,6 +2,7 @@ import Toast from '@/utils/Toast';
 import { notification } from 'ant-design-vue';
 import Axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import useGlobalStore from '@/store/global';
+import { history } from 'swico';
 
 const CancelToken = Axios.CancelToken;
 
@@ -68,7 +69,7 @@ instance.interceptors.response.use(
                     return;
                 }
                 isNotifying = true;
-                Swico.history.push({ name: 'auth-login' });
+                history.push({ name: 'auth-login' });
                 return Promise.reject(new AxiosError('登录状态已失效，请重新登录', '401'));
             case 403:
                 //登录失败（例如非管理员）
@@ -116,7 +117,7 @@ const handleRes = async (
                     isNotifying = false;
                 });
 
-                Swico.history.push({ name: 'auth-login' });
+                history.push({ name: 'auth-login' });
 
                 return;
             default:

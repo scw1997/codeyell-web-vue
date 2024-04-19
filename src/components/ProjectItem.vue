@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { toRefs } from 'vue';
+import { history } from 'swico';
 import { GithubOutlined, UserOutlined, ReadOutlined, LikeOutlined } from '@ant-design/icons-vue';
 import { dateFormat, processOSSLogo } from '@/utils/tools';
 import Logo from '@/components/Logo.vue';
@@ -9,8 +9,6 @@ interface PropsType {
 }
 
 const props = defineProps<PropsType>();
-
-const { history } = Swico;
 
 //跳转到项目详情页
 const jumpToProjectDetailPage = (projectId: number) => {

@@ -8,9 +8,8 @@ import { SelectProps, Empty, Alert } from 'ant-design-vue';
 import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import Logo from '@/components/Logo.vue';
 import { useMyPro, useHotPro, useHotNote, useRecentPro } from '@/use/dashboard';
-
+import { history } from 'swico';
 const globalStore = useGlobalStore();
-const { history } = Swico;
 const { getLanguageData } = globalStore;
 const { userInfo, languageData } = storeToRefs(globalStore);
 

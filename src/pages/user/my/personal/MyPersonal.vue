@@ -9,7 +9,8 @@ import type { TabConfigItem } from '@/components/PureTabs.vue';
 import { Component, h, defineComponent, ref, watchEffect } from 'vue';
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
-const { history } = Swico;
+import { history } from 'swico';
+
 const route = useLocation();
 const { query } = route;
 const defaultTab = ['read', 'note', 'integral'].find((item) => item === query.tab) || 'read';

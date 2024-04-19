@@ -8,14 +8,13 @@ import { useLocation } from 'swico';
 import { defineComponent, h, onMounted, ref } from 'vue';
 import { ShareAltOutlined } from '@ant-design/icons-vue';
 import api from '@/api';
-
+import { history } from 'swico';
 interface StatesType {
     detailData: Record<string, any> | null; //当前文章详情信息
 }
 
 const globalStore = useGlobalStore();
 const route = useLocation();
-const { history } = Swico;
 const { userInfo } = storeToRefs(globalStore);
 
 const { id: articleID, invite_id: inviteId } = route.query;

@@ -6,12 +6,13 @@ import { onMounted, ref, toRefs, watch, watchEffect } from 'vue';
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
 import api from '@/api';
+import { history } from 'swico';
 
 interface StatesType {
     projectDataList: any[]; //当前页码搜索的数据列表
     searchParams: Record<string, any>; //搜索参数
 }
-const { history } = Swico;
+
 const route = useLocation();
 const { query } = route;
 const globalStore = useGlobalStore();

@@ -1,12 +1,11 @@
 <script setup>
 import { defineComponent, onMounted, ref } from 'vue';
-import { useLocation, Link } from 'swico';
-import { RouterLink } from 'vue-router';
-const { name } = useLocation();
+import { history } from 'swico';
+console.log('history', history.location);
 
 const click = () => {
-    const { history } = Swico;
-    console.log('xxx', history.location);
+    // console.log('xxx', history.location);
+    history.push({ name: 'project-list' });
 };
 </script>
 

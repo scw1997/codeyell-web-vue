@@ -8,9 +8,9 @@ import api from '@/api';
 import http from '@/utils/http';
 import useGlobalStore from '@/store/global';
 import { useLocation } from 'swico';
+import { history } from 'swico';
 
 const globalStore = useGlobalStore();
-const { history } = Swico;
 const route = useLocation();
 const { query } = toRefs(route);
 const redirect_path = query.value['redirect_path'] || '/';

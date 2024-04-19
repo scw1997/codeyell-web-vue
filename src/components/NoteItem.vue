@@ -5,6 +5,7 @@ import { ref, toRefs, watch, h, defineComponent, reactive } from 'vue';
 import { dateFormat, processOSSLogo } from '@/utils/tools';
 import { ParsedContent, Logo } from '@/components';
 import { Modal, Space, Textarea } from 'ant-design-vue';
+import { history } from 'swico';
 import {
     DislikeFilled,
     DislikeOutlined,
@@ -36,8 +37,7 @@ const emits = defineEmits<{
     reply: [record: PropsType['data']]; //点击回复
     edit: [record: PropsType['data']]; //点击修改
 }>();
-//
-const { history } = Swico;
+
 const dropdownItems = ref<MenuProps['items']>([]);
 const likeStates = ref<{ count_liked: number; count_unliked: number; is_liked: number | null }>({
     count_liked: props.data?.count_liked,

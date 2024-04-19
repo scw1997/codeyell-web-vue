@@ -29,7 +29,7 @@ import { useLocation, Outlet } from 'swico';
 import useGlobalStore from '@/store/global';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { processOSSLogo } from '@/utils/tools';
-import { useRoute } from 'vue-router';
+import { history } from 'swico';
 
 import { watch, ref, toRefs, watchEffect, reactive } from 'vue';
 
@@ -37,7 +37,6 @@ import Loading from '@/components/Loading.vue';
 import { App as AntdApp } from 'ant-design-vue/es/components';
 
 const { Header, Content, Footer } = Layout;
-const { history } = Swico;
 
 const route = useLocation();
 

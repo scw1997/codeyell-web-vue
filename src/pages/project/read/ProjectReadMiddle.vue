@@ -10,6 +10,7 @@ import { storeToRefs } from 'pinia';
 import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { useLocation } from 'swico';
 import { MenuClickEventHandler } from 'ant-design-vue/es/menu/src/interface';
+import { history } from 'swico';
 
 export type Editor = monaco.editor.IStandaloneCodeEditor | null;
 interface PropsType {
@@ -43,7 +44,7 @@ const {
     isJoined
 } = storeToRefs(readStore);
 const { token } = storeToRefs(globalStore);
-const { history } = Swico;
+
 const route = useLocation();
 const { file: initActiveFileData, id: projectId } = route.query;
 const states = ref<StatesType>({

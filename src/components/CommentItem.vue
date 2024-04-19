@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import api from '@/api';
 import { ParsedContent } from '@/components';
-import readStore from '@/store/read';
+import { history } from 'swico';
 import useGlobalStore from '@/store/global';
 import http from '@/utils/http';
 import { authFunc, dateFormat, EMPTY, processOSSLogo } from '@/utils/tools';
@@ -23,7 +23,6 @@ import Toast from '@/utils/Toast';
 import { storeToRefs } from 'pinia';
 import { MenuClickEventHandler } from 'ant-design-vue/es/menu/src/interface';
 
-const { history } = Swico;
 interface PropsType {
     data: Record<string, any>; //当前评论相关数据
     type?: 'detail' | 'read';

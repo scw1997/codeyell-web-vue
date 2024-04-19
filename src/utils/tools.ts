@@ -4,6 +4,7 @@ import OSS from 'ali-oss';
 import http from '@/utils/http';
 import api from '@/api';
 import Toast from '@/utils/Toast';
+import { history } from 'swico';
 
 export const EMPTY: EmptyObject = Object.create(null);
 
@@ -33,7 +34,7 @@ export const authFunc: (func: any) => (...args: any[]) => void = (func) => {
         };
     } else {
         return () => {
-            Swico.history.push({ name: 'auth-login' });
+            history.push({ name: 'auth-login' });
         };
     }
 };

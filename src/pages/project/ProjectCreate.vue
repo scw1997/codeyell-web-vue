@@ -9,6 +9,7 @@ import http, { notifyError } from '@/utils/http';
 import api from '@/api';
 import { debounce, Reg } from '@/utils/tools';
 import { Title } from '@/components';
+import { history } from 'swico';
 import { FormItem, InputSearch } from 'ant-design-vue';
 interface StatesType {
     existedProId?: string; //当前所拉取项目已存在时的项目id，为undefined说明不存在，可以创建
@@ -17,7 +18,6 @@ interface StatesType {
     branchAndTagData: { branchList: SelectProps['options']; tagList: SelectProps['options'] }; //格式化当前所拉项目的分支和tag数据
 }
 
-const { history } = Swico;
 const globalStore = useGlobalStore();
 const { getLanguageData } = globalStore;
 const { languageData } = storeToRefs(globalStore);

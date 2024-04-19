@@ -18,8 +18,8 @@ import {
     TypographyText
 } from 'ant-design-vue';
 import { defineComponent, h, onMounted, ref, watch } from 'vue';
+import { history } from 'swico';
 
-const { history } = Swico;
 const globalStore = useGlobalStore();
 const { userInfo } = storeToRefs(globalStore);
 const route = useLocation();

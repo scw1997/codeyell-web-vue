@@ -10,10 +10,9 @@ import useGlobalStore from '@/store/global';
 import { useLocation } from 'swico';
 import { storeToRefs } from 'pinia';
 import { CountDown } from '@/components';
-
+import { history } from 'swico';
 const globalStore = useGlobalStore();
 
-const { history } = Swico;
 const route = useLocation();
 const props = withDefaults(defineProps<{ isControl?: boolean }>(), { isControl: false });
 const formRef = ref<FormInstance>();

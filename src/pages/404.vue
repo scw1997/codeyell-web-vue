@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { history } from 'swico';
 import { Result } from 'ant-design-vue';
-const { history } = Swico;
 
 const type = 'primary';
 </script>

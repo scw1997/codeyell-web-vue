@@ -12,6 +12,7 @@ import http from '@/utils/http';
 import MyPersonalReading from '@/pages/user/my/personal/MyPersonalReading.vue';
 import MyPersonalNotes from '@/pages/user/my/personal/MyPersonalNotes.vue';
 import { processOSSLogo } from '@/utils/tools';
+import { history } from 'swico';
 
 interface StatesType {
     tabConfig: TabConfigItem[];
@@ -19,7 +20,6 @@ interface StatesType {
     mainContent: Component | null;
 }
 const route = useLocation();
-const { history } = Swico;
 const userId = route.query.id;
 
 const states = ref<StatesType>({

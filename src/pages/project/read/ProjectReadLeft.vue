@@ -20,8 +20,7 @@ import { onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { Key } from 'ant-design-vue/es/_util/type';
 import { useSearch } from '@/use/projectRead';
-
-const { history } = Swico;
+import { history } from 'swico';
 
 interface StatesType {
     mode: 'directory' | 'search'; //查看模式，目录模式/搜索模式
