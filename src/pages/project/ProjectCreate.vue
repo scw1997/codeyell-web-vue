@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { FormInstance, RadioChangeEvent, RadioGroup, Radio, SelectProps } from 'ant-design-vue';
-import { useLocation } from 'swico';
+import { useLocation, useNav } from 'swico';
 import { onMounted, ref, toRefs, watch } from 'vue';
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
@@ -21,6 +21,7 @@ interface StatesType {
 const globalStore = useGlobalStore();
 const { getLanguageData } = globalStore;
 const { languageData } = storeToRefs(globalStore);
+const nav = useNav();
 
 const states = ref<StatesType>({
     existedProId: null,
@@ -91,7 +92,7 @@ const handleCreatClick = debounce(async (values: Record<string, any>) => {
         Toast.success('创建成功');
 
         //拿到创建后的项目id跳转到项目详情页
-        history.push({ name: 'project-detail', query: { id: data?.project_id } });
+        nav({ name: 'project-detail', query: { id: data?.project_id } });
     } else {
         notifyError(code, msg);
     }
@@ -169,7 +170,7 @@ watch(
                             <AButton
                                 @click="
                                     () => {
-                                        history.push({
+                                        nav({
                                             name: 'project-detail',
                                             query: { id: states.existedProId }
                                         });

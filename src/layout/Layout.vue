@@ -25,7 +25,7 @@ import { createPinia, storeToRefs } from 'pinia';
 
 import zhCN from 'ant-design-vue/locale/zh_CN';
 import { PureTabs } from '@/components';
-import { useLocation, Outlet } from 'swico';
+import { useLocation, Outlet, useNav } from 'swico';
 import useGlobalStore from '@/store/global';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { processOSSLogo } from '@/utils/tools';
@@ -39,7 +39,7 @@ import { App as AntdApp } from 'ant-design-vue/es/components';
 const { Header, Content, Footer } = Layout;
 
 const route = useLocation();
-
+const nav = useNav();
 const { userInfo } = storeToRefs(useGlobalStore());
 
 const navTabConfig = [
@@ -58,19 +58,19 @@ const navTabConfig = [
 ];
 
 const jumpToIndex = () => {
-    history.push({ name: 'home' });
+    nav({ name: 'home' });
 };
 const handleSearch = (value: string) => {
     //跳转搜索结果页
-    history.push({ name: 'project-search', query: { keyword: value } });
+    nav({ name: 'project-search', query: { keyword: value } });
 };
 
 const handleTabChange = (key) => {
-    history.push({ name: key });
+    nav({ name: key });
 };
 
 const handleAvatarClick = () => {
-    history.push({ name: 'my-personal' });
+    nav({ name: 'my-personal' });
 };
 </script>
 
@@ -129,7 +129,7 @@ const handleAvatarClick = () => {
                                             class="cp"
                                             @click="
                                                 () => {
-                                                    history.push({
+                                                    nav({
                                                         name: 'auth-login',
                                                         query:
                                                             route.name === 'home'
@@ -151,7 +151,7 @@ const handleAvatarClick = () => {
                                             class="cp"
                                             @click="
                                                 () => {
-                                                    history.push({ name: 'auth-login' });
+                                                    nav({ name: 'auth-login' });
                                                 }
                                             "
                                         >

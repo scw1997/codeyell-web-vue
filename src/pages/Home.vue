@@ -8,7 +8,7 @@ import { SelectProps, Empty, Alert } from 'ant-design-vue';
 import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import Logo from '@/components/Logo.vue';
 import { useMyPro, useHotPro, useHotNote, useRecentPro } from '@/use/dashboard';
-import { history } from 'swico';
+import { history, useNav } from 'swico';
 const globalStore = useGlobalStore();
 const { getLanguageData } = globalStore;
 const { userInfo, languageData } = storeToRefs(globalStore);
@@ -35,6 +35,7 @@ const { getMyProjectData, myProData } = useMyPro();
 const { getRecentProjectData, recentProData } = useRecentPro();
 const { getHotProjectData, hotProData } = useHotPro();
 const { hotNoteStatesRef, getHotNoteData } = useHotNote();
+const nav = useNav();
 
 //当前场景添加‘全部’选项
 const formatLanguageData = computed<SelectProps['options']>(() => {
@@ -42,7 +43,7 @@ const formatLanguageData = computed<SelectProps['options']>(() => {
 });
 //跳转到项目详情
 const handleJumpToProjectDetail = (id: number | string) => {
-    history.push({ name: 'project-detail', query: { id } });
+    nav({ name: 'project-detail', query: { id } });
 };
 
 //跳转到git仓库地址
@@ -58,7 +59,7 @@ const getLanguageName = (languageValue) => {
 };
 //跳转到文章详情
 const handleJumpToArticleDetail = () => {
-    history.push({ name: 'article-detail', query: { id: '658b9ce84a0dff467027438d' } });
+    nav({ name: 'article-detail', query: { id: '658b9ce84a0dff467027438d' } });
 };
 
 onMounted(() => {
@@ -214,7 +215,7 @@ watchEffect(() => {
                             class="cp"
                             @click="
                                 () => {
-                                    history.push({ name: 'my-personal' });
+                                    nav({ name: 'my-personal' });
                                 }
                             "
                             shape="square"
@@ -328,7 +329,7 @@ watchEffect(() => {
                     <AButton
                         @click="
                             () => {
-                                history.push({ name: 'project-create' });
+                                nav({ name: 'project-create' });
                             }
                         "
                         style="width: 100%"

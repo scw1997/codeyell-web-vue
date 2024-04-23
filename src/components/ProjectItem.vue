@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { history } from 'swico';
+import { history, useNav } from 'swico';
 import { GithubOutlined, UserOutlined, ReadOutlined, LikeOutlined } from '@ant-design/icons-vue';
 import { dateFormat, processOSSLogo } from '@/utils/tools';
 import Logo from '@/components/Logo.vue';
@@ -9,10 +9,10 @@ interface PropsType {
 }
 
 const props = defineProps<PropsType>();
-
+const nav = useNav();
 //跳转到项目详情页
 const jumpToProjectDetailPage = (projectId: number) => {
-    history.push({ name: 'project-detail', query: { id: projectId } });
+    nav({ name: 'project-detail', query: { id: projectId } });
 };
 
 //跳转到git仓库地址

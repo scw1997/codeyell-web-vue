@@ -7,9 +7,9 @@ import Toast from '@/utils/Toast';
 import api from '@/api';
 import http from '@/utils/http';
 import useGlobalStore from '@/store/global';
-import { useLocation } from 'swico';
+import { useLocation, useNav } from 'swico';
 import { history } from 'swico';
-
+const nav = useNav();
 const globalStore = useGlobalStore();
 const route = useLocation();
 const { query } = toRefs(route);
@@ -35,7 +35,7 @@ const handleFormFinish = debounce(async (values: Record<string, any>) => {
     if (props.isControl) {
         emits('success');
     } else {
-        history.push(redirect_path as string);
+        nav(redirect_path as string);
     }
 }, 200);
 </script>
@@ -86,9 +86,7 @@ const handleFormFinish = debounce(async (values: Record<string, any>) => {
                 class="cp"
                 @click="
                     () => {
-                        isControl
-                            ? emits('retrieveClick')
-                            : history.push({ name: 'auth-retrieve' });
+                        isControl ? emits('retrieveClick') : nav({ name: 'auth-retrieve' });
                     }
                 "
             >
@@ -98,7 +96,7 @@ const handleFormFinish = debounce(async (values: Record<string, any>) => {
                 class="cp"
                 @click="
                     () => {
-                        isControl ? emits('signClick') : history.push({ name: 'auth-sign' });
+                        isControl ? emits('signClick') : nav({ name: 'auth-sign' });
                     }
                 "
             >

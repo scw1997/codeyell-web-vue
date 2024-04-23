@@ -8,14 +8,14 @@ import allIcons, {
 } from '@ant-design/icons-vue';
 import useGlobalStore from '@/store/global';
 import { onMounted, toRefs, h } from 'vue';
-import { useLocation, Outlet } from 'swico';
+import { useLocation, Outlet, useNav } from 'swico';
 import { history } from 'swico';
 
 const globalStore = useGlobalStore();
 const { refreshMyData, clearUserCache } = globalStore;
 const { userInfo } = toRefs(globalStore);
 const { path, query, name: routeName } = toRefs(useLocation());
-
+const nav = useNav();
 const navList = [
     {
         icon: HomeOutlined,
@@ -38,7 +38,7 @@ const handleGoPath = (pathName: string) => {
     if (pathName === 'auth-login') {
         clearUserCache();
     }
-    history.replace({ name: pathName });
+    nav({ name: pathName });
 };
 
 onMounted(() => {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Title, ProjectItem, Pagination } from '@/components';
 import { Radio, RadioGroup, RadioButton, Empty } from 'ant-design-vue';
-import { useLocation } from 'swico';
+import { useLocation, useNav } from 'swico';
 import { onMounted, ref, toRefs, watch, watchEffect } from 'vue';
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
@@ -14,6 +14,7 @@ interface StatesType {
 }
 
 const route = useLocation();
+const nav = useNav();
 const { query } = route;
 const globalStore = useGlobalStore();
 const { getLanguageData } = globalStore;
@@ -47,7 +48,7 @@ watch(
 
 //跳转到项目详情
 const handleJumpToProjectList = (id: number | string) => {
-    history.push({
+    nav({
         name: 'project-list',
         query: { language_id: id, order_by: states.value.searchParams.order_by }
     });
@@ -55,7 +56,7 @@ const handleJumpToProjectList = (id: number | string) => {
 const setOrderBy = (order: string) => {
     // router.push(`/project?language_id=${language_id}&order_by=${order}`);
 
-    history.push({
+    nav({
         name: 'project-list',
         query: { language_id: states.value.searchParams.language_id, order_by: order }
     });

@@ -3,7 +3,7 @@ import { toRefs } from 'vue';
 import { Avatar } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { processOSSLogo } from '@/utils/tools';
-import { history } from 'swico';
+import { history, useNav } from 'swico';
 
 interface RankItemProps {
     data: Record<string, any> | null;
@@ -11,9 +11,9 @@ interface RankItemProps {
 }
 
 const props = withDefaults(defineProps<RankItemProps>(), { data: null, mode: 'comment' });
-
+const nav = useNav();
 const jumpToUserPublicPage = (userid: number) => {
-    history.push({ name: 'user-public', query: { id: userid } });
+    nav({ name: 'user-public', query: { id: userid } });
 };
 </script>
 

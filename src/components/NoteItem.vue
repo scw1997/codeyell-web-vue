@@ -5,7 +5,7 @@ import { ref, toRefs, watch, h, defineComponent, reactive } from 'vue';
 import { dateFormat, processOSSLogo } from '@/utils/tools';
 import { ParsedContent, Logo } from '@/components';
 import { Modal, Space, Textarea } from 'ant-design-vue';
-import { history } from 'swico';
+import { history, useNav } from 'swico';
 import {
     DislikeFilled,
     DislikeOutlined,
@@ -29,6 +29,7 @@ interface PropsType {
 }
 const { userInfo, token } = storeToRefs(useGlobalStore());
 const readStore = useReadStore();
+const nav = useNav();
 const { setRightShowMode } = readStore;
 const { isJoined } = storeToRefs(readStore);
 const props = defineProps<PropsType>();
@@ -80,7 +81,7 @@ watch(
 
 //跳转到项目阅读页
 const jumpToProjectReadPage = (id: number) => {
-    history.push({ name: 'project-read', query: { id } });
+    nav({ name: 'project-read', query: { id } });
 };
 
 //跳转到指定用户公开页
@@ -91,21 +92,21 @@ const jumpToPublicUserPage = (userid: number) => {
         if (props.type === 'read') {
             window.open('/my/personal_page');
         } else {
-            history.push({ name: 'my-personal' });
+            nav({ name: 'my-personal' });
         }
     } else {
         //其他用户头像
         if (props.type === 'read') {
             window.open(`/user/public?id=${userid}`);
         } else {
-            history.push({ name: 'user-public', query: { id: userid } });
+            nav({ name: 'user-public', query: { id: userid } });
         }
     }
 };
 
 //跳转到项目详情页
 const jumpToProjectDetailPage = (id: number) => {
-    history.push({ name: 'project-detail', query: { id } });
+    nav({ name: 'project-detail', query: { id } });
 };
 
 //举报评论/注解

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useLocation } from 'swico';
+import { useLocation, useNav } from 'swico';
 import { Title, PureTabs, Pagination } from '@/components';
 import { Radio, RadioGroup, RadioButton, Empty, Card } from 'ant-design-vue';
 import { Component, onMounted, ref, h, watch, watchEffect } from 'vue';
@@ -20,6 +20,7 @@ interface StatesType {
     mainContent: Component | null;
 }
 const route = useLocation();
+const nav = useNav();
 const userId = route.query.id;
 
 const states = ref<StatesType>({
@@ -41,7 +42,7 @@ const userStates = ref<Record<string, any> | null>(null); //当前指定用户�
 
 //未携带用户id参数
 if (!userId) {
-    history.replace({ name: '404' });
+    nav({ name: '404' }, { replace: true });
 }
 
 const handleTabChange = (key: string) => {

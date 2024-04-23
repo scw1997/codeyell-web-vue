@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { history } from 'swico';
+import { history, useNav } from 'swico';
 import { Result } from 'ant-design-vue';
-
+const nav = useNav();
 const type = 'primary';
 </script>
 <template>
@@ -10,7 +10,7 @@ const type = 'primary';
             <AButton
                 @click="
                     () => {
-                        history.replace('/');
+                        nav('/', { replace: true });
                     }
                 "
             >

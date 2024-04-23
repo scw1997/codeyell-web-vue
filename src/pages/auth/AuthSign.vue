@@ -7,11 +7,12 @@ import Toast from '@/utils/Toast';
 import api from '@/api';
 import http from '@/utils/http';
 import useGlobalStore from '@/store/global';
-import { useLocation } from 'swico';
+import { useLocation, useNav } from 'swico';
 import { history } from 'swico';
 import { CountDown } from '@/components';
 
 const globalStore = useGlobalStore();
+const nav = useNav();
 const route = useLocation();
 //分享链接中的邀请人id
 const inviteId = route.query['invite_id'] || undefined;
@@ -53,7 +54,7 @@ const handleSignClick = async () => {
         if (props.isControl) {
             emits('success');
         } else {
-            history.push({ name: 'auth-login' });
+            nav({ name: 'auth-login' });
         }
     } finally {
         submitLoading.value = false;
@@ -158,9 +159,7 @@ onMounted(() => {
                 class="cp"
                 @click="
                     () => {
-                        isControl
-                            ? emits('retrieveClick')
-                            : history.push({ name: 'auth-retrieve' });
+                        isControl ? emits('retrieveClick') : nav({ name: 'auth-retrieve' });
                     }
                 "
             >
@@ -170,7 +169,7 @@ onMounted(() => {
                 class="cp"
                 @click="
                     () => {
-                        isControl ? emits('login') : history.push({ name: 'auth-login' });
+                        isControl ? emits('login') : nav({ name: 'auth-login' });
                     }
                 "
             >

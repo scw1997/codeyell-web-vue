@@ -1,11 +1,10 @@
 <script setup>
 import { defineComponent, onMounted, ref } from 'vue';
-import { history } from 'swico';
-console.log('history', history.location);
-
+import { history, useNav } from 'swico';
+const nav = useNav();
 const click = () => {
     // console.log('xxx', history.location);
-    history.push({ name: 'project-list' });
+    nav({ name: 'project-list', query: { d: 1 } });
 };
 </script>
 

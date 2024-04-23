@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useLocation } from 'swico';
+import { useLocation, useNav } from 'swico';
 import { Title, ProjectItem, Pagination, Logo } from '@/components';
 import { Empty } from 'ant-design-vue';
 import { onMounted, ref, toRefs, watch } from 'vue';
@@ -13,6 +13,7 @@ import { history } from 'swico';
 const globalStore = useGlobalStore();
 const route = useLocation();
 const { getLanguageData } = globalStore;
+const nav = useNav();
 
 interface StatesType {
     curSearchDataList: any[]; //当前页码搜索的数据列表
@@ -27,7 +28,7 @@ const states = ref<StatesType>({
 
 //跳转到项目详情
 const handleJumpToProjectDetail = (id: number | string) => {
-    history.push({ name: 'project-detail', query: { id } });
+    nav({ name: 'project-detail', query: { id } });
 };
 //获取最近项目列表
 const getRecentData = async () => {
@@ -152,7 +153,7 @@ const getLanguageName = (languageId) =>
                     <AButton
                         @click="
                             () => {
-                                history.push({ name: 'project-create' });
+                                nav({ name: 'project-create' });
                             }
                         "
                         style="width: 100%"

@@ -20,7 +20,7 @@ import { processOSSLogo } from '@/utils/tools';
 import { CurNoteModalData, TabItem } from '@/store/read';
 import useReadStore from '@/store/read';
 import { storeToRefs } from 'pinia';
-import { useLocation, history } from 'swico';
+import { useLocation, history, useNav } from 'swico';
 import {
     Component,
     defineComponent,
@@ -63,7 +63,7 @@ const {
 const { token, userInfo } = storeToRefs(globalStore);
 
 const { modal } = App.useApp();
-
+const nav = useNav();
 const noteModel = defineModel({ default: '' });
 
 const modalTitle = shallowRef<Component>(null);
@@ -72,10 +72,10 @@ const modalTitle = shallowRef<Component>(null);
 const goBack = () => {
     if (!isPush.value) {
         //不是从项目详情跳转过来的情况
-        history.replace({ name: 'project-detail', query: { id: projectId } });
+        nav({ name: 'project-detail', query: { id: projectId } });
     } else {
         //返回到项目详情页
-        history.back();
+        nav(-1);
     }
 };
 

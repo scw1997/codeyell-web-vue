@@ -7,13 +7,14 @@ import Toast from '@/utils/Toast';
 import api from '@/api';
 import http from '@/utils/http';
 import useGlobalStore from '@/store/global';
-import { useLocation } from 'swico';
+import { useLocation, useNav } from 'swico';
 import { storeToRefs } from 'pinia';
 import { CountDown } from '@/components';
 import { history } from 'swico';
 const globalStore = useGlobalStore();
 
 const route = useLocation();
+const nav = useNav();
 const props = withDefaults(defineProps<{ isControl?: boolean }>(), { isControl: false });
 const formRef = ref<FormInstance>();
 const submitLoading = ref<boolean>(false);
@@ -50,7 +51,7 @@ const handleSubmit = async (values: Record<string, any>) => {
         if (props.isControl) {
             emits('success');
         } else {
-            history.push({ name: 'auth-login' });
+            nav({ name: 'auth-login' });
         }
     } finally {
         submitLoading.value = false;
@@ -130,7 +131,7 @@ const handleSubmit = async (values: Record<string, any>) => {
                 class="cp"
                 @click="
                     () => {
-                        isControl ? emits('loginClick') : history.push({ name: 'auth-login' });
+                        isControl ? emits('loginClick') : nav({ name: 'auth-login' });
                     }
                 "
             >
@@ -140,7 +141,7 @@ const handleSubmit = async (values: Record<string, any>) => {
                 class="cp"
                 @click="
                     () => {
-                        isControl ? emits('signClick') : history.push({ name: 'auth-sign' });
+                        isControl ? emits('signClick') : nav({ name: 'auth-sign' });
                     }
                 "
             >

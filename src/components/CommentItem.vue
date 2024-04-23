@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import api from '@/api';
 import { ParsedContent } from '@/components';
-import { history } from 'swico';
+import { history, useNav } from 'swico';
 import useGlobalStore from '@/store/global';
 import http from '@/utils/http';
 import { authFunc, dateFormat, EMPTY, processOSSLogo } from '@/utils/tools';
@@ -36,6 +36,7 @@ const emits = defineEmits<{
 }>();
 
 const { isJoined, setRightShowMode } = useReadStore();
+const nav = useNav();
 const { userInfo, token } = storeToRefs(useGlobalStore());
 const { modal } = App.useApp();
 let complaintValue = ref<string>('');
@@ -113,14 +114,14 @@ const jumpToPublicUserPage = (userid: number) => {
         if (props.type === 'read') {
             window.open('/my/personal_page');
         } else {
-            history.push({ name: 'my-personal' });
+            nav({ name: 'my-personal' });
         }
     } else {
         //其他用户头像
         if (props.type === 'read') {
             window.open(`/user/public?id=${userid}`);
         } else {
-            history.push({ name: 'user-public', query: { id: userid } });
+            nav({ name: 'user-public', query: { id: userid } });
         }
     }
 };

@@ -8,8 +8,8 @@ import { debounce, uploadFile } from '@/utils/tools';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons-vue';
 import { Title } from '@/components';
 import useGlobalStore from '@/store/global';
-import { history } from 'swico';
-
+import { history, useNav } from 'swico';
+const nav = useNav();
 const formRef = ref<FormInstance>();
 const { languageData, getLanguageData, userInfo, refreshMyData, clearUserCache } =
     toRefs(useGlobalStore());
@@ -60,7 +60,7 @@ const handleUpdatePwdFormFinish = debounce(async (formValue: Record<string, any>
     await http.post(api.user.updateMyPwd, { old_password, new_password });
     Toast.success('修改成功，请用新密码重新登录');
     clearUserCache.value();
-    history.push({ name: 'auth-login' });
+    nav({ name: 'auth-login' });
 }, 200);
 
 //基本信息校验通过，点击保存
