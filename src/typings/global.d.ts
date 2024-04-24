@@ -13,3 +13,7 @@ declare const API_HOST: string;
 type EmptyObject = {
     [K in PropertyKey]: never;
 };
+interface Window {
+    routerBase: string;
+    publicPath: string;
+}
