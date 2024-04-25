@@ -33,7 +33,7 @@
   "license": "ISC",
   "dependencies": {
     "vue": "~3.4.14",
-    "swico": "0.8.0",
+    "swico": "0.8.1",
     "@ant-design/icons-vue": "^7.0.1",
     "@kangc/v-md-editor": "^2.3.18",
     "ali-oss": "^6.17.1",
@@ -58,7 +58,7 @@
     "webpack-cli": "5.1.4",
     "webpack-dev-server": "4.15.2",
     "webpack-merge": "5.9.0",
-    "webpackbar": "6.0.0",
+    "webpackbar": "6.0.1",
     "@babel/types": "7.23.9",
     "@commitlint/cli": "18.5.0",
     "@commitlint/config-conventional": "18.5.0",
