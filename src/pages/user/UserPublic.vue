@@ -2,7 +2,7 @@
 import { useLocation, useNav } from 'swico';
 import { Title, PureTabs, Pagination } from '@/components';
 import { Radio, RadioGroup, RadioButton, Empty, Card } from 'ant-design-vue';
-import { Component, onMounted, ref, h, watch, watchEffect } from 'vue';
+import vue, { onMounted, ref, h, watch, watchEffect } from 'vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
@@ -17,7 +17,7 @@ import { history } from 'swico';
 interface StatesType {
     tabConfig: TabConfigItem[];
     activeKey: TabConfigItem['key'];
-    mainContent: Component | null;
+    mainContent: any;
 }
 const route = useLocation();
 const nav = useNav();

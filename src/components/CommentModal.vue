@@ -5,7 +5,7 @@ import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
 import '@kangc/v-md-editor/lib/theme/style/github.css';
 import { Drawer } from 'ant-design-vue';
 import { uploadFile } from '@/utils/tools';
-import { h, isVNode, Slot, toRefs, useCssModule, watch } from 'vue';
+import { h, isVNode, toRefs, useCssModule, watch } from 'vue';
 
 import hljs from 'highlight.js';
 

@@ -6,7 +6,7 @@ import Integral from '@/pages/user/my/personal/MyPersonalIntegral.vue';
 import { useLocation } from 'swico';
 import { Title, PureTabs } from '@/components';
 import type { TabConfigItem } from '@/components/PureTabs.vue';
-import { Component, h, defineComponent, ref, watchEffect } from 'vue';
+import vue, { h, defineComponent, ref, watchEffect } from 'vue';
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
 import { history } from 'swico';
@@ -23,7 +23,7 @@ type StatesType = {
 };
 // 定义各个模块的渲染组件
 
-const componentMap: Record<'read' | 'note' | 'integral', Component> = {
+const componentMap: Record<'read' | 'note' | 'integral', vue.Component> = {
     integral: Integral,
     read: h(Card, { class: 'main-card' }, () => h(Reading)),
     note: h(Card, { class: 'main-card' }, () => h(Notes))

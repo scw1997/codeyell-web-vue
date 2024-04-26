@@ -21,17 +21,7 @@ import { CurNoteModalData, TabItem } from '@/store/read';
 import useReadStore from '@/store/read';
 import { storeToRefs } from 'pinia';
 import { useLocation, history, useNav } from 'swico';
-import {
-    Component,
-    defineComponent,
-    h,
-    markRaw,
-    onMounted,
-    onUnmounted,
-    ref,
-    shallowRef,
-    watch
-} from 'vue';
+import { defineComponent, h, markRaw, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue';
 
 const route = useLocation();
 const { id: projectId, invite_id: inviteId } = route.query;
@@ -66,7 +56,7 @@ const { modal } = App.useApp();
 const nav = useNav();
 const noteModel = defineModel({ default: '' });
 
-const modalTitle = shallowRef<Component>(null);
+const modalTitle = shallowRef(null);
 
 //阅读页点击返回
 const goBack = () => {

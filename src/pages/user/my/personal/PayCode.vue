@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { QRCode, Empty } from 'ant-design-vue';
-import { Component, defineComponent, onMounted, ref, toRefs } from 'vue';
+import { defineComponent, onMounted, ref, toRefs } from 'vue';
 import wxPayLogo from '@/assets/wx_pay_logo.png';
 import http from '@/utils/http';
 import api from '@/api';
