@@ -5,7 +5,7 @@ import { GithubOutlined, ReadOutlined, UserAddOutlined, UserOutlined } from '@an
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
 import { SelectProps, Empty, Alert } from 'ant-design-vue';
-import { computed, onMounted, ref, watch, watchEffect } from 'vue';
+import { computed, onMounted, ref, watch, watchEffect, Component } from 'vue';
 import Logo from '@/components/Logo.vue';
 import { useMyPro, useHotPro, useHotNote, useRecentPro } from '@/use/dashboard';
 import { history, useNav } from 'swico';

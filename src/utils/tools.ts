@@ -45,7 +45,6 @@ export const authFunc: (func: any) => (...args: any[]) => void = (func) => {
  */
 export const dateFormat = (timeStamp: number | string) => {
     const length = String(timeStamp).length;
-
     const date = new Date(parseInt(`${length === 10 ? `${timeStamp}000` : timeStamp}`));
     return dayjs(date).format('YYYY-MM-DD HH:mm:ss');
 };

@@ -1,6 +1,6 @@
 {
   "name": "codeyell-web-vue",
-  "version": "1.1.0",
+  "version": "1.0.0",
   "description": "codeyell-web-vue",
   "main": "index.js",
   "scripts": {
@@ -33,7 +33,7 @@
   "license": "ISC",
   "dependencies": {
     "vue": "~3.4.14",
-    "swico": "0.8.3-beta1",
+    "swico": "0.8.3",
     "@ant-design/icons-vue": "^7.0.1",
     "@kangc/v-md-editor": "^2.3.18",
     "ali-oss": "^6.17.1",
