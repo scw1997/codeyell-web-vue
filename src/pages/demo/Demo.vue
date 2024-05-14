@@ -4,12 +4,13 @@ import { history, useNav } from 'swico';
 const nav = useNav();
 const click = () => {
     // console.log('xxx', history.location);
-    nav({ name: 'project-list', query: { d: 1 } });
+    // nav({ name: 'demo1', state: { d: 1, c: 2 } });
+    history.push({ name: 'demo1', state: { d: 1, e: 3 } });
 };
 </script>
 
 <template>
-    <AButton @click="click">选项</AButton>
+    <AButton @click="click">Demo</AButton>
 </template>
 
 <style scoped></style>

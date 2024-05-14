@@ -3,6 +3,11 @@ export const devRoutes = [
         path: '/demo',
         name: 'demo',
         component: 'demo/Demo'
+    },
+    {
+        path: '/demo1',
+        name: 'demo1',
+        component: 'demo/Demo1'
     }
 ];
 
