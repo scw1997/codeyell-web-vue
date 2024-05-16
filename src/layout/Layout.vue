@@ -31,10 +31,11 @@ import { UserOutlined } from '@ant-design/icons-vue';
 import { processOSSLogo } from '@/utils/tools';
 import { history } from 'swico';
 
-import { watch, ref, toRefs, watchEffect, reactive } from 'vue';
+import { watch, ref, toRefs, watchEffect, reactive, onErrorCaptured } from 'vue';
 
 import Loading from '@/components/Loading.vue';
 import { App as AntdApp } from 'ant-design-vue/es/components';
+import ErrorBundary from '@/components/ErrorBundary.vue';
 
 const { Header, Content, Footer } = Layout;
 
@@ -179,8 +180,11 @@ const handleAvatarClick = () => {
                     </Header>
                     <Content class="layout-content">
                         <main class="layout-main">
-                            <Outlet />
+                            <ErrorBundary>
+                                <Outlet />
+                            </ErrorBundary>
                         </main>
+
                         <Footer class="layout-footer">
                             <main class="layout-main">
                                 <span class="logo"></span>
