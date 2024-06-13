@@ -14,7 +14,13 @@ const click = () => {
 </script>
 
 <template>
-    <AButton @click="click">Demo</AButton>
+    <AButton @click="click">
+        <span>Demo</span>
+    </AButton>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+span {
+    color: red;
+}
+</style>
