@@ -6,7 +6,7 @@ onMounted(() => {
     // @ts-ignore
 });
 
-console.log('history', a.b);
+console.log('history1', a.b);
 
 const click = () => {
     history.push({ name: 'demo1', state: { d: 1, e: 3 } });
