@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { authFunc } from '@/utils/tools';
-import { h, nextTick, ref, toRefs, watch, watchEffect, withDefaults } from 'vue';
+import { h, nextTick, ref, toRefs, watch, watchEffect } from 'vue';
 import { Modal, Space, Textarea, InputNumber } from 'ant-design-vue';
 import http from '@/utils/http';
 //分页器业务组件
@@ -74,24 +74,24 @@ watch(
         <ACol flex="none">
             <AButton
                 :disabled="states.curPageNo === 1"
-                @click="getData(states.curPageNo - 1)"
                 type="link"
+                @click="getData(states.curPageNo - 1)"
             >
                 上一页
             </AButton>
-            <AButton :disabled="states.isFinish" @click="getData(states.curPageNo + 1)" type="link">
+            <AButton :disabled="states.isFinish" type="link" @click="getData(states.curPageNo + 1)">
                 下一页
             </AButton>
             跳转到：第
             <InputNumber
                 class="page-no-input"
                 :min="1"
+                :value="states.targetPageNo"
                 @change="
                     (value) => {
                         states.targetPageNo = Number(value);
                     }
                 "
-                :value="states.targetPageNo"
             >
                 <template #addonAfter>
                     <span class="cp" @click="getData(states.targetPageNo)">确定</span>

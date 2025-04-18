@@ -58,16 +58,16 @@ watch(
             v-if="type === 'drawer'"
             closable
             height="500px"
-            @close="emits('cancel')"
             :open="open"
-            :getContainer="getContainer"
+            :get-container="getContainer"
             placement="bottom"
-            :rootClassName="style.commentModalDrawer"
+            :root-class-name="style.commentModalDrawer"
+            @close="emits('cancel')"
         >
             <VMdEditor
+                v-model="model"
                 left-toolbar="undo redo clear | h bold italic strikethrough quote | ul ol table hr | link image code "
                 height="100%"
-                v-model="model"
                 :disabled-menus="[]"
                 @upload-image="handleAddImg"
             />
@@ -78,8 +78,12 @@ watch(
                 <ARow justify="space-between">
                     <span class="gray">发表无价值的注解很容易被删除或者惩罚</span>
                     <ASpace size="large">
-                        <AButton @click="emits('cancel')" type="default">取消</AButton>
-                        <AButton @click="emits('ok')" type="primary">确定</AButton>
+                        <AButton type="default" @click="emits('cancel')">
+取消
+</AButton>
+                        <AButton type="primary" @click="emits('ok')">
+确定
+</AButton>
                     </ASpace>
                 </ARow>
             </template>

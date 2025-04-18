@@ -1,26 +1,26 @@
-<script setup>
-import { defineComponent, onMounted, ref } from 'vue';
-import { history, useNav } from 'swico';
-const nav = useNav();
-onMounted(() => {
-    // @ts-ignore
-});
+<script setup lang="ts">
+import { useCssModule } from 'vue';
 
-console.log('history', a.b);
-
-const click = () => {
-    history.push({ name: 'demo1', state: { d: 1, e: 3 } });
-};
+const style = useCssModule('module1');
+console.log('style', style);
 </script>
 
 <template>
-    <AButton @click="click">
-        <span>Demo</span>
-    </AButton>
+    <div :class="style.welcome">
+        <img alt="logo" src="/logo.png" />
+        <h2 style="color: #3a95a7">
+Welcome to Swico
+</h2>
+    </div>
 </template>
 
-<style scoped lang="scss">
-span {
-    color: red;
+<style module="module1" lang="less">
+.welcome {
+    inset: 0 0 0 0;
+    position: absolute;
+    width: 100%;
+    height: max-content;
+    margin: auto;
+    text-align: center;
 }
 </style>
