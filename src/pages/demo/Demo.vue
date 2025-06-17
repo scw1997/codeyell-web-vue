@@ -6,7 +6,7 @@ console.log('style', style);
 </script>
 
 <template>
-    <div :class="style.welcome">
+    <div class="m-2">
         <img alt="logo" src="/logo.png" />
         <h2 style="color: #3a95a7">
 Welcome to Swico
