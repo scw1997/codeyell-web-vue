@@ -39,8 +39,8 @@ importers:
         specifier: ^2.1.7
         version: 2.3.1(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))
       swico:
-        specifier: 2.1.0-beta.7
-        version: 2.1.0-beta.7(@rspack/core@1.3.5)(@types/express@4.17.21)(@types/node@22.14.1)(eslint@9.24.0(jiti@2.4.2))(react@19.1.0)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))(webpack@5.99.5)
+        specifier: 2.1.0
+        version: 2.1.0(@rspack/core@1.3.5)(@types/express@4.17.21)(@types/node@22.14.1)(eslint@9.24.0(jiti@2.4.2))(react@19.1.0)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))(webpack@5.99.5)
       vue:
         specifier: ~3.5.13
         version: 3.5.13(typescript@5.8.3)
@@ -462,8 +462,8 @@ packages:
       '@swc/helpers':
         optional: true
 
-  '@rspack/dev-server@1.1.1':
-    resolution: {integrity: sha512-9r7vOml2SrFA8cvbcJdSan9wHEo1TPXezF22+s5jvdyAAywg8w7HqDol6TPVv64NUonP1DOdyLxZ+6UW6WZiwg==}
+  '@rspack/dev-server@1.1.3':
+    resolution: {integrity: sha512-jWPeyiZiGpbLYGhwHvwxhaa4rsr8CQvsWkWslqeMLb2uXwmyy3UWjUR1q+AhAPnf0gs3lZoFZ1hjBQVecHKUvg==}
     engines: {node: '>= 18.12.0'}
     peerDependencies:
       '@rspack/core': '*'
@@ -4053,8 +4053,8 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  swico@2.1.0-beta.7:
-    resolution: {integrity: sha512-VOQbfep6xfZvlqaZuSr8t8yMH9r+HBYMBJi48FpJgHSkhiX63WjG2Qfj6gMPHGE6NyOcP0RZ1X8AMaSNnBz38Q==}
+  swico@2.1.0:
+    resolution: {integrity: sha512-Y6p8sejFBegx6tLOB9wD3/BLB+aryh8+Q/uxDOATdoA/SdM/alhfskTMn7g61gQrCQXiTMP+Hg2gF1YoBgBepA==}
     engines: {node: '>=20.0.0'}
     hasBin: true
 
@@ -4433,8 +4433,8 @@ packages:
       webpack:
         optional: true
 
-  webpack-dev-server@5.2.0:
-    resolution: {integrity: sha512-90SqqYXA2SK36KcT6o1bvwvZfJFcmoamqeJY7+boioffX9g9C0wjjJRGUrQIuh43pb0ttX7+ssavmj/WN2RHtA==}
+  webpack-dev-server@5.2.2:
+    resolution: {integrity: sha512-QcQ72gh8a+7JO63TAx/6XZf/CWhgMzu5m0QirvPfGvptOusAxG12w2+aua1Jkjr7hzaWDnJ2n6JFeexMHI+Zjg==}
     engines: {node: '>= 18.12.0'}
     hasBin: true
     peerDependencies:
@@ -4988,16 +4988,13 @@ snapshots:
       '@rspack/lite-tapable': 1.0.1
       caniuse-lite: 1.0.30001714
 
-  '@rspack/dev-server@1.1.1(@rspack/core@1.3.5)(@types/express@4.17.21)(webpack@5.99.5)':
+  '@rspack/dev-server@1.1.3(@rspack/core@1.3.5)(@types/express@4.17.21)(webpack@5.99.5)':
     dependencies:
       '@rspack/core': 1.3.5
       chokidar: 3.6.0
-      express: 4.21.2
       http-proxy-middleware: 2.0.9(@types/express@4.17.21)
-      mime-types: 2.1.35
       p-retry: 6.2.1
-      webpack-dev-middleware: 7.4.2(webpack@5.99.5)
-      webpack-dev-server: 5.2.0(webpack@5.99.5)
+      webpack-dev-server: 5.2.2(webpack@5.99.5)
       ws: 8.18.1
     transitivePeerDependencies:
       - '@types/express'
@@ -8798,9 +8795,9 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  swico@2.1.0-beta.7(@rspack/core@1.3.5)(@types/express@4.17.21)(@types/node@22.14.1)(eslint@9.24.0(jiti@2.4.2))(react@19.1.0)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))(webpack@5.99.5):
+  swico@2.1.0(@rspack/core@1.3.5)(@types/express@4.17.21)(@types/node@22.14.1)(eslint@9.24.0(jiti@2.4.2))(react@19.1.0)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))(webpack@5.99.5):
     dependencies:
-      '@rspack/dev-server': 1.1.1(@rspack/core@1.3.5)(@types/express@4.17.21)(webpack@5.99.5)
+      '@rspack/dev-server': 1.1.3(@rspack/core@1.3.5)(@types/express@4.17.21)(webpack@5.99.5)
       '@vue/compiler-sfc': 3.5.13
       chalk: 4.1.2
       chokidar: 3.6.0
@@ -9222,11 +9219,12 @@ snapshots:
     optionalDependencies:
       webpack: 5.99.5
 
-  webpack-dev-server@5.2.0(webpack@5.99.5):
+  webpack-dev-server@5.2.2(webpack@5.99.5):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
       '@types/express': 4.17.21
+      '@types/express-serve-static-core': 4.19.6
       '@types/serve-index': 1.9.4
       '@types/serve-static': 1.15.7
       '@types/sockjs': 0.3.36
