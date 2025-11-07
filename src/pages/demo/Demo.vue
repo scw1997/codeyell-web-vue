@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useCssModule } from 'vue';
+import { Link } from 'swico';
 
 const style = useCssModule('module1');
 console.log('style', style);
@@ -11,6 +12,9 @@ console.log('style', style);
         <h2 style="color: #3a95a7">
 Welcome to Swico
 </h2>
+        <Link :to="{ name: 'demo1', query: { a: '1' } }">
+2323
+</Link>
     </div>
 </template>
 
