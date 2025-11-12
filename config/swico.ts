@@ -7,7 +7,6 @@ import routes from './routes';
 export default defineConfig('base', {
     template: 'vue',
     define: {
-        ENV: env,
         API_HOST: env === 'prod' ? 'https://api.codeyell.com' : 'https://api.codeyell.com'
     },
     router: {

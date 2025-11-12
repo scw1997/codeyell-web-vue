@@ -7,7 +7,10 @@ declare module '*.bmp';
 declare module '*.webp';
 declare module '*.less';
 declare module '*.vue';
-declare const ENV: 'dev' | 'prod';
+//Swico默认注入的全局变量
+declare const SWICO_PUBLIC_PATH: string;
+declare const SWICO_ROUTER_BASE: string;
+declare const SWICO_ENV: 'dev' | 'prod';
 declare const API_HOST: string;
 
 type EmptyObject = {

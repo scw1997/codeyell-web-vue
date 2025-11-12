@@ -29,12 +29,7 @@ import { useLocation, Outlet, useNav } from 'swico';
 import useGlobalStore from '@/store/global';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { processOSSLogo } from '@/utils/tools';
-import { history } from 'swico';
 
-import { watch, ref, toRefs, watchEffect, reactive, onErrorCaptured } from 'vue';
-
-import Loading from '@/components/Loading.vue';
-import { App as AntdApp } from 'ant-design-vue/es/components';
 import ErrorBundary from '@/components/ErrorBundary.vue';
 
 const { Header, Content, Footer } = Layout;
@@ -77,12 +72,12 @@ const handleAvatarClick = () => {
 
 <template>
     <template v-if="route.name">
-        <AConfigProvider :locale="zhCN" v-if="route.name === 'project-read'">
-            <AApp className="layout-app">
+        <AConfigProvider v-if="route.name === 'project-read'" :locale="zhCN">
+            <AApp class-name="layout-app">
                 <Outlet />
             </AApp>
         </AConfigProvider>
-        <AConfigProvider :locale="zhCN" v-else>
+        <AConfigProvider v-else :locale="zhCN">
             <AApp>
                 <Layout class="page-layout">
                     <Header class="layout-header">
@@ -93,7 +88,7 @@ const handleAvatarClick = () => {
                             </section>
                             <section class="item nav-bar">
                                 <PureTabs
-                                    :activeKey="route.name"
+                                    :active-key="route.name"
                                     :config="navTabConfig"
                                     @change="
                                         (key) => {
@@ -103,11 +98,11 @@ const handleAvatarClick = () => {
                                 />
                             </section>
                             <AInputSearch
-                                allowClear
+                                allow-clear
                                 class="item search-bar"
-                                maxLength="50"
-                                @search="handleSearch"
+                                max-length="50"
                                 placeholder="搜索项目"
+                                @search="handleSearch"
                             />
 
                             <section class="item register-login">
@@ -115,10 +110,10 @@ const handleAvatarClick = () => {
                                     <AAvatar
                                         v-if="!!userInfo"
                                         class="avatar cp"
-                                        @click="handleAvatarClick"
                                         :size="40"
                                         shape="square"
                                         :src="processOSSLogo(userInfo?.avatar, true) || null"
+                                        @click="handleAvatarClick"
                                     >
                                         <template #icon>
                                             <UserOutlined />
@@ -161,7 +156,7 @@ const handleAvatarClick = () => {
                                     </template>
 
                                     <ASelect
-                                        defaultValue="chinese"
+                                        default-value="chinese"
                                         :options="[
                                             {
                                                 value: 'chinese',
@@ -212,7 +207,7 @@ const handleAvatarClick = () => {
         </AConfigProvider>
     </template>
 
-    <Loading v-else />
+    <!--    <Loading v-else />-->
 </template>
 
 <style scoped lang="less">

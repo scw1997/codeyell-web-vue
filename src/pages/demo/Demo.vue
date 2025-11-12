@@ -1,30 +1,19 @@
 <script setup lang="ts">
-import { useCssModule } from 'vue';
-import { Link } from 'swico';
+console.log('Swico全局变量', SWICO_PUBLIC_PATH, SWICO_ROUTER_BASE, SWICO_ENV);
 
-const style = useCssModule('module1');
-console.log('style', style);
+const publicPath = SWICO_PUBLIC_PATH;
+const routerBase = SWICO_ROUTER_BASE;
+const env = SWICO_ENV;
 </script>
 
 <template>
-    <div class="m-2">
-        <img alt="logo" src="/logo.png" />
-        <h2 style="color: #3a95a7">
-Welcome to Swico
-</h2>
-        <Link :to="{ name: 'demo1', query: { a: '1' } }">
-2323
-</Link>
-    </div>
+    <div>1111</div>
 </template>
-
-<style module="module1" lang="less">
-.welcome {
-    inset: 0 0 0 0;
-    position: absolute;
-    width: 100%;
-    height: max-content;
-    margin: auto;
-    text-align: center;
+<style scoped>
+.loading-container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>
