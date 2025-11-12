@@ -8,3 +8,4 @@ export { default as CountDown } from './CountDown.vue';
 export { default as Pagination } from './Pagination.vue';
 export { default as ProjectItem } from './ProjectItem.vue';
 export { default as CommentModal } from './CommentModal.vue';
+export { default as Loading } from './Loading.vue';

@@ -24,7 +24,7 @@ import {
 import { createPinia, storeToRefs } from 'pinia';
 
 import zhCN from 'ant-design-vue/locale/zh_CN';
-import { PureTabs } from '@/components';
+import { PureTabs, Loading } from '@/components';
 import { useLocation, Outlet, useNav } from 'swico';
 import useGlobalStore from '@/store/global';
 import { UserOutlined } from '@ant-design/icons-vue';
@@ -73,7 +73,7 @@ const handleAvatarClick = () => {
 <template>
     <template v-if="route.name">
         <AConfigProvider v-if="route.name === 'project-read'" :locale="zhCN">
-            <AApp class-name="layout-app">
+            <AApp class="layout-app">
                 <Outlet />
             </AApp>
         </AConfigProvider>
@@ -207,7 +207,7 @@ const handleAvatarClick = () => {
         </AConfigProvider>
     </template>
 
-    <!--    <Loading v-else />-->
+    <Loading v-else />
 </template>
 
 <style scoped lang="less">
