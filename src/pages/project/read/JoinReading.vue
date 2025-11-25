@@ -8,7 +8,7 @@ import { debounce, EMPTY } from '@/utils/tools';
 import { App, Empty } from 'ant-design-vue';
 import useGlobalStore from '@/store/global';
 import { h, onMounted, ref } from 'vue';
-import { useLocation } from 'swico';
+import { useLocation } from 'swico/vue';
 import { storeToRefs } from 'pinia';
 
 interface StatesType {
@@ -110,10 +110,12 @@ const openMyIntegralPage = () => {
 
 <template>
     <div class="join-reading-root">
-        <h3 class="pt">你尚未加入阅读</h3>
+        <h3 class="pt">
+你尚未加入阅读
+</h3>
         <p>未加入项目只能查看根目录下的注解，加入后可拥有全部权限</p>
         <div class="mb">
-            <AButton @click="handleJoinReading(false)" type="primary">
+            <AButton type="primary" @click="handleJoinReading(false)">
                 花费{{ detailData?.point }}积分立即加入
             </AButton>
             <p class="gray cp mt" @click="openMyIntegralPage">
@@ -129,7 +131,7 @@ const openMyIntegralPage = () => {
                     }}
                 </div>
                 <p>
-                    <AButton @click="handlePay" type="default">
+                    <AButton type="default" @click="handlePay">
                         支付{{ buyPointStates?.buy_fee_yuan }}元，获得{{
                             buyPointStates?.buy_point
                         }}
@@ -138,10 +140,12 @@ const openMyIntegralPage = () => {
                 </p>
             </div>
             <div class="integral-rules">
-                <h3 class="title">积分获取</h3>
+                <h3 class="title">
+积分获取
+</h3>
                 <ol class="list">
                     <template v-if="Number(integralRulesData?.increase?.length)">
-                        <li :key="index" v-for="(item, index) in integralRulesData?.increase">
+                        <li v-for="(item, index) in integralRulesData?.increase" :key="index">
                             {{ item }}
                         </li>
                     </template>
@@ -151,10 +155,12 @@ const openMyIntegralPage = () => {
                         :image="Empty.PRESENTED_IMAGE_SIMPLE"
                     />
                 </ol>
-                <h3 class="title">积分消费</h3>
+                <h3 class="title">
+积分消费
+</h3>
                 <ol class="list">
                     <template v-if="Number(integralRulesData?.decrease?.length)">
-                        <li :key="index" v-for="(item, index) in integralRulesData?.decrease">
+                        <li v-for="(item, index) in integralRulesData?.decrease" :key="index">
                             {{ item }}
                         </li>
                     </template>

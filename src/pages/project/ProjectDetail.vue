@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useLocation, useNav } from 'swico';
+import { useLocation, useNav } from 'swico/vue';
 import { CommentItem, CommentModal, NoteItem, Pagination, Title, Logo } from '@/components';
 import Toast from '@/utils/Toast';
 import { CaretRightOutlined, GithubOutlined, ShareAltOutlined } from '@ant-design/icons-vue';
@@ -18,7 +18,7 @@ import {
     TypographyText
 } from 'ant-design-vue';
 import { defineComponent, h, onMounted, ref, watch } from 'vue';
-import { history } from 'swico';
+import { history } from 'swico/vue';
 
 const globalStore = useGlobalStore();
 const { userInfo } = storeToRefs(globalStore);
@@ -195,30 +195,36 @@ watch(
                                         </ATag>
                                     </span>
 
-                                    <span title="分享" v-if="detailStates?.status === 2">
+                                    <span v-if="detailStates?.status === 2" title="分享">
                                         <ShareAltOutlined
                                             class="cp"
-                                            @click="handleShareClick"
                                             style="font-size: 20px"
+                                            @click="handleShareClick"
                                         />
                                     </span>
                                 </ASpace>
                             </ACol>
                         </ARow>
-                        <div class="description mt">{{ detailStates?.info || '介绍' }}</div>
+                        <div class="description mt">
+                            {{ detailStates?.info || '介绍' }}
+                        </div>
                     </ACol>
                 </ARow>
             </ACard>
 
             <ACard class="bottom-card">
-                <ARow align="middle" v-if="detailStates?.status !== 2" justify="center">
+                <ARow v-if="detailStates?.status !== 2" align="middle" justify="center">
                     <ACol flex="none">
-                        <p class="fail-text" v-if="detailStates?.status === 3">
+                        <p v-if="detailStates?.status === 3" class="fail-text">
                             当前项目创建失败，系统管理员将会1个工作日内处理
                         </p>
                         <template v-if="detailStates?.status === 1">
-                            <p class="fail-text">项目正在创建中，请稍后...</p>
-                            <AButton @click="getInitData" type="link">点击刷新项目状态</AButton>
+                            <p class="fail-text">
+项目正在创建中，请稍后...
+</p>
+                            <AButton type="link" @click="getInitData">
+点击刷新项目状态
+</AButton>
                         </template>
 
                         <span v-else>暂无当前项目信息</span>
@@ -229,24 +235,28 @@ watch(
                     <ARow align="middle" class="pb" justify="space-between">
                         <ACol>
                             <RadioGroup
-                                buttonStyle="solid"
+                                button-style="solid"
                                 class="radio-btns"
+                                :value="states.orderType"
                                 @change="
                                     (e) => {
                                         states.orderType = e.target.value;
                                     }
                                 "
-                                :value="states.orderType"
                             >
-                                <RadioButton value="time">最新注解</RadioButton>
-                                <RadioButton value="liked">热门注解</RadioButton>
+                                <RadioButton value="time">
+最新注解
+</RadioButton>
+                                <RadioButton value="liked">
+热门注解
+</RadioButton>
                             </RadioGroup>
                         </ACol>
                         <ACol>
                             <AButton
                                 :disabled="detailStates?.status !== 2"
-                                @click="handleJumpToRead(detailStates?.id)"
                                 type="primary"
+                                @click="handleJumpToRead(detailStates?.id)"
                             >
                                 在线阅读源码
                             </AButton>
@@ -254,19 +264,19 @@ watch(
                     </ARow>
                     <template v-if="states.commentList?.length > 0">
                         <div
-                            class="pb"
-                            :key="index"
                             v-for="(commentItem, index) in states.commentList"
+                            :key="index"
+                            class="pb"
                         >
-                            <NoteItem class="pb" :data="commentItem" :key="index" type="detail" />
-                            <div class="comment-list" v-if="commentItem?.children?.length > 0">
+                            <NoteItem :key="index" class="pb" :data="commentItem" type="detail" />
+                            <div v-if="commentItem?.children?.length > 0" class="comment-list">
                                 <CommentItem
                                     v-for="(childrenItem, index) in commentItem?.children"
+                                    :key="index"
                                     :class="`${
                                         index !== commentItem?.children?.length - 1 && 'pb'
                                     } comment-item`"
                                     :data="childrenItem"
-                                    :key="index"
                                     type="detail"
                                 />
                             </div>
@@ -276,14 +286,14 @@ watch(
 
                     <Pagination
                         class="mt"
-                        :isReady="states.isCommentReady"
+                        :is-ready="states.isCommentReady"
+                        :params="states.commentParams"
+                        :url="api.comment.getCommentListByCode"
                         @change="
                             (data) => {
                                 states.commentList = data;
                             }
                         "
-                        :params="states.commentParams"
-                        :url="api.comment.getCommentListByCode"
                     />
                 </div>
             </ACard>
@@ -292,15 +302,21 @@ watch(
             <ACard class="top-card mb">
                 <ARow align="middle" class="main" justify="space-between">
                     <ACol class="item">
-                        <div class="amount">{{ detailStates?.count_member || 0 }}</div>
+                        <div class="amount">
+                            {{ detailStates?.count_member || 0 }}
+                        </div>
                         <span class="text">人在读</span>
                     </ACol>
                     <ACol class="item">
-                        <div class="amount">{{ detailStates?.count_comment || 0 }}</div>
+                        <div class="amount">
+                            {{ detailStates?.count_comment || 0 }}
+                        </div>
                         <span class="text">注解</span>
                     </ACol>
                     <ACol class="item">
-                        <div class="amount">{{ detailStates?.count_line || 0 }}</div>
+                        <div class="amount">
+                            {{ detailStates?.count_line || 0 }}
+                        </div>
                         <span class="text">代码行</span>
                     </ACol>
                 </ARow>
@@ -309,16 +325,20 @@ watch(
             <ACard class="top-card" title="阅读源码">
                 <ARow align="middle">
                     <ACol :span="24">
-                        <p style="font-weight: 600">方式1 在浏览器中阅读</p>
+                        <p style="font-weight: 600">
+方式1 在浏览器中阅读
+</p>
                         <AButton
                             :disabled="detailStates?.status !== 2"
-                            @click="handleJumpToRead(detailStates?.id)"
                             style="width: 100%"
                             type="primary"
+                            @click="handleJumpToRead(detailStates?.id)"
                         >
                             在线阅读源码
                         </AButton>
-                        <p class="pt" style="font-weight: 600">方式2 使用VS Code阅读</p>
+                        <p class="pt" style="font-weight: 600">
+方式2 使用VS Code阅读
+</p>
                         <div style="font-size: 14px">
                             <p>
                                 1. 安装插件: 在VS Code中按Ctrl+p, 输入 ext install LiFang.codeyell
@@ -327,7 +347,7 @@ watch(
                             <p>
                                 2. Clone代码到本地:
 
-                                <TypographyLink copyable v-if="!!detailStates?.local_clone_url">
+                                <TypographyLink v-if="!!detailStates?.local_clone_url" copyable>
                                     {{ detailStates.local_clone_url }}
                                 </TypographyLink>
                             </p>

@@ -5,7 +5,7 @@ import { ref, toRefs, watch, h, defineComponent, reactive } from 'vue';
 import { dateFormat, processOSSLogo } from '@/utils/tools';
 import { ParsedContent, Logo } from '@/components';
 import { Modal, Space, Textarea } from 'ant-design-vue';
-import { history, useNav } from 'swico';
+import { history, useNav } from 'swico/vue';
 import {
     DislikeFilled,
     DislikeOutlined,
@@ -230,10 +230,10 @@ const handleMenuClick: MenuClickEventHandler = ({ item, key, keyPath }) => {
                 <ACol>
                     <AAvatar
                         class="cp"
-                        @click="jumpToPublicUserPage(data.user_id)"
                         shape="square"
                         :size="40"
                         :src="processOSSLogo(data.user_info?.avatar, true) || null"
+                        @click="jumpToPublicUserPage(data.user_id)"
                     >
                         <template #icon>
                             <UserOutlined />
@@ -275,10 +275,10 @@ const handleMenuClick: MenuClickEventHandler = ({ item, key, keyPath }) => {
                 <ACol>
                     <AAvatar
                         class="cp"
-                        @click="jumpToProjectDetailPage(data.project?.id)"
                         shape="square"
                         :size="40"
                         :src="processOSSLogo(data.project?.avatar, true) || null"
+                        @click="jumpToProjectDetailPage(data.project?.id)"
                     >
                         <template #icon>
                             <Logo />
@@ -319,10 +319,10 @@ const handleMenuClick: MenuClickEventHandler = ({ item, key, keyPath }) => {
                 <ACol>
                     <AAvatar
                         class="cp"
-                        @click="jumpToPublicUserPage(data.user_id)"
                         shape="square"
                         :size="40"
                         :src="processOSSLogo(data.user_info?.avatar, true) || null"
+                        @click="jumpToPublicUserPage(data.user_id)"
                     >
                         <template #icon>
                             <UserOutlined />
@@ -345,9 +345,9 @@ const handleMenuClick: MenuClickEventHandler = ({ item, key, keyPath }) => {
 
                 <ASpace class="operation" size="large">
                     <div>
-                        <LikeOutlined class="cp" v-if="data.is_liked === 0" />
+                        <LikeOutlined v-if="data.is_liked === 0" class="cp" />
 
-                        <LikeFilled class="cp" v-else />
+                        <LikeFilled v-else class="cp" />
 
                         <span class="like-amount">{{ data.count_liked || 0 }}</span>
                     </div>
@@ -360,10 +360,10 @@ const handleMenuClick: MenuClickEventHandler = ({ item, key, keyPath }) => {
                 <ACol>
                     <AAvatar
                         class="cp"
-                        @click="jumpToPublicUserPage(data.user_id)"
                         shape="square"
                         :size="40"
                         :src="processOSSLogo(data.user_info?.avatar, true) || null"
+                        @click="jumpToPublicUserPage(data.user_id)"
                     >
                         <template #icon>
                             <UserOutlined />

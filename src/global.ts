@@ -1,4 +1,4 @@
-import { defineGlobal } from 'swico';
+import { defineGlobal } from 'swico/vue';
 import { createPinia } from 'pinia';
 import {
     Avatar,

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Link } from 'swico/vue';
+
 console.log('Swico全局变量', SWICO_PUBLIC_PATH, SWICO_ROUTER_BASE, SWICO_ENV);
 
 const publicPath = SWICO_PUBLIC_PATH;
@@ -7,6 +9,9 @@ const env = SWICO_ENV;
 </script>
 
 <template>
+    <Link :to="{ name: 'demo1' }">
+demo1
+</Link>
     <div>1111</div>
 </template>
 <style scoped>

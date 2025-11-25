@@ -3,7 +3,7 @@ import { toRefs } from 'vue';
 import { Avatar } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { processOSSLogo } from '@/utils/tools';
-import { history, useNav } from 'swico';
+import { history, useNav } from 'swico/vue';
 
 interface RankItemProps {
     data: Record<string, any> | null;
@@ -27,17 +27,23 @@ const jumpToUserPublicPage = (userid: number) => {
                 </template>
             </Avatar>
             <div class="text">
-                <div class="name" v-if="data?.mode === 'like'">
+                <div v-if="data?.mode === 'like'" class="name">
                     <span class="main-name ellipsis">{Nickname || '昵称"</span>
                 </div>
 
-                <div v-else class="name ellipsis">{{ data?.Nickname || '昵称' }}</div>
+                <div v-else class="name ellipsis">
+                    {{ data?.Nickname || '昵称' }}
+                </div>
 
-                <div class="introduce ellipsis">{{ data?.Info || '介绍' }}</div>
+                <div class="introduce ellipsis">
+                    {{ data?.Info || '介绍' }}
+                </div>
             </div>
         </div>
         <section class="amount-text">
-            <div class="amount">{{ data?.Count }}</div>
+            <div class="amount">
+                {{ data?.Count }}
+            </div>
             <span class="text">{{ data?.mode === 'like' ? '被赞' : '注解' }}</span>
         </section>
     </div>

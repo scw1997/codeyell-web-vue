@@ -8,7 +8,7 @@ import { Empty, Switch } from 'ant-design-vue';
 import useGlobalStore from '@/store/global';
 import useReadStore, { CurNoteModalData } from '@/store/read';
 import { storeToRefs } from 'pinia';
-import { useLocation } from 'swico';
+import { useLocation } from 'swico/vue';
 import { ref, watch } from 'vue';
 interface PropsType {
     openNoteModal: (type: CurNoteModalData['mode'], record?: Record<string, any>) => void; //打开注解弹窗
@@ -75,8 +75,8 @@ const handleNoteListChange = (data) => {
 
 <template>
     <div
-        :class="{ 'project-read-right-section-root': true, hide: rightShowMode === 'hidden' }"
         id="right-part"
+        :class="{ 'project-read-right-section-root': true, hide: rightShowMode === 'hidden' }"
     >
         <ARow align="middle" class="right-head" justify="space-between">
             <template v-if="!!curNoteFileData">
@@ -102,78 +102,78 @@ const handleNoteListChange = (data) => {
                     <ATooltip title="是否自动显示注解">
                         <Switch
                             :checked="rightAutoVisible"
-                            checkedChildren="自动显示"
+                            checked-children="自动显示"
+                            un-checked-children="手动显示"
                             @change="
                                 (value) => {
                                     setRightAutoVisible(value as boolean);
                                 }
                             "
-                            unCheckedChildren="手动显示"
                         />
                     </ATooltip>
                 </ACol>
             </template>
 
-            <ACol flex="1" v-else>
+            <ACol v-else flex="1">
                 注解列表
                 <CaretRightOutlined />
             </ACol>
         </ARow>
         <Auth>
-            <div class="main-content" id="right-main" v-if="!!curNoteFileData">
+            <div v-if="!!curNoteFileData" id="right-main" class="main-content">
                 <div class="note-list">
                     <div
-                        class="note-item pb"
-                        :key="index"
                         v-for="(noteItem, index) in states.noteListData"
+                        :key="index"
+                        class="note-item pb"
                     >
                         <NoteItem
                             class="mb"
                             :data="noteItem"
-                            @edit="(record) => openNoteModal('edit', record)"
-                            @reply="(record) => openNoteModal('reply', record)"
                             :refresh="handleRefresh"
                             type="read"
+                            @edit="(record) => openNoteModal('edit', record)"
+                            @reply="(record) => openNoteModal('reply', record)"
                         />
 
-                        <div class="comment-list" v-if="noteItem.children?.length > 0">
+                        <div v-if="noteItem.children?.length > 0" class="comment-list">
                             <CommentItem
                                 v-for="(childrenItem, index) in noteItem.children"
+                                :key="index"
                                 :class="{
                                     pb: index !== noteItem.children?.length - 1,
 
                                     'comment-item': true
                                 }"
                                 :data="childrenItem"
-                                :key="index"
-                                @edit="(record) => openNoteModal('edit', record)"
-                                @reply="(record) => openNoteModal('childReply', record)"
                                 :refresh="handleRefresh"
                                 type="read"
+                                @edit="(record) => openNoteModal('edit', record)"
+                                @reply="(record) => openNoteModal('childReply', record)"
                             />
                         </div>
                     </div>
 
-                    <ARow align="middle" justify="center" v-if="states.noteListData.length === 0">
+                    <ARow v-if="states.noteListData.length === 0" align="middle" justify="center">
                         <ACol flex="none">
                             <Empty description="暂无数据" :image="Empty.PRESENTED_IMAGE_SIMPLE" />
                         </ACol>
                     </ARow>
 
                     <Pagination
-                        class="mt"
-                        @change="
-                            (data) => {
-                                handleNoteListChange(data);
-                            }
-                        "
-                        :params="states.noteParams"
                         :ref="
                             (ref1) => {
                                 setNoteListPageRef(ref1);
                             }
                         "
+                        class="mt"
+                        :params="states.noteParams"
                         :url="api.code.getNoteListByLine"
+                        @change="
+                            (data) => {
+                                handleNoteListChange(data);
+                            }
+                        "
                     />
                 </div>
 
@@ -188,10 +188,12 @@ const handleNoteListChange = (data) => {
                     "
                 >
                     <ACol flex="1">
-                        <AInput placeholder="输入内容发表注解" readOnly />
+                        <AInput placeholder="输入内容发表注解" read-only />
                     </ACol>
                     <ACol flex="none">
-                        <AButton type="primary">发表注解</AButton>
+                        <AButton type="primary">
+发表注解
+</AButton>
                     </ACol>
                 </ARow>
             </div>

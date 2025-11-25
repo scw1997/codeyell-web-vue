@@ -1,6 +1,6 @@
 <script setup>
 import { defineComponent, onMounted, ref } from 'vue';
-import { history, useNav, useLocation } from 'swico';
+import { history, useNav, useLocation } from 'swico/vue';
 const location = useLocation();
 console.log('state', location.state);
 const click = () => {
@@ -11,7 +11,9 @@ const click = () => {
 </script>
 
 <template>
-    <AButton @click="click">Demo1</AButton>
+    <AButton @click="click">
+Demo1
+</AButton>
 </template>
 
 <style scoped></style>

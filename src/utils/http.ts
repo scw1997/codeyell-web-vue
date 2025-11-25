@@ -2,7 +2,7 @@ import Toast from '@/utils/Toast';
 import { notification } from 'ant-design-vue';
 import Axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import useGlobalStore from '@/store/global';
-import { history } from 'swico';
+import { history } from 'swico/vue';
 
 const CancelToken = Axios.CancelToken;
 

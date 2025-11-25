@@ -25,7 +25,7 @@ import { createPinia, storeToRefs } from 'pinia';
 
 import zhCN from 'ant-design-vue/locale/zh_CN';
 import { PureTabs, Loading } from '@/components';
-import { useLocation, Outlet, useNav } from 'swico';
+import { useLocation, Outlet, useNav } from 'swico/vue';
 import useGlobalStore from '@/store/global';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { processOSSLogo } from '@/utils/tools';

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { Title, ProjectItem, Pagination } from '@/components';
 import { Radio, RadioGroup, RadioButton, Empty } from 'ant-design-vue';
-import { useLocation, useNav } from 'swico';
+import { useLocation, useNav } from 'swico/vue';
 import { onMounted, ref, toRefs, watch, watchEffect } from 'vue';
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
 import api from '@/api';
-import { history } from 'swico';
+import { history } from 'swico/vue';
 
 interface StatesType {
     projectDataList: any[]; //当前页码搜索的数据列表
@@ -75,8 +75,12 @@ const setOrderBy = (order: string) => {
                             :value="states.searchParams?.order_by"
                             @change="(e) => setOrderBy(e.target.value)"
                         >
-                            <RadioButton value="comment">按注解数</RadioButton>
-                            <RadioButton value="time">按创建时间</RadioButton>
+                            <RadioButton value="comment">
+按注解数
+</RadioButton>
+                            <RadioButton value="time">
+按创建时间
+</RadioButton>
                         </RadioGroup>
                     </ASpace>
                 </div>
@@ -84,9 +88,9 @@ const setOrderBy = (order: string) => {
                 <template v-if="states.projectDataList?.length > 0">
                     <ProjectItem
                         v-for="(item, index) in states.projectDataList"
+                        :key="index"
                         class="project-item"
                         :data="item"
-                        :key="index"
                         type="search"
                     />
                 </template>
@@ -95,19 +99,21 @@ const setOrderBy = (order: string) => {
 
                 <Pagination
                     class="mt"
+                    :params="states.searchParams"
+                    :url="api.project.geProList"
                     @change="
                         (data) => {
                             states.projectDataList = data;
                         }
                     "
-                    :params="states.searchParams"
-                    :url="api.project.geProList"
                 />
             </ACard>
         </section>
         <section class="right-side-container">
             <ACard class="card">
-                <div class="pb title">按语言筛选</div>
+                <div class="pb title">
+按语言筛选
+</div>
                 <main class="pt">
                     <section class="language-item pb cp" @click="handleJumpToProjectList(0)">
                         <div :class="states.searchParams?.language_id == 0 ? 'current' : ''">
@@ -118,8 +124,8 @@ const setOrderBy = (order: string) => {
                     <template v-if="languageData?.length > 0">
                         <section
                             v-for="{ value, label } in languageData"
-                            class="language-item pb cp"
                             :key="value"
+                            class="language-item pb cp"
                             @click="handleJumpToProjectList(value)"
                         >
                             <div

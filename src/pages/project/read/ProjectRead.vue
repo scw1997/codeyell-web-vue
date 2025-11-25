@@ -20,7 +20,7 @@ import { processOSSLogo } from '@/utils/tools';
 import { CurNoteModalData, TabItem } from '@/store/read';
 import useReadStore from '@/store/read';
 import { storeToRefs } from 'pinia';
-import { useLocation, history, useNav } from 'swico';
+import { useLocation, history, useNav } from 'swico/vue';
 import { defineComponent, h, markRaw, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue';
 
 const route = useLocation();
@@ -418,10 +418,10 @@ watch(noteModel, (newNoteValue) => {
                         </div>
                         <AAvatar
                             class="cp"
-                            @click="openMyPage"
                             shape="square"
                             :size="26"
                             :src="processOSSLogo(userInfo?.avatar, true) || null"
+                            @click="openMyPage"
                         >
                             <template #icon>
                                 <UserOutlined />
@@ -452,24 +452,26 @@ watch(noteModel, (newNoteValue) => {
         </ARow>
         <main class="main">
             <Left />
-            <Middle :openNoteModal="handleOpenNoteModal" />
-            <Right :openNoteModal="handleOpenNoteModal" />
+            <Middle :open-note-modal="handleOpenNoteModal" />
+            <Right :open-note-modal="handleOpenNoteModal" />
         </main>
 
         <CommentModal
-            autoFocus
+            v-model="noteModel"
+            auto-focus
+            :open="!!curNoteModalData?.visible"
+            get-container="#right-part"
+            type="drawer"
             @cancel="
                 () => {
                     setCurNoteModalData({ ...curNoteModalData!, visible: false });
                 }
             "
             @ok="handleCommentModalOk"
-            :open="!!curNoteModalData?.visible"
-            getContainer="#right-part"
-            type="drawer"
-            v-model="noteModel"
         >
-            <template #title><component v-if="modalTitle" :is="modalTitle" /></template>
+            <template #title>
+                <component :is="modalTitle" v-if="modalTitle" />
+            </template>
         </CommentModal>
     </div>
 </template>

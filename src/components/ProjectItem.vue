@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { history, useNav } from 'swico';
+import { history, useNav } from 'swico/vue';
 import { GithubOutlined, UserOutlined, ReadOutlined, LikeOutlined } from '@ant-design/icons-vue';
 import { dateFormat, processOSSLogo } from '@/utils/tools';
 import Logo from '@/components/Logo.vue';
@@ -33,7 +33,9 @@ const jumpToGitPath = (url: string) => {
                     :size="56"
                     :src="processOSSLogo(data.logo, false) || null"
                 >
-                    <template #icon><Logo /></template>
+                    <template #icon>
+                        <Logo />
+                    </template>
                 </AAvatar>
             </ACol>
             <ACol class="text" flex="1">
@@ -56,7 +58,9 @@ const jumpToGitPath = (url: string) => {
                         {{ data.info || '介绍' }}
 
                         <template #content>
-                            <div style="max-width: 400pc">{{ data.info }}</div>
+                            <div style="max-width: 400pc">
+                                {{ data.info }}
+                            </div>
                         </template>
                     </APopover>
                 </section>

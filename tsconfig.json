@@ -32,7 +32,7 @@
     ],
     "noEmit": false,
     //不生成输出文件。
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "baseUrl": "./",
     "paths": {
       //模块名到基于 baseUrl的路径映射的列表，类似webpack的alias

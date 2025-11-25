@@ -15,12 +15,12 @@ import http from '@/utils/http';
 import api from '@/api';
 import Toast from '@/utils/Toast';
 import useReadStore from '@/store/read';
-import { useLocation } from 'swico';
+import { useLocation } from 'swico/vue';
 import { onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { Key } from 'ant-design-vue/es/_util/type';
 import { useSearch } from '@/use/projectRead';
-import { history } from 'swico';
+import { history } from 'swico/vue';
 
 interface StatesType {
     mode: 'directory' | 'search'; //查看模式，目录模式/搜索模式
@@ -248,17 +248,17 @@ onMounted(() => {
             <Collapse
                 v-if="states.mode === 'directory'"
                 class="directory"
-                :defaultActiveKey="['1']"
+                :default-active-key="['1']"
             >
-                <CollapsePanel header="FILES" key="1">
+                <CollapsePanel key="1" header="FILES">
                     <main class="directory-main">
                         <DirectoryTree
                             v-if="states.treeData.length > 0"
                             :key="String(isJoined)"
-                            :loadData="handleLoadData"
+                            :load-data="handleLoadData"
                             multiple
+                            :tree-data="states.treeData"
                             @select="handleTreeNodeSelect"
-                            :treeData="states.treeData"
                         />
                         <Empty
                             v-else
@@ -269,10 +269,12 @@ onMounted(() => {
                 </CollapsePanel>
             </Collapse>
 
-            <div class="search" v-else>
-                <section class="title mb">SEARCH</section>
+            <div v-else class="search">
+                <section class="title mb">
+SEARCH
+</section>
 
-                <InputSearch @search="search" placeholder="输入关键字" size="large">
+                <InputSearch placeholder="输入关键字" size="large" @search="search">
                     <template #suffix>
                         <Tooltip
                             :class="{ 'case-text': true, cp: true, active: searchStates.isCase }"
@@ -297,7 +299,7 @@ onMounted(() => {
                 <Collapse
                     v-if="searchStates.data?.length > 0"
                     class="collapse-root"
-                    :defaultActiveKey="searchStates.data.map((item) => item.FileID)"
+                    :default-active-key="searchStates.data.map((item) => item.FileID)"
                 >
                     <CollapsePanel
                         v-for="{ FileName, Rows = [], FileID } in searchStates.data"
@@ -305,18 +307,20 @@ onMounted(() => {
                     >
                         <template #header>
                             <ARow>
-                                <ACol flex="1">{{ FileName }}</ACol>
+                                <ACol flex="1">
+                                    {{ FileName }}
+                                </ACol>
                                 <ACol flex="none" style="padding-left: 8px">
-                                    <Badge color="#878787" :count="Rows.length" showZero />
+                                    <Badge color="#878787" :count="Rows.length" show-zero />
                                 </ACol>
                             </ARow>
                         </template>
 
                         <ARow
                             v-for="({ Line, LineNumber }, index) in Rows"
+                            :key="index"
                             align="middle"
                             class="result-item cp"
-                            :key="index"
                             @click="handleResultItemSelect(FileName, LineNumber, FileID)"
                         >
                             <!-- eslint-disable -->

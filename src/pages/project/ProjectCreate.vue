@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { FormInstance, RadioChangeEvent, RadioGroup, Radio, SelectProps } from 'ant-design-vue';
-import { useLocation, useNav } from 'swico';
+import { useLocation, useNav } from 'swico/vue';
 import { onMounted, ref, toRefs, watch } from 'vue';
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
@@ -9,7 +9,7 @@ import http, { notifyError } from '@/utils/http';
 import api from '@/api';
 import { debounce, Reg } from '@/utils/tools';
 import { Title } from '@/components';
-import { history } from 'swico';
+import { history } from 'swico/vue';
 import { FormItem, InputSearch } from 'ant-design-vue';
 interface StatesType {
     existedProId?: string; //当前所拉取项目已存在时的项目id，为undefined说明不存在，可以创建
@@ -128,14 +128,14 @@ watch(
         <Title value="创建项目 - 源码阅读交流平台" />
         <ACard class="main-card">
             <AForm
-                autoComplete="off"
                 ref="formRef"
+                auto-complete="off"
                 :model="formModelStates"
-                :initialValues="{ type: 'branch' }"
-                :labelCol="{ span: 6 }"
+                :initial-values="{ type: 'branch' }"
+                :label-col="{ span: 6 }"
                 name="basic"
+                :wrapper-col="{ span: 12 }"
                 @finish="handleCreatClick"
-                :wrapperCol="{ span: 12 }"
             >
                 <FormItem
                     label="项目Git地址"
@@ -154,20 +154,21 @@ watch(
                             }
                         }
                     ]"
-                    validateFirst
+                    validate-first
                 >
                     <InputSearch
                         v-model:value="formModelStates.url"
-                        enterButton="获取仓库信息"
+                        enter-button="获取仓库信息"
                         @search="handleGetGitMsg"
                     />
                 </FormItem>
 
-                <ARow class="mb" v-if="!!states.existedProId">
+                <ARow v-if="!!states.existedProId" class="mb">
                     <ACol class="project-message existed" :offset="4" :span="14">
                         <p>
                             该项目已存在，你可以直接点击
                             <AButton
+                                type="link"
                                 @click="
                                     () => {
                                         nav({
@@ -176,7 +177,6 @@ watch(
                                         });
                                     }
                                 "
-                                type="link"
                             >
                                 查看详情
                             </AButton>
@@ -193,8 +193,12 @@ watch(
                 <template v-if="!!states.repoData">
                     <ARow class="mt mb">
                         <ACol class="project-message pt" :offset="4" :span="14">
-                            <p class="ellipsis">项目名称：{{ states.repoData?.info?.Name }}</p>
-                            <p class="ellipsis">仓库地址：{{ states.repoData?.info?.CloneUrl }}</p>
+                            <p class="ellipsis">
+项目名称：{{ states.repoData?.info?.Name }}
+</p>
+                            <p class="ellipsis">
+仓库地址：{{ states.repoData?.info?.CloneUrl }}
+</p>
                             <p class="ellipsis">
                                 项目介绍：{{ states.repoData?.info?.Description }}
                             </p>
@@ -217,8 +221,12 @@ watch(
                         :rules="[{ required: true, message: '请选择拉取类型' }]"
                     >
                         <RadioGroup v-model:value="formModelStates.type" @change="handleTypeChange">
-                            <Radio value="branch">拉取分支</Radio>
-                            <Radio value="tag">拉取Tag</Radio>
+                            <Radio value="branch">
+拉取分支
+</Radio>
+                            <Radio value="tag">
+拉取Tag
+</Radio>
                         </RadioGroup>
                     </FormItem>
 
@@ -248,8 +256,8 @@ watch(
                         />
                     </FormItem>
 
-                    <FormItem :wrapperCol="{ offset: 8 }">
-                        <AButton htmlType="submit" style="width: 250px" type="primary">
+                    <FormItem :wrapper-col="{ offset: 8 }">
+                        <AButton html-type="submit" style="width: 250px" type="primary">
                             创建项目
                         </AButton>
                     </FormItem>

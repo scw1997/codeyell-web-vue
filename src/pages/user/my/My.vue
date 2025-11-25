@@ -8,8 +8,8 @@ import allIcons, {
 } from '@ant-design/icons-vue';
 import useGlobalStore from '@/store/global';
 import { onMounted, toRefs, h } from 'vue';
-import { useLocation, Outlet, useNav } from 'swico';
-import { history } from 'swico';
+import { useLocation, Outlet, useNav } from 'swico/vue';
+import { history } from 'swico/vue';
 
 const globalStore = useGlobalStore();
 const { refreshMyData, clearUserCache } = globalStore;
@@ -65,15 +65,19 @@ onMounted(() => {
                         </template>
                     </AAvatar>
                     <div class="main">
-                        <p class="name">{{ userInfo?.nickname || '昵称' }}</p>
-                        <p class="description ellipsis">{{ userInfo?.info || '介绍' }}</p>
+                        <p class="name">
+                            {{ userInfo?.nickname || '昵称' }}
+                        </p>
+                        <p class="description ellipsis">
+                            {{ userInfo?.info || '介绍' }}
+                        </p>
                     </div>
                 </div>
                 <div class="navs">
                     <section
                         v-for="({ icon, pathName, name }, index) in navList"
-                        :class="{ 'nav-item': true, active: routeName === pathName }"
                         :key="index"
+                        :class="{ 'nav-item': true, active: routeName === pathName }"
                         @click="handleGoPath(pathName)"
                     >
                         <ASpace class="text" size="middle">
@@ -86,16 +90,28 @@ onMounted(() => {
             <ACard class="bottom-card">
                 <main class="main">
                     <section class="item">
-                        <div class="amount mb">{{ userInfo?.count_project || 0 }}</div>
-                        <div class="name">在读</div>
+                        <div class="amount mb">
+                            {{ userInfo?.count_project || 0 }}
+                        </div>
+                        <div class="name">
+在读
+</div>
                     </section>
                     <section class="item">
-                        <div class="amount mb">{{ userInfo?.count_comment || 0 }}</div>
-                        <div class="name">注解</div>
+                        <div class="amount mb">
+                            {{ userInfo?.count_comment || 0 }}
+                        </div>
+                        <div class="name">
+注解
+</div>
                     </section>
                     <section class="item">
-                        <div class="amount mb">{{ userInfo?.count_point || 0 }}</div>
-                        <div class="name">积分</div>
+                        <div class="amount mb">
+                            {{ userInfo?.count_point || 0 }}
+                        </div>
+                        <div class="name">
+积分
+</div>
                     </section>
                 </main>
             </ACard>

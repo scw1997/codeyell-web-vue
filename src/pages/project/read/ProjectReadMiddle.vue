@@ -8,9 +8,9 @@ import useGlobalStore from '@/store/global';
 import useReadStore, { TabItem } from '@/store/read';
 import { storeToRefs } from 'pinia';
 import { onMounted, onUnmounted, ref, watch } from 'vue';
-import { useLocation } from 'swico';
+import { useLocation } from 'swico/vue';
 import { MenuClickEventHandler } from 'ant-design-vue/es/menu/src/interface';
-import { history } from 'swico';
+import { history } from 'swico/vue';
 
 export type Editor = monaco.editor.IStandaloneCodeEditor | null;
 interface PropsType {
@@ -643,12 +643,12 @@ onUnmounted(() => {
         <div class="resize-line"></div>
         <div class="resize-save">
             <Tabs
-                :activeKey="activeTab?.key"
+                :active-key="activeTab?.key"
                 class="middle-tabs-root"
-                defaultActiveKey="1"
-                :destroyInactiveTabPane="false"
-                :tabBarGutter="2"
-                tabPosition="top"
+                default-active-key="1"
+                :destroy-inactive-tab-pane="false"
+                :tab-bar-gutter="2"
+                tab-position="top"
             >
                 <template #rightExtra>
                     <div
@@ -671,7 +671,7 @@ onUnmounted(() => {
                         <LeftOutlined v-else class="cp" style="font-size: 20px" />
                     </div>
                 </template>
-                <TabPane :key="key" v-for="({ name, shortName, key, fileId }, index) in tabList">
+                <TabPane v-for="({ name, shortName, key, fileId }, index) in tabList" :key="key">
                     <template #tab>
                         <ADropdown
                             :key="index"
@@ -690,9 +690,9 @@ onUnmounted(() => {
                                     {{ shortName }}
                                 </ATooltip>
                                 <CloseOutlined
-                                    @click.stop="closeTabItem(index)"
                                     :size="10"
                                     style="font-size: 12px; padding-left: 4px"
+                                    @click.stop="closeTabItem(index)"
                                 />
                             </div>
                         </ADropdown>
@@ -701,15 +701,15 @@ onUnmounted(() => {
                     <section class="main-content">
                         <div
                             v-if="states.mode === 'editor'"
-                            class="editor-container"
                             :id="`${fileId}-monaco-ref`"
+                            class="editor-container"
                         ></div>
 
                         <div v-else class="no-editor-content-container">
                             <img
+                                v-if="states.mode === 'image'"
                                 :alt="activeTab.shortName"
                                 :src="activeTab.content"
-                                v-if="states.mode === 'image'"
                             />
                             <Empty
                                 v-else-if="states.mode === 'empty'"

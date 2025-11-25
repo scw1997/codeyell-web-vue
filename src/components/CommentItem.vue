@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import api from '@/api';
 import { ParsedContent } from '@/components';
-import { history, useNav } from 'swico';
+import { history, useNav } from 'swico/vue';
 import useGlobalStore from '@/store/global';
 import http from '@/utils/http';
 import { authFunc, dateFormat, EMPTY, processOSSLogo } from '@/utils/tools';
@@ -212,15 +212,17 @@ const handleAgreeOrDisagree = async (isLike: boolean) => {
             <ACol flex="none">
                 <AAvatar
                     class="cp"
-                    @click="jumpToPublicUserPage(data?.user_info?.id)"
                     shape="square"
                     :size="30"
                     :src="processOSSLogo(data?.user_info?.avatar, true) || null"
+                    @click="jumpToPublicUserPage(data?.user_info?.id)"
                 >
-                    <template #icon><UserOutlined /></template>
+                    <template #icon>
+                        <UserOutlined />
+                    </template>
                 </AAvatar>
 
-                <span class="name" v-if="data?.reply_to">
+                <span v-if="data?.reply_to" class="name">
                     <span class="cp" @click="jumpToPublicUserPage(data?.user_info?.id)">
                         {{ data?.user_info?.nickname || '昵称' }}
                     </span>

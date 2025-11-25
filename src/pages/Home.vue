@@ -8,7 +8,7 @@ import { SelectProps, Empty, Alert } from 'ant-design-vue';
 import { computed, onMounted, ref, watch, watchEffect, Component } from 'vue';
 import Logo from '@/components/Logo.vue';
 import { useMyPro, useHotPro, useHotNote, useRecentPro } from '@/use/dashboard';
-import { history, useNav } from 'swico';
+import { history, useNav } from 'swico/vue';
 const globalStore = useGlobalStore();
 const { getLanguageData } = globalStore;
 const { userInfo, languageData } = storeToRefs(globalStore);
@@ -91,7 +91,9 @@ watchEffect(() => {
         <section class="left-side-container">
             <Alert message="读源码 赚现金，从此不缺私房钱" class="mb" type="info">
                 <template #action>
-                    <AButton @click="handleJumpToArticleDetail" size="small">查看详情</AButton>
+                    <AButton size="small" @click="handleJumpToArticleDetail">
+查看详情
+</AButton>
                 </template>
             </Alert>
 
@@ -100,14 +102,14 @@ watchEffect(() => {
                     <ASpace size="large">
                         <span class="title">热门项目</span>
                         <ASelect
+                            v-model:value="modelRange"
                             :options="rangeOptions"
                             style="width: 120px"
-                            v-model:value="modelRange"
                         />
                         <ASelect
+                            v-model:value="modelLanguage"
                             :options="formatLanguageData"
                             style="width: 120px"
-                            v-model:value="modelLanguage"
                         />
                     </ASpace>
                 </section>
@@ -122,10 +124,10 @@ watchEffect(() => {
                             v-for="(
                                 { name, logo, member_recent, code_comment_recent, id, info }, index
                             ) in hotProData"
-                            class="project-item pt pr cp"
                             :key="index"
-                            @click="handleJumpToProjectDetail(id)"
+                            class="project-item pt pr cp"
                             span="12"
+                            @click="handleJumpToProjectDetail(id)"
                         >
                             <AAvatar
                                 class="avatar"
@@ -133,11 +135,15 @@ watchEffect(() => {
                                 :size="56"
                                 :src="processOSSLogo(logo, false) || null"
                             >
-                                <template #icon><Logo /></template>
+                                <template #icon>
+                                    <Logo />
+                                </template>
                             </AAvatar>
                             <main class="main pl">
                                 <div class="top">
-                                    <div class="name ellipsis">{{ name }}</div>
+                                    <div class="name ellipsis">
+                                        {{ name }}
+                                    </div>
                                     <div class="data">
                                         <span class="pr" title="新增阅读人数">
                                             <UserAddOutlined />
@@ -172,12 +178,14 @@ watchEffect(() => {
             </ACard>
 
             <ACard class="bottom-card">
-                <div class="title">近期热门注解</div>
+                <div class="title">
+近期热门注解
+</div>
                 <NoteItem
                     v-for="(item, index) in hotNoteStatesRef.hotNoteData"
+                    :key="index"
                     class="pb"
                     :data="item"
-                    :key="index"
                     type="index"
                 />
 
@@ -213,22 +221,26 @@ watchEffect(() => {
                     <div class="introduce pb mb">
                         <AAvatar
                             class="cp"
+                            shape="square"
+                            :size="50"
+                            :src="processOSSLogo(userInfo?.avatar, true) || null"
                             @click="
                                 () => {
                                     nav({ name: 'my-personal' });
                                 }
                             "
-                            shape="square"
-                            :size="50"
-                            :src="processOSSLogo(userInfo?.avatar, true) || null"
                         >
                             <template #icon>
                                 <UserOutlined />
                             </template>
                         </AAvatar>
                         <div class="main">
-                            <p class="name ellipsis">{{ userInfo?.nickname || '昵称' }}</p>
-                            <p class="description ellipsis">{{ userInfo?.info || '介绍' }}</p>
+                            <p class="name ellipsis">
+                                {{ userInfo?.nickname || '昵称' }}
+                            </p>
+                            <p class="description ellipsis">
+                                {{ userInfo?.info || '介绍' }}
+                            </p>
                         </div>
                     </div>
 
@@ -238,8 +250,8 @@ watchEffect(() => {
                                 v-for="(
                                     { name, count_comment, count_member, logo, id, status }, index
                                 ) in myProData"
-                                class="project-item cp"
                                 :key="index"
+                                class="project-item cp"
                                 @click="handleJumpToProjectDetail(id)"
                             >
                                 <AAvatar
@@ -281,15 +293,17 @@ watchEffect(() => {
             </template>
 
             <ACard class="bottom-card">
-                <div class="pb title">新增项目</div>
+                <div class="pb title">
+新增项目
+</div>
                 <main class="pt">
                     <template v-if="recentProData.length > 0">
                         <section
                             v-for="(
                                 { name, language, count_star, id, logo, input_url }, index
                             ) in recentProData"
-                            class="project-item pb cp"
                             :key="index"
+                            class="project-item pb cp"
                             @click="handleJumpToProjectDetail(id)"
                         >
                             <AAvatar
@@ -312,7 +326,9 @@ watchEffect(() => {
                                         </ATooltip>
                                         <section @click="jumpToGitPath(input_url, $event)">
                                             <GithubOutlined style="padding-right: 4px" />
-                                            <ATag color="default">{{ count_star || 0 }}</ATag>
+                                            <ATag color="default">
+                                                {{ count_star || 0 }}
+                                            </ATag>
                                         </section>
                                     </ASpace>
                                 </ASpace>
@@ -327,13 +343,13 @@ watchEffect(() => {
                 </main>
                 <footer class="footer">
                     <AButton
+                        style="width: 100%"
+                        type="primary"
                         @click="
                             () => {
                                 nav({ name: 'project-create' });
                             }
                         "
-                        style="width: 100%"
-                        type="primary"
                     >
                         新建项目
                     </AButton>

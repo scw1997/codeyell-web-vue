@@ -7,8 +7,8 @@ import Toast from '@/utils/Toast';
 import api from '@/api';
 import http from '@/utils/http';
 import useGlobalStore from '@/store/global';
-import { useLocation, useNav } from 'swico';
-import { history } from 'swico';
+import { useLocation, useNav } from 'swico/vue';
+import { history } from 'swico/vue';
 import { CountDown } from '@/components';
 
 const globalStore = useGlobalStore();
@@ -70,14 +70,14 @@ onMounted(() => {
     <div class="sign-content">
         <Title v-if="!isControl" value="登录 - 源码阅读交流平台" />
         <Form
-            :model="formStates"
             ref="formRef"
-            autoComplete="off"
+            :model="formStates"
+            auto-complete="off"
             class="sign-form"
-            :labelCol="{ span: 6 }"
+            :label-col="{ span: 6 }"
             name="form"
+            :wrapper-col="{ span: 18 }"
             @finish="handleSignClick"
-            :wrapperCol="{ span: 18 }"
         >
             <FormItem
                 label="手机号"
@@ -90,7 +90,7 @@ onMounted(() => {
                     }
                 ]"
             >
-                <AInput :maxLength="11" v-model:value="formStates.mobile" placeholder="手机号" />
+                <AInput v-model:value="formStates.mobile" :max-length="11" placeholder="手机号" />
             </FormItem>
 
             <FormItem
@@ -100,16 +100,16 @@ onMounted(() => {
             >
                 <ARow :gutter="8">
                     <ACol :span="16">
-                        <FormItem :noStyle="true">
+                        <FormItem :no-style="true">
                             <AInput
                                 v-model:value="formStates.code"
-                                :maxLength="6"
+                                :max-length="6"
                                 placeholder="验证码"
                             />
                         </FormItem>
                     </ACol>
                     <ACol :span="8">
-                        <CountDown :beforeStart="handleSendMsgClick" text="发送短信" />
+                        <CountDown :before-start="handleSendMsgClick" text="发送短信" />
                     </ACol>
                 </ARow>
             </FormItem>
@@ -121,7 +121,7 @@ onMounted(() => {
             >
                 <InputPassword
                     v-model:value="formStates.password"
-                    :maxLength="20"
+                    :max-length="20"
                     placeholder="密码"
                 />
             </FormItem>
@@ -137,14 +137,14 @@ onMounted(() => {
                         v-model:value="formStates.mobile"
                         disabled
                         placeholder="请输入邀请人id"
-                        readOnly
+                        read-only
                     />
                 </div>
             </FormItem>
 
-            <FormItem style="text-align: center" :wrapperCol="{ span: 24 }">
+            <FormItem style="text-align: center" :wrapper-col="{ span: 24 }">
                 <AButton
-                    htmlType="submit"
+                    html-type="submit"
                     :loading="submitLoading"
                     style="width: 200px"
                     type="primary"

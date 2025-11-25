@@ -3,13 +3,13 @@ import { Card } from 'ant-design-vue';
 import Reading from '@/pages/user/my/personal/MyPersonalReading.vue';
 import Notes from '@/pages/user/my/personal/MyPersonalNotes.vue';
 import Integral from '@/pages/user/my/personal/MyPersonalIntegral.vue';
-import { useLocation } from 'swico';
+import { useLocation } from 'swico/vue';
 import { Title, PureTabs } from '@/components';
 import type { TabConfigItem } from '@/components/PureTabs.vue';
 import vue, { h, defineComponent, ref, watchEffect } from 'vue';
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
-import { history } from 'swico';
+import { history } from 'swico/vue';
 
 const route = useLocation();
 const { query } = route;
@@ -76,7 +76,7 @@ watchEffect(() => {
         <Title value="个人中心 - 源码阅读交流平台" />
         <ACard class="tab-card mb">
             <PureTabs
-                :activeKey="states.activeKey"
+                :active-key="states.activeKey"
                 class="pure-tabs"
                 :config="states.tabConfig"
                 @change="handleTabChange"

@@ -4,11 +4,11 @@ import http from '@/utils/http';
 import useGlobalStore from '@/store/global';
 import { storeToRefs } from 'pinia';
 import { App, TypographyLink, QRCode } from 'ant-design-vue';
-import { useLocation, useNav } from 'swico';
+import { useLocation, useNav } from 'swico/vue';
 import { defineComponent, h, onMounted, ref } from 'vue';
 import { ShareAltOutlined } from '@ant-design/icons-vue';
 import api from '@/api';
-import { history } from 'swico';
+import { history } from 'swico/vue';
 interface StatesType {
     detailData: Record<string, any> | null; //当前文章详情信息
 }
@@ -100,8 +100,8 @@ onMounted(() => {
                         <span title="分享">
                             <ShareAltOutlined
                                 class="cp"
-                                @click="handleShareClick"
                                 style="font-size: 20px"
+                                @click="handleShareClick"
                             />
                         </span>
                     </ASpace>

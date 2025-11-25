@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useLocation, useNav } from 'swico';
+import { useLocation, useNav } from 'swico/vue';
 import { Title, ProjectItem, Pagination, Logo } from '@/components';
 import { Empty } from 'ant-design-vue';
 import { onMounted, ref, toRefs, watch } from 'vue';
@@ -8,7 +8,7 @@ import http from '@/utils/http';
 import api from '@/api';
 import useGlobalStore from '@/store/global';
 import { processOSSLogo } from '@/utils/tools';
-import { history } from 'swico';
+import { history } from 'swico/vue';
 
 const globalStore = useGlobalStore();
 const route = useLocation();
@@ -77,13 +77,15 @@ const getLanguageName = (languageId) =>
         />
         <section class="left-side-container">
             <ACard class="top-card mb">
-                <div class="search-text pb">关键字：{{ states.searchParams?.keyword }}</div>
+                <div class="search-text pb">
+关键字：{{ states.searchParams?.keyword }}
+</div>
                 <template v-if="states.curSearchDataList.length > 0">
                     <ProjectItem
                         v-for="(item, index) in states.curSearchDataList"
+                        :key="index"
                         class="project-item"
                         :data="item"
-                        :key="index"
                         type="search"
                     />
                 </template>
@@ -96,34 +98,36 @@ const getLanguageName = (languageId) =>
 
                 <Pagination
                     class="mt"
+                    :params="states.searchParams"
+                    :url="api.project.searchPro"
                     @change="
                         (data) => {
                             states.curSearchDataList = data;
                         }
                     "
-                    :params="states.searchParams"
-                    :url="api.project.searchPro"
                 />
             </ACard>
         </section>
         <section class="right-side-container">
             <ACard class="card">
-                <div class="pb title">新增项目</div>
+                <div class="pb title">
+新增项目
+</div>
                 <main class="pt">
                     <template v-if="states.recentData.length > 0">
                         <section
                             v-for="(
                                 { name, language, count_star, id, logo, input_url }, index
                             ) in states.recentData"
-                            class="project-item pb cp"
                             :key="index"
+                            class="project-item pb cp"
                             @click="handleJumpToProjectDetail(id)"
                         >
                             <AAvatar
-                                @click="handleJumpToProjectDetail(id)"
                                 shape="square"
                                 :size="45"
                                 :src="processOSSLogo(logo, false) || null"
+                                @click="handleJumpToProjectDetail(id)"
                             >
                                 <template #icon>
                                     <Logo />
@@ -140,7 +144,9 @@ const getLanguageName = (languageId) =>
                                         </ATooltip>
                                         <section @click="jumpToGitPath(input_url, $event)">
                                             <GithubOutlined style="padding-right: 4px" />
-                                            <ATag color="default">{{ count_star || 0 }}</ATag>
+                                            <ATag color="default">
+                                                {{ count_star || 0 }}
+                                            </ATag>
                                         </section>
                                     </ASpace>
                                 </ASpace>
@@ -151,13 +157,13 @@ const getLanguageName = (languageId) =>
                 </main>
                 <footer class="footer">
                     <AButton
+                        style="width: 100%"
+                        type="primary"
                         @click="
                             () => {
                                 nav({ name: 'project-create' });
                             }
                         "
-                        style="width: 100%"
-                        type="primary"
                     >
                         新建项目
                     </AButton>

@@ -4,7 +4,7 @@ import OSS from 'ali-oss';
 import http from '@/utils/http';
 import api from '@/api';
 import Toast from '@/utils/Toast';
-import { history } from 'swico';
+import { history } from 'swico/vue';
 
 export const EMPTY: EmptyObject = Object.create(null);
 

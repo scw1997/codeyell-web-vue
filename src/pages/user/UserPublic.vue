@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useLocation, useNav } from 'swico';
+import { useLocation, useNav } from 'swico/vue';
 import { Title, PureTabs, Pagination } from '@/components';
 import { Radio, RadioGroup, RadioButton, Empty, Card } from 'ant-design-vue';
 import vue, { onMounted, ref, h, watch, watchEffect } from 'vue';
@@ -12,7 +12,7 @@ import http from '@/utils/http';
 import MyPersonalReading from '@/pages/user/my/personal/MyPersonalReading.vue';
 import MyPersonalNotes from '@/pages/user/my/personal/MyPersonalNotes.vue';
 import { processOSSLogo } from '@/utils/tools';
-import { history } from 'swico';
+import { history } from 'swico/vue';
 
 interface StatesType {
     tabConfig: TabConfigItem[];
@@ -90,7 +90,7 @@ watch(
         <section class="left-card">
             <ACard class="tab-card mb">
                 <PureTabs
-                    :activeKey="states.activeKey"
+                    :active-key="states.activeKey"
                     class="pure-tabs"
                     :config="states.tabConfig"
                     @change="handleTabChange"
@@ -118,23 +118,39 @@ watch(
                         </template>
                     </AAvatar>
                     <div class="main">
-                        <p class="name">{{ userStates?.nickname || '昵称' }}</p>
-                        <p class="description ellipsis">{{ userStates?.info || '介绍' }}</p>
+                        <p class="name">
+                            {{ userStates?.nickname || '昵称' }}
+                        </p>
+                        <p class="description ellipsis">
+                            {{ userStates?.info || '介绍' }}
+                        </p>
                     </div>
                 </div>
 
                 <div class="statistics">
                     <section class="item">
-                        <div class="amount">{{ userStates?.count_project || 0 }}</div>
-                        <div class="name">在读</div>
+                        <div class="amount">
+                            {{ userStates?.count_project || 0 }}
+                        </div>
+                        <div class="name">
+在读
+</div>
                     </section>
                     <section class="item">
-                        <div class="amount">{{ userStates?.count_comment || 0 }}</div>
-                        <div class="name">注解</div>
+                        <div class="amount">
+                            {{ userStates?.count_comment || 0 }}
+                        </div>
+                        <div class="name">
+注解
+</div>
                     </section>
                     <section class="item">
-                        <div class="amount">{{ userStates?.count_liked || 0 }}</div>
-                        <div class="name">被赞</div>
+                        <div class="amount">
+                            {{ userStates?.count_liked || 0 }}
+                        </div>
+                        <div class="name">
+被赞
+</div>
                     </section>
                 </div>
             </Card>

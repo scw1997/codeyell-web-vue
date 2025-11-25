@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Outlet } from 'swico';
+import { Outlet, Link } from 'swico/vue';
 </script>
 
 <template>

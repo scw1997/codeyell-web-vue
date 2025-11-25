@@ -8,7 +8,7 @@ import { debounce, uploadFile } from '@/utils/tools';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons-vue';
 import { Title } from '@/components';
 import useGlobalStore from '@/store/global';
-import { history, useNav } from 'swico';
+import { history, useNav } from 'swico/vue';
 const nav = useNav();
 const formRef = ref<FormInstance>();
 const { languageData, getLanguageData, userInfo, refreshMyData, clearUserCache } =
@@ -114,17 +114,17 @@ watch(
         <Title value="个人中心 - 源码阅读交流平台" />
         <ACard class="basic-card mb">
             <AForm
-                :model="infoModelStates"
-                autoComplete="off"
                 ref="formRef"
-                :labelCol="{ span: 6 }"
+                :model="infoModelStates"
+                auto-complete="off"
+                :label-col="{ span: 6 }"
                 name="basic"
+                :wrapper-col="{ span: 10 }"
                 @finish="
                     (values) => {
                         handleMyDataFormFinish(values);
                     }
                 "
-                :wrapperCol="{ span: 10 }"
             >
                 <FormItem
                     label="昵称"
@@ -133,7 +133,7 @@ watch(
                 >
                     <AInput
                         v-model:value="infoModelStates.nickname"
-                        :maxLength="20"
+                        :max-length="20"
                         placeholder="单行输入"
                     />
                 </FormItem>
@@ -145,7 +145,7 @@ watch(
                 >
                     <AInput
                         v-model:value="infoModelStates.info"
-                        :maxLength="100"
+                        :max-length="100"
                         placeholder="单行输入"
                     />
                 </FormItem>
@@ -157,27 +157,27 @@ watch(
                 >
                     <ASelect
                         v-model:value="infoModelStates.language"
-                        :maxTagCount="3"
+                        :max-tag-count="3"
                         mode="multiple"
                         :options="languageData"
                     />
                 </FormItem>
 
                 <FormItem
+                    v-model:value="infoModelStates.avatar"
                     label="头像"
                     name="avatar"
-                    v-model:value="infoModelStates.avatar"
                     :rules="[{ required: false, message: '请上传头像' }]"
                 >
                     <div>
                         <Upload
                             accept=".jpg,.png,.webp"
-                            :beforeUpload="beforeAvatarUpload"
-                            :fileList="states.fileList"
-                            listType="picture-card"
-                            :maxCount="1"
+                            :before-upload="beforeAvatarUpload"
+                            :file-list="states.fileList"
+                            list-type="picture-card"
+                            :max-count="1"
                             name="avatar"
-                            :onRemove="
+                            :on-remove="
                                 () => {
                                     states.avatarUrl = null;
                                 }
@@ -187,26 +187,30 @@ watch(
                                 <component
                                     :is="states.uploadLoading ? LoadingOutlined : PlusOutlined"
                                 />
-                                <div style="margin-top: 0">Upload</div>
+                                <div style="margin-top: 0">
+Upload
+</div>
                             </div>
                         </Upload>
                     </div>
                 </FormItem>
 
-                <FormItem :wrapperCol="{ offset: 8, span: 6 }">
-                    <AButton htmlType="submit" style="width: 100%" type="primary">保存</AButton>
+                <FormItem :wrapper-col="{ offset: 8, span: 6 }">
+                    <AButton html-type="submit" style="width: 100%" type="primary">
+保存
+</AButton>
                 </FormItem>
             </AForm>
         </ACard>
         <ACard class="password-card">
             <AForm
                 :model="pwdModelStates"
-                autoComplete="off"
-                :initialValues="{ remember: true }"
-                :labelCol="{ span: 6 }"
+                auto-complete="off"
+                :initial-values="{ remember: true }"
+                :label-col="{ span: 6 }"
                 name="password"
+                :wrapper-col="{ span: 9 }"
                 @finish="handleUpdatePwdFormFinish"
-                :wrapperCol="{ span: 9 }"
             >
                 <FormItem
                     label="旧密码"
@@ -216,7 +220,7 @@ watch(
                     <InputPassword
                         v-model:value="pwdModelStates.old_password"
                         autocomplete="on"
-                        :maxLength="20"
+                        :max-length="20"
                         placeholder="单行输入"
                     />
                 </FormItem>
@@ -227,9 +231,9 @@ watch(
                     :rules="[{ required: true, message: '请输入新密码' }]"
                 >
                     <InputPassword
-                        autocomplete="on"
                         v-model:value="pwdModelStates.new_password"
-                        :maxLength="20"
+                        autocomplete="on"
+                        :max-length="20"
                         placeholder="单行输入"
                     />
                 </FormItem>
@@ -242,13 +246,15 @@ watch(
                     <InputPassword
                         v-model:value="pwdModelStates.sure_password"
                         autocomplete="on"
-                        :maxLength="20"
+                        :max-length="20"
                         placeholder="单行输入"
                     />
                 </FormItem>
 
-                <FormItem :wrapperCol="{ offset: 8, span: 6 }">
-                    <AButton htmlType="submit" style="width: 100%" type="primary">修改密码</AButton>
+                <FormItem :wrapper-col="{ offset: 8, span: 6 }">
+                    <AButton html-type="submit" style="width: 100%" type="primary">
+                        修改密码
+                    </AButton>
                 </FormItem>
             </AForm>
         </ACard>

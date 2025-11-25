@@ -7,8 +7,8 @@ import Toast from '@/utils/Toast';
 import api from '@/api';
 import http from '@/utils/http';
 import useGlobalStore from '@/store/global';
-import { useLocation, useNav } from 'swico';
-import { history } from 'swico';
+import { useLocation, useNav } from 'swico/vue';
+import { history } from 'swico/vue';
 const nav = useNav();
 const globalStore = useGlobalStore();
 const route = useLocation();
@@ -46,12 +46,12 @@ const handleFormFinish = debounce(async (values: Record<string, any>) => {
         <Form
             ref="formRef"
             :model="modelStates"
-            autoComplete="off"
+            auto-complete="off"
             class="login-form"
-            :labelCol="{ span: 6 }"
+            :label-col="{ span: 6 }"
             name="basic"
+            :wrapper-col="{ span: 18 }"
             @finish="handleFormFinish"
-            :wrapperCol="{ span: 18 }"
         >
             <FormItem
                 label="手机号"
@@ -61,7 +61,11 @@ const handleFormFinish = debounce(async (values: Record<string, any>) => {
                     { pattern: Reg.mobileTel, message: '手机号格式不正确' }
                 ]"
             >
-                <AInput v-model:value="modelStates.username" :maxLength="11" placeholder="手机号" />
+                <AInput
+                    v-model:value="modelStates.username"
+                    :max-length="11"
+                    placeholder="手机号"
+                />
             </FormItem>
 
             <FormItem
@@ -71,13 +75,15 @@ const handleFormFinish = debounce(async (values: Record<string, any>) => {
             >
                 <InputPassword
                     v-model:value="modelStates.password"
-                    :maxLength="20"
+                    :max-length="20"
                     placeholder="密码"
                 />
             </FormItem>
 
-            <FormItem style="text-align: center" :wrapperCol="{ span: 24 }">
-                <AButton htmlType="submit" style="width: 200px" type="primary">登录</AButton>
+            <FormItem style="text-align: center" :wrapper-col="{ span: 24 }">
+                <AButton html-type="submit" style="width: 200px" type="primary">
+登录
+</AButton>
             </FormItem>
         </Form>
 

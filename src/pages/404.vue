@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { history, useNav } from 'swico';
+import { history, useNav } from 'swico/vue';
 import { Result } from 'ant-design-vue';
 const nav = useNav();
 const type = 'primary';
 </script>
 <template>
-    <Result status="404" subTitle="抱歉，你访问的页面不存在" title="404">
+    <Result status="404" sub-title="抱歉，你访问的页面不存在" title="404">
         <template #extra>
             <AButton
                 @click="

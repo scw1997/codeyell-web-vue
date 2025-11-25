@@ -7,10 +7,10 @@ import Toast from '@/utils/Toast';
 import api from '@/api';
 import http from '@/utils/http';
 import useGlobalStore from '@/store/global';
-import { useLocation, useNav } from 'swico';
+import { useLocation, useNav } from 'swico/vue';
 import { storeToRefs } from 'pinia';
 import { CountDown } from '@/components';
-import { history } from 'swico';
+import { history } from 'swico/vue';
 const globalStore = useGlobalStore();
 
 const route = useLocation();
@@ -62,14 +62,14 @@ const handleSubmit = async (values: Record<string, any>) => {
     <div class="retrieve-content">
         <Title value="找回密码 - 源码阅读交流平台" />
         <Form
-            :model="modelStates"
-            autoComplete="off"
-            class="retrieve-form"
             ref="formRef"
-            :labelCol="{ span: 6 }"
+            :model="modelStates"
+            auto-complete="off"
+            class="retrieve-form"
+            :label-col="{ span: 6 }"
             name="basic"
-            :onFinish="handleSubmit"
-            :wrapperCol="{ span: 18 }"
+            :on-finish="handleSubmit"
+            :wrapper-col="{ span: 18 }"
         >
             <FormItem
                 label="手机号"
@@ -82,7 +82,11 @@ const handleSubmit = async (values: Record<string, any>) => {
                     }
                 ]"
             >
-                <AInput v-model:value="modelStates.username" :maxLength="11" placeholder="手机号" />
+                <AInput
+                    v-model:value="modelStates.username"
+                    :max-length="11"
+                    placeholder="手机号"
+                />
             </FormItem>
 
             <FormItem
@@ -92,12 +96,12 @@ const handleSubmit = async (values: Record<string, any>) => {
             >
                 <ARow :gutter="8">
                     <ACol :span="16">
-                        <FormItem :noStyle="true">
-                            <AInput :maxLength="6" placeholder="验证码" />
+                        <FormItem :no-style="true">
+                            <AInput :max-length="6" placeholder="验证码" />
                         </FormItem>
                     </ACol>
                     <ACol :span="8">
-                        <CountDown :beforeStart="handleSendMsgClick" text="发送短信" />
+                        <CountDown :before-start="handleSendMsgClick" text="发送短信" />
                     </ACol>
                 </ARow>
             </FormItem>
@@ -109,14 +113,14 @@ const handleSubmit = async (values: Record<string, any>) => {
             >
                 <InputPassword
                     v-model:value="modelStates.password"
-                    :maxLength="20"
+                    :max-length="20"
                     placeholder="设置新密码"
                 />
             </FormItem>
 
-            <FormItem style="text-align: center" :wrapperCol="{ span: 24 }">
+            <FormItem style="text-align: center" :wrapper-col="{ span: 24 }">
                 <AButton
-                    htmlType="submit"
+                    html-type="submit"
                     :loading="submitLoading"
                     style="width: 200px"
                     type="primary"
