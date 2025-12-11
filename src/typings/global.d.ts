@@ -11,6 +11,7 @@ declare module '*.vue';
 declare const SWICO_PUBLIC_PATH: string;
 declare const SWICO_ROUTER_BASE: string;
 declare const SWICO_ENV: 'dev' | 'prod';
+declare const SWICO_STATIC_PUBLIC_PATH: string;
 declare const API_HOST: string;
 
 type EmptyObject = {
